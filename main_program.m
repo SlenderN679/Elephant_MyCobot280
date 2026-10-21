@@ -46,7 +46,24 @@ function main()
     %           RED_CYLINDER,  TARGET_GREEN,  0.06, 0.00 ];
     IS_CUBE = @(obj) obj ~= BLUE_CYLINDER;  % cubos: J6 alinha os dedos com as faces
     RANDOM_START = 1;                       % 1 - (teste, só simulação) começar numa pose aleatória do braço
+    SHOW_ZONES = 1;                         % 1 - desenhar na mesa as zonas de alcance e a zona morta de J1
+    CELEBRATE = 1;                          % 1 - dança de celebração quando todas as tarefas correm bem
+    END_WHEN_DONE = 1;                      % 1 - parar a simulação quando todas as tarefas acabarem
 
+    % Desimpedir o alvo antes das tarefas: os objetos que estejam dentro de
+    % CLEAR_RADIUS do destino são levados para os pontos CLEAR_SPOTS
+    CLEAR_TARGET = 1;                       % 1 - desimpedir o alvo no início
+    CLEAR_RADIUS = 0.05;                    % raio da zona a desimpedir [m]
+    PICKABLE = [BLUE_CUBE BLUE_CYLINDER RED_CYLINDER BLOCK1 BLOCK2 BLOCK3];  % objetos que se podem mover
+    % metade da altura de cada objeto [m] (para os pousar à altura certa,
+    % mesmo quando são tirados do topo de uma pilha)
+    HALF_H = zeros(1, max(PICKABLE));
+    HALF_H([BLUE_CUBE BLUE_CYLINDER RED_CYLINDER]) = 0.04/2;   % cubos e cilindro do cenário: 4 cm
+    HALF_H([BLOCK1 BLOCK2 BLOCK3]) = BLOCK_H/2;                % blocos
+    CLEAR_SPOTS = [ -0.22 -0.03;            % pontos de estacionamento [x y] no MUNDO [m]
+                    -0.17 -0.10;            % (alcançáveis com a garra na vertical;
+                    -0.10 -0.16;            %  verificar que estão livres no vosso cenário)
+                    -0.03 -0.17 ];
     % Montagem - o que se sabe do espaço de trabalho. O código abaixo não usa
     % informação escondida do simulador, por isso serve também para o braço
     % real: o estado do robô vem só das leituras das juntas (encoders) e os
@@ -57,7 +74,10 @@ function main()
     BASE_YAW      = -pi/2;                 % rotação da base do robô [rad]
     TABLE_Z       = 0;                     % altura da superfície da mesa [m]
     USE_OBJECT_YAW = (ROSWORKING == 0);    % orientação do cubo (alinhamento de J6): lida do simulador;
-    HOME_POSE     = [0 0 -90 0 0 0];        % pose inicial [GRAUS] (J1..J6); [0 0 0 0 0 0] = braço vertical
+    HOME_POSE     = [0 0 -90 0 0 0];       % pose inicial [GRAUS] (J1..J6); [0 0 0 0 0 0] = braço vertical
+    FAIL_POSE     = [0 0 0 90 0 0];        % pose de ERRO [GRAUS]: braço vertical com a garra a
+                                           % apontar para cima; o robô vai para lá, abana a garra
+                                           % e para as tarefas quando uma tarefa falha
 %% ======================================================================
 % /Configuração do exemplo pick-and-place/
 %======================================================================
@@ -95,6 +115,12 @@ function main()
     end
     
     sim_interface.start_simulation(); % start simulation in CoppeliaSim
+
+    % [ACRESCENTADO] desenhar as zonas de alcance na mesa (só visual)
+    if SHOW_ZONES == 1
+        draw_zones(sim_interface, BASE_POSITION, BASE_YAW, TABLE_Z, deg2rad(165), ...
+                   [0.1316 0.1104 0.0960 0.0731 0.0646 0.0456 0.1057]);
+    end
     
     %----------------------------------------------------------------------
     % Informations of arm characteristics
@@ -128,6 +154,8 @@ function main()
     if ~go_home(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(HOME_POSE))
         disp('AVISO: pose inicial não alcançada');
     end
+    %celebrate(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint);
+    
 %% ======================================================================
 % /Inicialização do exemplo pick-and-place/
 %======================================================================
@@ -171,6 +199,8 @@ function main()
     cfg.DROP_ON_PLACE = 1;    % 1 - larga o objeto um pouco acima do destino (empilhar sem forçar)
                               % 0 - pousa o objeto e só depois abre a garra
     cfg.DROP_HEIGHT   = 0.015;% altura da queda quando DROP_ON_PLACE = 1 [m]
+    cfg.CLEAR_SPACING = 0.05; % distância mínima livre à volta de um ponto de estacionamento [m]
+    cfg.CHECK_COLLISIONS = 1; % 1 - rejeitar poses em que o braço choca consigo próprio (arm_collision)
 
     iTask = 1;                % próxima tarefa da lista TASKS
     PRINT_PERIOD = 1.0;       % intervalo entre a escrita do tempo de simulação [s]
@@ -233,29 +263,57 @@ function main()
     %======================================================================
         if DEMO_PICK_AND_PLACE == 1
             if iTask <= size(TASKS, 1)
-                obj = TASKS(iTask, 1);
-                fprintf('\n--- tarefa %d de %d ---\n', iTask, size(TASKS, 1));
-
-                % onde está o objeto e onde o pousar (referencial do MUNDO)
-                objPos   = sim_interface.get_target_position(obj);
-                placePos = sim_interface.get_target_position(TASKS(iTask, 2)) ...
-                           + [TASKS(iTask, 3), TASKS(iTask, 4), (TASKS(iTask, 5) - 1)*BLOCK_H];
-
-                % orientação do cubo (para alinhar os dedos com as faces)
-                objYaw = [];
-                if IS_CUBE(obj) && USE_OBJECT_YAW
-                    o = sim_interface.get_target_orientation(obj);
-                    objYaw = o(3);
+                % antes da primeira tarefa: desimpedir o destino
+                if iTask == 1 && CLEAR_TARGET == 1
+                    [~, okC, whyC] = clear_area(robot_arm, sim_interface, cfg, PICKABLE, ...
+                               sim_interface.get_target_position(TASKS(1, 2)), CLEAR_RADIUS, ...
+                               CLEAR_SPOTS, IS_CUBE, USE_OBJECT_YAW, HALF_H(PICKABLE));
+                    if ~okC
+                        fprintf('ERRO ao desimpedir o alvo: %s\n', whyC);
+                        signal_failure(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
+                        DEMO_PICK_AND_PLACE = 0;     % parar as tarefas (a simulação continua)
+                    end
                 end
 
-                if ~pick_and_place(robot_arm, sim_interface, cfg, objPos, placePos, objYaw)
-                    fprintf('tarefa %d falhou\n', iTask);
+                if DEMO_PICK_AND_PLACE == 1     % (0 se o desimpedir do alvo falhou)
+                    obj = TASKS(iTask, 1);
+                    fprintf('\n--- tarefa %d de %d ---\n', iTask, size(TASKS, 1));
+
+                    % onde está o objeto e onde o pousar (referencial do MUNDO)
+                    objPos   = sim_interface.get_target_position(obj);
+                    placePos = sim_interface.get_target_position(TASKS(iTask, 2)) ...
+                               + [TASKS(iTask, 3), TASKS(iTask, 4), (TASKS(iTask, 5) - 1)*BLOCK_H];
+
+                    % orientação do cubo (para alinhar os dedos com as faces)
+                    objYaw = [];
+                    if IS_CUBE(obj) && USE_OBJECT_YAW
+                        o = sim_interface.get_target_orientation(obj);
+                        objYaw = o(3);
+                    end
+
+                    [okT, whyT] = pick_and_place(robot_arm, sim_interface, cfg, objPos, placePos, objYaw, HALF_H(obj));
+                    if ~okT
+                        % falhou: assinalar indo para a pose de erro e parar as tarefas
+                        fprintf('ERRO na tarefa %d: %s\n', iTask, whyT);
+                        signal_failure(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
+                        DEMO_PICK_AND_PLACE = 0;         % parar as tarefas (a simulação continua)
+                        if END_WHEN_DONE == 1
+                            stop = 1;   % sai do ciclo while -> sim_interface.terminate() para a simulação
+                        end
+                    end
+                    iTask = iTask + 1;
                 end
-                iTask = iTask + 1;
             else
-                % todas as tarefas feitas: voltar à pose inicial e parar o exemplo
+                % todas as tarefas feitas: celebrar, voltar à pose inicial e parar o exemplo
+                if CELEBRATE == 1
+                    celebrate(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint);
+                end
                 go_home(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(HOME_POSE));
+                pause(2);
                 DEMO_PICK_AND_PLACE = 0;
+                if END_WHEN_DONE == 1
+                    stop = 1;   % sai do ciclo while -> sim_interface.terminate() para a simulação
+                end
             end
         end
     %% ======================================================================
@@ -317,6 +375,16 @@ function main()
     end
     sim_interface.terminate();
     disp('stop simulation')
+end
+
+%% ======================================================================
+% Assinalar uma falha: subir a garra se estiver baixa, ir para a pose de
+% erro e abanar a garra durante 3 s
+%======================================================================
+function signal_failure(robot_arm, sim_interface, Links, qMin, qMax, FAIL_POSE)
+    go_home(robot_arm, sim_interface, Links, qMin, qMax, [], deg2rad(FAIL_POSE));
+    wiggle(robot_arm, sim_interface, 3, deg2rad(30), 1);
+    disp('>>> ROBÔ PARADO: tarefa falhou (ver mensagem acima) <<<');
 end
 
 function myCleanupFun(sim_interface)

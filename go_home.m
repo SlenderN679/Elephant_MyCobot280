@@ -60,4 +60,5 @@ function ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, 
     else
         fprintf('go_home: pose inicial NÃO alcançada, juntas [graus] %s\n', sprintf('%7.1f', rad2deg(q)));
     end
+    wiggle(robot_arm, sim_interface, 2, deg2rad(30), 2);
 end

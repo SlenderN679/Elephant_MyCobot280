@@ -10,7 +10,8 @@ function q = random_start(robot_arm, sim_interface, Links, qMin, qMax, tableZbas
 %   q          : a pose aleatória alcançada [rad]
 %
 % Escolhe juntas aleatórias (J1..J6) dentro dos limites, aceitando só poses
-% em que a garra, o pulso e o cotovelo ficam acima da mesa, e vai para lá
+% em que a garra, o pulso e o cotovelo ficam acima da mesa e o braço não
+% choca consigo próprio (arm_collision), e vai para lá
 % com um movimento suave das juntas. Não usar com o braço real.
 
     MARGIN = 0.03;                  % manter tudo pelo menos 3 cm acima da mesa
@@ -21,8 +22,8 @@ function q = random_start(robot_arm, sim_interface, Links, qMin, qMax, tableZbas
         zEl   = Links(1) + Links(2)*cos(q(2));
         zJ4   = zEl + Links(3)*cos(q(2)+q(3));
         zJ5   = zJ4 + Links(4)*cos(q(2)+q(3)+q(4));
-        if min([tip(3) zEl zJ4 zJ5]) > tableZbase + MARGIN
-            break;
+        if min([tip(3) zEl zJ4 zJ5]) > tableZbase + MARGIN && ~arm_collision(q, Links)
+            break;                  % acima da mesa e sem chocar consigo próprio
         end
     end
     fprintf('random_start: a ir para [graus] %s\n', sprintf('%7.1f', rad2deg(q)));

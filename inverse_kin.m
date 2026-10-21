@@ -1,10 +1,11 @@
-function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch)
+function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch, family, fixedPitch)
 % INVERSE_KIN  Cinemática inversa analítica do myCobot 280
 %
 %   [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links)
 %   [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax)
 %   [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw)
 %   [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch)
+%   [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch, family, fixedPitch)
 %
 %   (x,y,z)   : posição desejada do centro de preensão, referencial da BASE [m]
 %               (converter posições do mundo com world_to_base)
@@ -17,6 +18,15 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 %               para baixo. Por defeito pi/2 (vertical para baixo, o melhor
 %               para apanhar objetos). Acima de pi/2 a garra aponta para baixo
 %               e um pouco para a base.
+%
+%   family    : (opcional) família de soluções:
+%               'auto'  (por defeito) - igual a 'front'
+%               'front' - só "à frente" com o cotovelo para cima (J3 <= 0)
+%               'back'  - só "atrás" com o cotovelo invertido (J3 >= 0): braço
+%                         inclinado para trás e antebraço a dobrar por cima
+%   fixedPitch: (opcional) true -> usar SÓ a inclinação prefPitch (sem procurar
+%               outras). Usado por plan_vertical / move_linear para que uma
+%               descida inteira use a mesma solução, sem saltos.
 %
 %   armJoints   = [J1 J2 J3 J4 J5 J6] em rad, pronto para robot_arm.set_joints
 %   isReachable = true se existir solução dentro dos limites das juntas
@@ -51,6 +61,12 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     if nargin < 8 || isempty(prefPitch) 
         prefPitch = pi/2;                                % valor de defeito para a inclinação do objeto
     end
+    if nargin < 9 || isempty(family)
+        family = 'auto';                                 % família de soluções por defeito
+    end
+    if nargin < 10 || isempty(fixedPitch)
+        fixedPitch = false;                              % por defeito procura a inclinação
+    end
     
     % inicializar valores para os cálculos
     L  = Links;
@@ -68,12 +84,24 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 
     ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
     PITCH_MAX = deg2rad(135);           % garra no máximo 45 graus inclinada para a base
-    PITCH_MIN = deg2rad(-60);           % garra no máximo 60 graus acima da horizontal
+    PITCH_MIN = deg2rad(30);            % garra sempre pelo menos 30 graus abaixo da horizontal
+                                        % (a apontar para cima não serve para apanhar nada)
     STEP      = deg2rad(5);
 
-    % 1.ª passagem: só soluções "à frente"; 2.ª: também "atrás"
-    for sides = {1, [1 -1]}
-        for d = 0:STEP:(PITCH_MAX - PITCH_MIN)
+    % passagens: {lados, família do cotovelo (0 = qualquer, 1 = J3<=0, -1 = J3>=0)}
+    switch family
+        case 'front', passes = {{1, 1}};
+        case 'back',  passes = {{-1, -1}};
+        otherwise,    passes = {{1, 1}};               % por defeito: só "à frente", cotovelo para cima
+    end
+    if fixedPitch
+        dList = 0;                       % só a inclinação pedida
+    else
+        dList = 0:STEP:(PITCH_MAX - PITCH_MIN);
+    end
+    for ip = 1:numel(passes)
+        sides = passes{ip}(1);  fam = passes{ip}{2};
+        for d = dList
             % candidatos com desvio d da inclinação preferida: primeiro para a
             % base (+d), depois para fora (-d)
             if d == 0
@@ -82,10 +110,10 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
                 cands = [prefPitch + d, prefPitch - d];
             end
             for psi = cands
-                if psi > PITCH_MAX || psi < PITCH_MIN
+                if ~fixedPitch && (psi > PITCH_MAX || psi < PITCH_MIN)
                     continue;
                 end
-                best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, sides{1});
+                best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, sides{1}, fam);
                 if isempty(best)
                     continue;
                 end
@@ -97,7 +125,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
                     good = psi;  bad = psi - sign(psi - prefPitch)*STEP;
                     for it = 1:15
                         mid = (good + bad)/2;
-                        qm  = solve_pitch(mid, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, sides{1});
+                        qm  = solve_pitch(mid, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, sides{1}, fam);
                         if isempty(qm), bad = mid; else, good = mid; best = qm; end
                     end
                     psi = good;
@@ -118,7 +146,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     end
 end
 
-function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, sides)
+function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, sides, fam)
 % melhor solução "cotovelo para cima" [J1..J4] para a inclinação psi, ou [] se não houver
     wrap = @(t) atan2(sin(t), cos(t));
     best = [];  bestElbow = -inf;
@@ -145,6 +173,9 @@ function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, side
             q  = wrap([q1, a1 - pi/2, g, phi - (a1 - pi/2) - g]);
             if any(q < qMin(1:4)) || any(q > qMax(1:4)) || abs(q(3)) > elbowMax
                 continue;           % fora dos limites, ou cotovelo dobrado demais
+            end
+            if (fam == 1 && q(3) > 0) || (fam == -1 && q(3) < 0)
+                continue;           % cotovelo do lado errado para a família pedida
             end
             % alturas do cotovelo (J3) e do pulso (J4, J5): têm de ficar acima da base
             zElbow = L(1) + L(2)*cos(q(2));

@@ -1,9 +1,10 @@
-function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime)
+function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, ikOpts)
 % MOVE_LINEAR  Leva o centro de preensão da garra em LINHA RETA até goal (bloqueante).
 %
 %   ok = move_linear(robot_arm, sim_interface, cfg, goal, V)
 %   ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw)
 %   ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime)
+%   ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, ikOpts)
 %
 %   cfg     : configuração (ver main_program: Links, qMin, qMax, ACC, TABLE_Z,
 %             BASE_POSITION, FINGER_EXTRA, CLEARANCE)
@@ -11,6 +12,8 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime)
 %   V       : velocidade máxima [m/s]
 %   yaw     : (opcional) orientação do cubo para alinhar J6 ([] = J6 a 0)
 %   maxTime : (opcional) tempo máximo de simulação [s] (por defeito 15)
+%   ikOpts  : (opcional) família e inclinação fixa da garra (de plan_vertical);
+%             sem ele, inverse_kin escolhe a solução em cada ponto
 %   ok      : true se a garra terminou a menos de 3 mm do objetivo
 %
 % Em cada passo de simulação:
@@ -23,6 +26,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime)
 
     if nargin < 6, yaw = []; end
     if nargin < 7 || isempty(maxTime), maxTime = 15; end
+    if nargin < 8, ikOpts = []; end
     TOL     = 0.003;          % erro de posição aceite [m]
     SETTLE  = 4;              % tempo máximo à espera do erro < TOL depois de chegar [s]
 
@@ -62,7 +66,12 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime)
         end
 
         p = cmd + corr;
-        [qi, reach] = inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw);
+        if isempty(ikOpts)
+            [qi, reach] = inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw);
+        else
+            [qi, reach] = inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw, ...
+                                      ikOpts.pitch, ikOpts.family, true);
+        end
         if reach
             if robot_arm.set_joints(qi) == 1
                 return;                       % fora dos limites: desistir
