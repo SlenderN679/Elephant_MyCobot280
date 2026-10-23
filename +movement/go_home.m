@@ -1,12 +1,13 @@
-function ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, qHome)
+function ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointOffset, qHome)
 % GO_HOME  Leva o myCobot 280 à pose inicial, seja qual for a pose de partida. 
 %          Usa APENAS as leituras das juntas, 
 %          por isso funciona igual com o braço simulado e com o real.
 %
-%   ok = go_home(robot_arm, sim_interface, Links, qMin, qMax)
-%   ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset)
-%   ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, qHome)
+%   ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax)
+%   ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointOffset)
+%   ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointOffset, qHome)
 %
+%   SHAKE       : se abana a cabeça no final
 %   jointOffset : (opcional) 1x6 [rad] calibração: leitura das juntas com o
 %                 braço realmente na pos inicial. Os encoders do myCobot real vêm
 %                 calibrados de fábrica -> deixar a 0 se não tivermos medido outro valor.
@@ -33,13 +34,13 @@ function ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, 
     fprintf('go_home: juntas iniciais [graus] %s\n', sprintf('%7.1f', rad2deg(q)));
 
     %% 1. subir na vertical se a garra estiver baixa
-    [tip, approach] = direct_kin(q, Links);
+    [tip, approach] = movement.direct_kin(q, Links);
     if tip(3) < SAFE_Z
         pitch = asin(max(-1, min(1, -approach(3))));   % manter a inclinação atual
         p = tip;  qCmd = q;
         while p(3) < SAFE_Z
             p(3) = min(SAFE_Z, p(3) + LIFT_SPEED*0.05);
-            [qi, reach] = inverse_kin(p(1), p(2), p(3), Links, qMin, qMax, [], pitch);
+            [qi, reach] = movement.inverse_kin(p(1), p(2), p(3), Links, qMin, qMax, [], pitch);
             if ~reach || max(abs(qi(1:4) - qCmd(1:4))) > deg2rad(10)
                 break;                  % sem caminho suave para cima: passar ao passo 2
             end
@@ -50,7 +51,7 @@ function ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, 
     end
 
     %% 2. movimento suave das juntas até à pose inicial
-    move_joints(robot_arm, sim_interface, qHome + jointOffset, JOINT_SPEED);
+    movement.move_joints(robot_arm, sim_interface, qHome + jointOffset, JOINT_SPEED);
 
     %% 3. verificar as leituras
     q  = robot_arm.get_joints() - jointOffset;
@@ -60,5 +61,7 @@ function ok = go_home(robot_arm, sim_interface, Links, qMin, qMax, jointOffset, 
     else
         fprintf('go_home: pose inicial NÃO alcançada, juntas [graus] %s\n', sprintf('%7.1f', rad2deg(q)));
     end
-    wiggle(robot_arm, sim_interface, 2, deg2rad(30), 2);
+    if SHAKE
+        aux.wiggle(robot_arm, sim_interface, 1, deg2rad(30), 2);
+    end
 end

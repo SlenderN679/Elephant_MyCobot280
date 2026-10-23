@@ -18,16 +18,16 @@ function q = random_start(robot_arm, sim_interface, Links, qMin, qMax, tableZbas
     for tries = 1:1000
         q = qMin + rand(1,6).*(qMax - qMin);
         q(2:4) = 0.6*q(2:4);         % evitar dobras extremas (colisões com o próprio braço)
-        tip   = direct_kin(q, Links);
+        tip   = movement.direct_kin(q, Links);
         zEl   = Links(1) + Links(2)*cos(q(2));
         zJ4   = zEl + Links(3)*cos(q(2)+q(3));
         zJ5   = zJ4 + Links(4)*cos(q(2)+q(3)+q(4));
-        if min([tip(3) zEl zJ4 zJ5]) > tableZbase + MARGIN && ~arm_collision(q, Links)
+        if min([tip(3) zEl zJ4 zJ5]) > tableZbase + MARGIN && ~aux.arm_collision(q, Links)
             break;                  % acima da mesa e sem chocar consigo próprio
         end
     end
     fprintf('random_start: a ir para [graus] %s\n', sprintf('%7.1f', rad2deg(q)));
-    move_joints(robot_arm, sim_interface, q, deg2rad(45));
+    movement.move_joints(robot_arm, sim_interface, q, deg2rad(45));
     % deixar estabilizar um momento
     for k = 1:10
         sim_interface.step_simulation();

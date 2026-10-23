@@ -1,4 +1,4 @@
-function [det, img] = vision_colors(sim_interface, wanted, quiet)
+function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
 % VISION_COLORS  Localiza peças por COR com o sensor de visão (/Vision_sensor).
 %
 %   det = vision_colors()                    % corre sozinho (liga ao CoppeliaSim,
@@ -28,6 +28,8 @@ function [det, img] = vision_colors(sim_interface, wanted, quiet)
 %                           entre -45 e 45 graus (um quadrado repete-se a cada 90
 %                           graus); NaN se a mancha é pequena demais
 %   img : [ACRESCENTADO] imagem RGB (H x W x 3, 0..1) usada na deteção (para show_vision.m)
+%   cam : [ACRESCENTADO] modelo da câmara (W, H, f, Rc, pc, sgn) para passar pontos
+%         do mundo para pixeis da imagem (ver world2pix.m)
 %
 % Como funciona
 %   1. Lê a imagem do sensor e converte para HSV.
@@ -74,7 +76,7 @@ function [det, img] = vision_colors(sim_interface, wanted, quiet)
     ownSim = (nargin < 1 || isempty(sim_interface));
     if ownSim
         [sim_interface, err] = simulator_interface(0);
-        if err == 1, det = []; img = []; return; end
+        if err == 1, det = []; img = []; cam = []; return; end
         cleanup = onCleanup(@() sim_interface.terminate()); %#ok<NASGU>
         sim_interface.start_simulation();
     end
@@ -103,6 +105,7 @@ function [det, img] = vision_colors(sim_interface, wanted, quiet)
         fov = deg2rad(FOV_DEG);
     end
     f = (max(W, H)/2) / tan(fov/2);                     % distância focal [pixeis]
+    cam = struct('W', W, 'H', H, 'f', f, 'Rc', Rc, 'pc', pc, 'sgn', SIGN);   % [ACRESCENTADO]
     if ~quiet
         fprintf('Sensor: %dx%d px, FOV %.1f graus, posição [%.3f %.3f %.3f]\n', ...
                 W, H, rad2deg(fov), pc);

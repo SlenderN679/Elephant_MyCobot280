@@ -1,8 +1,8 @@
-function [pos, found, pix, img, det, yaw] = vision_snapshot(sim_interface, objIds, colors, ranks, halfH, tableZ)
+function [pos, found, pix, img, det, yaw, cam] = vision_snapshot(sim_interface, objIds, colors, ranks, halfH, tableZ)
 % VISION_SNAPSHOT  Posição de cada objeto obtida SÓ pela câmara (vision_colors).
 %
 %   [pos, found] = vision_snapshot(sim_interface, objIds, colors, ranks, halfH, tableZ)
-%   [pos, found, pix, img, det, yaw] = vision_snapshot(...)   % + dados para show_vision
+%   [pos, found, pix, img, det, yaw, cam] = vision_snapshot(...)   % + dados para show_vision
 %
 %   objIds : índices dos objetos (os mesmos de get_target_position)
 %   colors : cell com a cor de cada objeto de objIds ('blue', 'yellow', ...)
@@ -30,7 +30,7 @@ function [pos, found, pix, img, det, yaw] = vision_snapshot(sim_interface, objId
 
     n = numel(objIds);
     pos = nan(n, 3);  found = false(n, 1);  pix = nan(n, 2);  yaw = nan(n, 1);
-    [det, img] = vision_colors(sim_interface, unique(colors), true);
+    [det, img, cam] = vision.vision_colors(sim_interface, unique(colors), true);
     if isempty(det), return; end
 
     for k = 1:n

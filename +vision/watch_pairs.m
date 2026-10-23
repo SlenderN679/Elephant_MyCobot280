@@ -104,7 +104,7 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
 
     %% ---- uma fotografia ----
     act = [];
-    [det, img] = vision_colors(sim_interface, W.colors, true);
+    [det, img, cam] = vision.vision_colors(sim_interface, W.colors, true);
     vNames = {};  vColors = {};  vPos = zeros(0, 3);  vPix = zeros(0, 2);  vYaw = zeros(0, 1);
     tz = W.target(3);                          % superfície do alvo
     for ci = 1:nc
@@ -252,8 +252,41 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
         end
     end
     W.init = true;
+
+    % [ACRESCENTADO] plano para a visualização: setas + painel de estado
+    arrows = struct('from', {}, 'to', {}, 'color', {}, 'label', {}, 'state', {});
+    if strcmp(W.mode, 'pairs')
+        info = {'MODO 2: PILHA DE PARES', ...
+                sprintf('cores: %s', strjoin(W.colors, ', ')), ...
+                sprintf('pares empilhados: %d', size(W.stacks, 1))};
+    else
+        info = {'MODO 3: PEDIDO DE COR', ...
+                sprintf('cores: %s', strjoin(W.colors, ', ')), ...
+                sprintf('pilha verde: %d bloco(s)', W.nStack)};
+        % o alvo verde (onde cresce a pilha), mesmo sem ação
+        arrows(end+1) = struct('from', W.target + [-0.03 0 0], 'to', W.target + [0.03 0 0], ...
+                               'color', 'green', 'label', 'pilha', 'state', 'link');
+    end
+    if ~isempty(act)
+        if strcmp(W.mode, 'request') && norm(act.req - act.pick(1:2)) > W.match
+            % ligação pedido -> peça escolhida
+            arrows(end+1) = struct('from', [act.req, W.tableZ + W.blockH/2], 'to', act.pick, ...
+                                   'color', act.color, 'label', 'pedido', 'state', 'link');
+        end
+        arrows(end+1) = struct('from', act.pick, 'to', act.place, 'color', act.color, ...
+                               'label', sprintf('nível %d', act.level), 'state', 'next');
+        info{end+1} = sprintf('> a seguir: %s para o nível %d', act.color, act.level);
+    else
+        waiting = W.lastMsg(~cellfun(@isempty, W.lastMsg));
+        if isempty(waiting)
+            info{end+1} = 'à espera de um bloco novo...';
+        else
+            info = [info, strrep(waiting, 'watch_pairs: ', '')];
+        end
+    end
     view = struct('img', img, 'det', {det}, 'names', {vNames}, 'colors', {vColors}, ...
-                  'pos', vPos, 'pix', vPix, 'found', true(numel(vNames), 1), 'yaw', vYaw);
+                  'pos', vPos, 'pix', vPix, 'found', true(numel(vNames), 1), 'yaw', vYaw, ...
+                  'cam', cam, 'extras', struct('cam', cam, 'arrows', arrows, 'info', {info}));
 end
 
 % -------------------------------------------------------------------------

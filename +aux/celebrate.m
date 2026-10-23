@@ -10,7 +10,7 @@ function celebrate(robot_arm, sim_interface, Links, qMin, qMax)
 % Termina com o braço na vertical e a garra aberta.
 
     T = 6;                                            % duração [s]
-    go_home(robot_arm, sim_interface, Links, qMin, qMax, [], zeros(1,6));   % braço na vertical
+    movement.go_home(robot_arm, sim_interface, Links, qMin, qMax, [], zeros(1,6));   % braço na vertical
     disp('celebrate: \o/');
 
     t0 = sim_interface.get_simulation_time();

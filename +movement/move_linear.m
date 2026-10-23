@@ -36,7 +36,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
     goal(3) = max(goal(3), floorBase + cfg.FINGER_EXTRA + cfg.CLEARANCE);
 
     q    = robot_arm.get_joints();
-    cmd  = direct_kin(q, cfg.Links);          % começa onde a garra está
+    cmd  = movement.direct_kin(q, cfg.Links);          % começa onde a garra está
     corr = zeros(3,1);                        % correção da gravidade
     vCur = 0;                                 % velocidade atual [m/s]
     t0   = sim_interface.get_simulation_time();
@@ -47,7 +47,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
         t  = sim_interface.get_simulation_time();
         dt = max(t - tPrev, 1e-3);  tPrev = t;
         q   = robot_arm.get_joints();
-        tip = direct_kin(q, cfg.Links);       % onde a garra está realmente
+        tip = movement.direct_kin(q, cfg.Links);       % onde a garra está realmente
 
         % avançar o ponto de referência (perfil de velocidade suave)
         d = goal - cmd;  n = norm(d);
@@ -67,9 +67,9 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
 
         p = cmd + corr;
         if isempty(ikOpts)
-            [qi, reach] = inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw);
+            [qi, reach] = movement.inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw);
         else
-            [qi, reach] = inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw, ...
+            [qi, reach] = movement.inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw, ...
                                       ikOpts.pitch, ikOpts.family, true);
         end
         if reach

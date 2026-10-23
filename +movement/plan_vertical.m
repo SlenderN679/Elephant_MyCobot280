@@ -1,4 +1,4 @@
-function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw, qRef)
+function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw)
 % PLAN_VERTICAL  Escolhe uma inclinação FIXA da garra para um movimento
 %                vertical (descer até um objeto / subir), com o braço na
 %                pose normal "cotovelo para cima".
@@ -9,7 +9,6 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw, qRef)
 %   pLow, pHigh : 3x1 pontos de baixo e de cima, referencial da BASE [m]
 %                 (mesmo x, y; só muda a altura)
 %   yaw         : orientação do cubo (para J6), ou []
-%   qRef        : (opcional, não usado; mantido por compatibilidade)
 %   ikOpts      : estrutura para move_linear / inverse_kin:
 %                   ikOpts.family = 'front' (cotovelo para cima)
 %                   ikOpts.pitch  = inclinação da garra [rad] (fixa)
@@ -26,7 +25,6 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw, qRef)
 % a melhor inclinação em cada ponto faz a solução mudar de ramo a meio da
 % descida (J4 bate no limite de +-165 graus) e as juntas dão saltos.
 
-    if nargin < 5, qRef = []; end %#ok<NASGU>
     minPitch = deg2rad(45);
     if isfield(cfg, 'MIN_GRASP_PITCH'), minPitch = cfg.MIN_GRASP_PITCH; end
     checkColl = ~isfield(cfg, 'CHECK_COLLISIONS') || cfg.CHECK_COLLISIONS;
@@ -45,12 +43,12 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw, qRef)
             if psi > maxPitch || psi < minPitch, continue; end
             good = true;  qPrev = [];  qT = [];
             for z = zs
-                [q, reach] = inverse_kin(pLow(1), pLow(2), z, cfg.Links, cfg.qMin, cfg.qMax, ...
+                [q, reach] = movement.inverse_kin(pLow(1), pLow(2), z, cfg.Links, cfg.qMin, cfg.qMax, ...
                                          yaw, psi, 'front', true);
                 if ~reach || (~isempty(qPrev) && max(abs(q(1:4) - qPrev(1:4))) > MAX_JUMP)
                     good = false;  break;
                 end
-                if checkColl && arm_collision(q, cfg.Links)
+                if checkColl && aux.arm_collision(q, cfg.Links)
                     good = false;  break;
                 end
                 if isempty(qT), qT = q; end

@@ -37,8 +37,8 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
     ok = false;  why = '';
 
     % posições no referencial da base do robô
-    pObj  = world_to_base(objWorld,   cfg.BASE_POSITION, cfg.BASE_YAW);
-    pTgt  = world_to_base(placeWorld, cfg.BASE_POSITION, cfg.BASE_YAW);
+    pObj  = aux.world_to_base(objWorld,   cfg.BASE_POSITION, cfg.BASE_YAW);
+    pTgt  = aux.world_to_base(placeWorld, cfg.BASE_POSITION, cfg.BASE_YAW);
     yaw = [];
     if ~isempty(objYaw)
         yaw = objYaw - cfg.BASE_YAW;           % orientação do cubo no referencial da base
@@ -62,13 +62,13 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
 
     % 0. planear as duas descidas ANTES de mexer o braço
     qNow = robot_arm.get_joints();
-    [optPick, okP, qPickTop] = plan_vertical(pGrasp, pGrasp + up, cfg, yaw, qNow);
+    [optPick, okP, qPickTop] = movement.plan_vertical(pGrasp, pGrasp + up, cfg, yaw, qNow);
     if ~okP
         why = sprintf('objeto inalcançável sem colisões, a %.0f cm do eixo da base (mundo x=%.3f y=%.3f)', ...
                       100*hypot(pObj(1), pObj(2)), objWorld(1), objWorld(2));
         fprintf('pick_and_place: %s\n', why);  return;
     end
-    [optPlace, okD, qPlaceTop] = plan_vertical(pPlace, pPlace + up, cfg, yaw, qPickTop);
+    [optPlace, okD, qPlaceTop] = movement.plan_vertical(pPlace, pPlace + up, cfg, yaw, qPickTop);
     if ~okD
         why = sprintf('destino inalcançável sem colisões, a %.0f cm do eixo da base (mundo x=%.3f y=%.3f)', ...
                       100*hypot(pTgt(1), pTgt(2)), placeWorld(1), placeWorld(2));
@@ -86,12 +86,12 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
     robot_arm.open_hand();
 
     % 2-4. descer, fechar, subir
-    if ~move_linear(robot_arm, sim_interface, cfg, pGrasp, cfg.V_SLOW, yaw, [], optPick)
+    if ~movement.move_linear(robot_arm, sim_interface, cfg, pGrasp, cfg.V_SLOW, yaw, [], optPick)
         why = 'não chegou ao objeto';  return;
     end
     robot_arm.close_hand();
     wait_time(sim_interface, cfg.T_CLOSE);
-    if ~move_linear(robot_arm, sim_interface, cfg, pGrasp + up, cfg.V_SLOW, yaw, [], optPick)
+    if ~movement.move_linear(robot_arm, sim_interface, cfg, pGrasp + up, cfg.V_SLOW, yaw, [], optPick)
         why = 'não conseguiu subir com o objeto';  return;
     end
 
@@ -101,12 +101,12 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
     end
 
     % 6-8. descer, abrir, subir
-    if ~move_linear(robot_arm, sim_interface, cfg, pPlace, cfg.V_SLOW, yaw, [], optPlace)
+    if ~movement.move_linear(robot_arm, sim_interface, cfg, pPlace, cfg.V_SLOW, yaw, [], optPlace)
         why = 'não chegou ao destino';  return;
     end
     robot_arm.open_hand();
     wait_time(sim_interface, cfg.T_OPEN);
-    if ~move_linear(robot_arm, sim_interface, cfg, pPlace + up, cfg.V_SLOW, yaw, [], optPlace)
+    if ~movement.move_linear(robot_arm, sim_interface, cfg, pPlace + up, cfg.V_SLOW, yaw, [], optPlace)
         why = 'não conseguiu subir depois de pousar';  return;
     end
 
@@ -119,15 +119,15 @@ function ok = go_above(robot_arm, sim_interface, cfg, pAbove, yaw, ikOpts)
 % inclinação planeadas. Se o braço estiver na outra família (cotovelo
 % dobrado para o outro lado), passa primeiro pela vertical, lá em cima,
 % para a mudança não varrer a mesa.
-    [q, ok] = inverse_kin(pAbove(1), pAbove(2), pAbove(3), cfg.Links, cfg.qMin, cfg.qMax, ...
+    [q, ok] = movement.inverse_kin(pAbove(1), pAbove(2), pAbove(3), cfg.Links, cfg.qMin, cfg.qMax, ...
                           yaw, ikOpts.pitch, ikOpts.family, true);
     if ~ok, return; end
     qNow = robot_arm.get_joints();
     if sign(qNow(3)) ~= sign(q(3)) && abs(qNow(3)) > deg2rad(5)
-        move_joints(robot_arm, sim_interface, [qNow(1) 0 0 0 0 qNow(6)]);   % braço na vertical
+        movement.move_joints(robot_arm, sim_interface, [qNow(1) 0 0 0 0 qNow(6)]);   % braço na vertical
     end
-    move_joints(robot_arm, sim_interface, q);
-    ok = move_linear(robot_arm, sim_interface, cfg, pAbove, cfg.V_SLOW, yaw, [], ikOpts);
+    movement.move_joints(robot_arm, sim_interface, q);
+    ok = movement.move_linear(robot_arm, sim_interface, cfg, pAbove, cfg.V_SLOW, yaw, [], ikOpts);
 end
 
 function wait_time(sim_interface, T)
