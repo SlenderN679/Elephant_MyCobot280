@@ -9,9 +9,11 @@ function ok = can_reach(cfg, pWorld)
 % Ex.: ver se um bloco pousado na mesa se pode apanhar:
 %   can_reach(cfg, [x y cfg.TABLE_Z + BLOCK_H/2])
 
+    % Passo 1: passar o ponto para o referencial da base
     p = aux.world_to_base(pWorld, cfg.BASE_POSITION, cfg.BASE_YAW);
     % o centro de preensão nunca abaixo da mesa + pontas dos dedos + folga
     floorZ = cfg.TABLE_Z - cfg.BASE_POSITION(3) + cfg.FINGER_EXTRA + cfg.CLEARANCE;
     p = [p(1:2); max(p(3), floorZ)];
+    % Passo 2: o mesmo teste que pick_and_place faz antes de mexer o braço
     [~, ok] = movement.plan_vertical(p, p + [0; 0; cfg.LIFT], cfg, []);
 end

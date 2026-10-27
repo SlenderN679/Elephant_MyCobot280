@@ -19,6 +19,8 @@ function ok = wiggle(robot_arm, sim_interface, duration, amplitude, frequency)
     if nargin < 4 || isempty(amplitude), amplitude = deg2rad(10);  end
     if nargin < 5 || isempty(frequency), frequency = 2;            end
 
+    % a cada passo de simulação só J6 muda: oscilação sin(2*pi*f*t), com a
+    % amplitude a crescer e a diminuir (envolvente) para não dar solavancos
     q0 = robot_arm.get_joints();             % pose atual (as outras juntas ficam fixas)
     t0 = sim_interface.get_simulation_time();
     ok = true;

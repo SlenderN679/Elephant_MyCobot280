@@ -36,6 +36,8 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
     end
     ok = false;  why = '';
 
+    % PREPARAÇÃO: converter as posições para a base e calcular os pontos de
+    % apanhar (pGrasp) e de largar (pPlace), nunca abaixo da mesa
     % posições no referencial da base do robô
     pObj  = aux.world_to_base(objWorld,   cfg.BASE_POSITION, cfg.BASE_YAW);
     pTgt  = aux.world_to_base(placeWorld, cfg.BASE_POSITION, cfg.BASE_YAW);
@@ -62,13 +64,13 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
 
     % 0. planear as duas descidas ANTES de mexer o braço
     qNow = robot_arm.get_joints();
-    [optPick, okP, qPickTop] = movement.plan_vertical(pGrasp, pGrasp + up, cfg, yaw, qNow);
+    [optPick, okP, qPickTop] = movement.plan_vertical(pGrasp, pGrasp + up, cfg, yaw);
     if ~okP
         why = sprintf('objeto inalcançável sem colisões, a %.0f cm do eixo da base (mundo x=%.3f y=%.3f)', ...
                       100*hypot(pObj(1), pObj(2)), objWorld(1), objWorld(2));
         fprintf('pick_and_place: %s\n', why);  return;
     end
-    [optPlace, okD, qPlaceTop] = movement.plan_vertical(pPlace, pPlace + up, cfg, yaw, qPickTop);
+    [optPlace, okD, qPlaceTop] = movement.plan_vertical(pPlace, pPlace + up, cfg, yaw);
     if ~okD
         why = sprintf('destino inalcançável sem colisões, a %.0f cm do eixo da base (mundo x=%.3f y=%.3f)', ...
                       100*hypot(pTgt(1), pTgt(2)), placeWorld(1), placeWorld(2));
@@ -110,6 +112,7 @@ function [ok, why] = pick_and_place(robot_arm, sim_interface, cfg, objWorld, pla
         why = 'não conseguiu subir depois de pousar';  return;
     end
 
+    % tudo correu bem
     ok = true;
     fprintf('pick_and_place: concluído\n');
 end

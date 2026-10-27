@@ -20,6 +20,7 @@ function [hit, what] = arm_collision(q, Links)
 % Cada ponto tem ainda MARGIN de folga. É uma aproximação: serve para
 % rejeitar poses claramente más, não substitui ver a simulação.
 
+    % Passo 1: medidas dos obstáculos (referencial da base)
     COL_R     = 0.048;   COL_TOP   = 0.13;     % coluna da base [m]
     PLATE_HX  = 0.055;   PLATE_HY  = 0.075;    % meias larguras da placa (x, y da base) [m]
     PLATE_TOP = 0.002;                         % topo da placa [m]
@@ -29,21 +30,27 @@ function [hit, what] = arm_collision(q, Links)
     L = Links;  q = q(:)';
     if numel(q) == 4, q = [q 0 0]; end
 
+    % Passo 2: posição de cada junta para a pose q (percorre o braço como em
+    % direct_kin e guarda a posição depois de cada elo)
     % posições das juntas (mesmas transformações que direct_kin)
-    T = rotz(q(1)) * trans(0,0,L(1));                 J2 = T(1:3,4);
-    T = T * rotx(q(2)) * trans(0,0,L(2));             J3 = T(1:3,4);
-    T = T * rotx(q(3)) * trans(L(5),0,L(3));          J4 = T(1:3,4);
-    T = T * rotx(q(4)) * trans(0,0,L(4));             J5 = T(1:3,4);
-    T = T * rotz(q(5)) * trans(0,L(6),0);             J6 = T(1:3,4);
-    T = T * roty(q(6)) * trans(0,L(7),0);             G  = T(1:3,4);
+    T = aux.matrix.rotz(q(1)) * aux.matrix.trans(0,0,L(1));                 J2 = T(1:3,4);
+    T = T * aux.matrix.rotx(q(2)) * aux.matrix.trans(0,0,L(2));             J3 = T(1:3,4);
+    T = T * aux.matrix.rotx(q(3)) * aux.matrix.trans(L(5),0,L(3));          J4 = T(1:3,4);
+    T = T * aux.matrix.rotx(q(4)) * aux.matrix.trans(0,0,L(4));             J5 = T(1:3,4);
+    T = T * aux.matrix.rotz(q(5)) * aux.matrix.trans(0,L(6),0);             J6 = T(1:3,4);
+    T = T * aux.matrix.roty(q(6)) * aux.matrix.trans(0,L(7),0);             G  = T(1:3,4);
     F = J6 + 0.75*(G - J6);                           % início dos dedos
 
+    % Passo 3: o braço como "cápsulas": cada linha = {início, fim, raio, nome}
+    % (o braço superior J2->J3 não está aqui: só serve de obstáculo no passo 4)
     parts = { J3, J4, 0.025, 'antebraço';
               J4, J5, 0.022, 'pulso';
               J5, J6, 0.022, 'pulso';
               J6, F,  0.030, 'garra';
               F,  G,  0.020, 'dedos' };
 
+    % Passo 4: para cada cápsula, verificar 8 pontos do início ao fim contra a
+    % coluna, a placa e o braço superior; a primeira colisão termina a função
     hit = false;  what = '';
     for k = 1:size(parts, 1)
         [a, b, r, nm] = parts{k, :};
@@ -65,31 +72,12 @@ function [hit, what] = arm_collision(q, Links)
     end
 end
 
+% --------------------------------------------------------------------------
+% Projeta p na reta a-b (t = fração do caminho de a para b), limita t a
+% [0, 1] para ficar dentro do segmento e mede a distância a esse ponto
 function d = seg_dist(p, a, b)
 % distância do ponto p ao segmento a<->b
     ab = b - a;
     t  = max(0, min(1, dot(p - a, ab) / dot(ab, ab)));
     d  = norm(p - (a + t*ab));
-end
-
-function M = trans(x,y,z) % move em xyz
-    M = eye(4);  M(1:3,4) = [x;y;z];
-end
-function M = rotx(t)      % roda em x
-    M = [1 0 0 0; 
-        0 cos(t) -sin(t) 0; 
-        0 sin(t) cos(t) 0; 
-        0 0 0 1];
-end
-function M = roty(t)      % roda em y
-    M = [cos(t) 0 sin(t) 0; 
-        0 1 0 0; 
-        -sin(t) 0 cos(t) 0; 
-        0 0 0 1];
-end
-function M = rotz(t)      % roda em z
-    M = [cos(t) -sin(t) 0 0; 
-        sin(t) cos(t) 0 0;
-        0 0 1 0; 
-        0 0 0 1];
 end

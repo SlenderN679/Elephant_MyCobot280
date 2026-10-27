@@ -35,6 +35,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
     goal = goal(:);
     goal(3) = max(goal(3), floorBase + cfg.FINGER_EXTRA + cfg.CLEARANCE);
 
+    % Passo 1: ponto de referência (cmd) começa onde a garra está agora
     q    = robot_arm.get_joints();
     cmd  = movement.direct_kin(q, cfg.Links);          % começa onde a garra está
     corr = zeros(3,1);                        % correção da gravidade
@@ -49,6 +50,8 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
         q   = robot_arm.get_joints();
         tip = movement.direct_kin(q, cfg.Links);       % onde a garra está realmente
 
+        % Passo 2: ler onde a garra está (direct_kin das juntas lidas) e avançar cmd
+        % em direção ao objetivo: acelera com ACC, nunca passa de V e trava a tempo
         % avançar o ponto de referência (perfil de velocidade suave)
         d = goal - cmd;  n = norm(d);
         vCur = min([V, vCur + cfg.ACC*dt, sqrt(2*cfg.ACC*n)]);
@@ -66,6 +69,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
         end
 
         p = cmd + corr;
+        % Passo 3: inverse_kin do ponto (com a correção) e enviar para o braço
         if isempty(ikOpts)
             [qi, reach] = movement.inverse_kin(p(1), p(2), p(3), cfg.Links, cfg.qMin, cfg.qMax, yaw);
         else
@@ -79,6 +83,7 @@ function ok = move_linear(robot_arm, sim_interface, cfg, goal, V, yaw, maxTime, 
         end
         sim_interface.step_simulation();
 
+        % Passo 4: terminar quando chegou e o erro real é < 3 mm, ou desistir por tempo
         % terminado?
         if reached && tReached < 0, tReached = t; end
         if reached && norm(goal - tip) < TOL

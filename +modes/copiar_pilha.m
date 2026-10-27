@@ -14,27 +14,33 @@ function [S, status] = copiar_pilha(action, S, ctx)
     status = 'running';
     switch action
         case 'init'
+            % INIT, passo 1: configurar o reconhecimento do modelo (cores, alturas, alvo,
+            % qual a ponta do modelo que é a base, espaçamento entre blocos, alcance)
             [~, ~, R] = vision.copy_stack();                % configuração por defeito
             R.colors = ctx.WATCH_COLORS;  R.tableZ = ctx.TABLE_Z;  R.blockH = ctx.BLOCK_H;
             R.base = ctx.BASE_POSITION(1:2);  R.target = ctx.POS(ctx.TARGET_GREEN, :);
             R.bottom = ctx.COPY_BOTTOM;  R.gap = ctx.COPY_GAP;
             R.reachFn = @(p) aux.can_reach(ctx.cfg, p);
-            movement.go_home(SHAKE_HEAD, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+            movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                              [], deg2rad(ctx.VISION_POSE));
+            % INIT, passo 2: com o braço fora da vista, UMA fotografia -> modelo + plano
+            % (uma peça escolhida para cada nível da pilha); S guarda tudo para os 'step'
             [plan, view, R] = vision.copy_stack(ctx.sim_interface, R);
             S = struct('plan', plan, 'view', view, 'R', R, 'iStep', 1, 'hPlan', ctx.hPlan);
             if ctx.SHOW_VISION == 1
                 S.hPlan = show_copy(ctx, S);
             end
+            % sem plano (não há modelo ou falta alguma peça ao alcance): assinalar e parar
             if isempty(plan)
                 fprintf('ERRO (copiar pilha): %s\n', R.why);
-                aux.signal_failure(ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
+                aux.signal_failure(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
                                    ctx.qMin, ctx.qMax, ctx.FAIL_POSE);
                 status = 'failed';
             end
 
         case 'step'
             if S.iStep <= numel(S.plan)
+                % STEP: executar o passo iStep do plano (apanhar a peça e pô-la no nível certo)
                 st = S.plan(S.iStep);
                 if ctx.SHOW_VISION == 1
                     S.hPlan = show_copy(ctx, S);
@@ -47,7 +53,7 @@ function [S, status] = copiar_pilha(action, S, ctx)
                                                st.pick, st.place, yawC, ctx.BLOCK_H/2);
                 if ~ok
                     fprintf('ERRO no passo %d: %s\n', S.iStep, why);
-                    aux.signal_failure(ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
+                    aux.signal_failure(ctx. SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
                                        ctx.qMin, ctx.qMax, ctx.FAIL_POSE);
                     status = 'failed';
                     return;
@@ -65,9 +71,9 @@ function [S, status] = copiar_pilha(action, S, ctx)
                 end
                 disp('copiar pilha: modelo copiado!');
                 if ctx.CELEBRATE == 1
-                    aux.celebrate(ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax);
+                    aux.celebrate(ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ctx.SHAKE);
                 end
-                movement.go_home(SHAKE_HEAD, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], deg2rad(ctx.HOME_POSE));
                 status = 'finished';
             end
@@ -79,6 +85,8 @@ end
 % escolhida para a pilha do alvo
 % =========================================================================
 function hOut = show_copy(ctx, S)
+    % monta as setas (modelo + um movimento por passo) e o painel de texto e
+    % chama drawing.show_vision com a fotografia guardada (não tira outra)
     hOut = S.hPlan;
     try
         V = S.view;  plan = S.plan;  R = S.R;  iStep = S.iStep;

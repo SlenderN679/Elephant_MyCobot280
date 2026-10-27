@@ -70,6 +70,8 @@ function [plan, view, R] = copy_stack(sim_interface, R)
             det = det(~isG);
         end
     end
+    % manchas dos blocos -> posições na mesa (face de cima à altura de um bloco),
+    % yaw, pixel e cor de cada uma
     n = numel(det);
     P = zeros(n, 2);  Y = nan(n, 1);  X = zeros(n, 2);  C = cell(n, 1);
     for j = 1:n
@@ -80,6 +82,8 @@ function [plan, view, R] = copy_stack(sim_interface, R)
     label = repmat({'peça'}, n, 1);
 
     %% ---- 1-2. o modelo ----
+    % procurar a fila mais comprida; ordenar a partir da ponta escolhida em
+    % R.bottom; a sequência de cores (R.recipe) é a pilha a construir
     chain = find_chain(P, (1:n)', R.gap, R.alignTol);
     if numel(chain) < R.minLen
         chain = [];
@@ -102,6 +106,9 @@ function [plan, view, R] = copy_stack(sim_interface, R)
         reach = nan(n, 1);                           % (alcance: calculado só se preciso)
         steps = struct('color', {}, 'pick', {}, 'yaw', {}, 'place', {}, 'level', {}, 'blob', {});
         missing = {};
+        % para cada nível: a peça dessa cor ainda não usada, mais perto da base, que
+        % o robô alcança (testa o alcance só quando precisa); nível s fica (s-1)
+        % alturas de bloco acima do alvo
         for s = 1:numel(R.recipe)
             want = R.recipe{s};
             cand = find(~used & strcmpi(C, want));
@@ -133,6 +140,7 @@ function [plan, view, R] = copy_stack(sim_interface, R)
     end
     if ~isempty(R.why), fprintf('copy_stack: %s\n', R.why); end
 
+    % dados para drawing.show_vision (etiquetas, posições, pixeis, cores)
     names = cell(1, n);
     for j = 1:n, names{j} = sprintf('%s: %s', C{j}, label{j}); end
     view = struct('img', img, 'det', {det}, 'names', {names}, 'colors', {C'}, ...

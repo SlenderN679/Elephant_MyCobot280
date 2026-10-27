@@ -37,6 +37,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
 %   - objeto a retirar: X vermelho, com uma seta amarela até ao ponto escolhido;
 %   - no fim: anel VERDE se a zona ficou livre, VERMELHO se não.
 
+    % Passo 0: valores por defeito dos argumentos opcionais
     if nargin < 8 || isempty(isCube), isCube = @(id) true; end
     if nargin < 9 || isempty(useYaw), useYaw = false;      end
     if nargin < 10, halfHeights = []; end
@@ -47,6 +48,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
 
     nMoved = 0;  ok = true;  why = '';
 
+    % Passo 1: desenhar a zona e os estacionamentos no CoppeliaSim (só visual)
     % desenhar a zona e os pontos de estacionamento
     show = ~isfield(cfg, 'SHOW_CLEAR') || cfg.SHOW_CLEAR == 1;
     hZone = [];
@@ -58,6 +60,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
         end
     end
 
+    % Passo 2: repetir até a zona ficar livre (um objeto por volta)
     for k = 1:numel(objIds)                  % no máximo um movimento por objeto
         % posições atuais de todos os objetos
         P = zeros(numel(objIds), 3);
@@ -70,6 +73,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
             P(objIds == parked(m,1), :) = parked(m, 2:4);
         end
 
+        % 2b. quais estão dentro da zona? se nenhum, acabou
         % objetos dentro da zona (distância horizontal ao centro)
         inside = find(hypot(P(:,1) - center(1), P(:,2) - center(2)) < radius);
         if isempty(inside)
@@ -81,6 +85,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
         [~, j] = max(P(inside, 3));          % o mais alto primeiro
         i = inside(j);
 
+        % 2c. escolher o primeiro estacionamento sem nenhum objeto por perto
         % primeiro ponto de estacionamento livre
         spot = [];
         for s = 1:size(spots, 1)
@@ -95,6 +100,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
             break;
         end
 
+        % 2d. orientação do objeto (para alinhar os dedos), da visão ou do simulador
         objYaw = [];
         if isa(useYaw, 'function_handle')    % orientação dada (ex.: visão)
             if isCube(objIds(i)), objYaw = useYaw(objIds(i)); end
@@ -104,6 +110,7 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
             objYaw = o(3);
         end
 
+        % 2e. levar o objeto para o estacionamento e registar onde ficou
         fprintf('clear_area: a retirar o objeto %d para [%.3f %.3f]\n', objIds(i), spot);
         hMove = [];
         if show                              % X no objeto e seta até ao estacionamento
@@ -111,7 +118,9 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
                      drawing.draw_arrow(sim_interface, P(i,:), [spot 0], [1 0.9 0])];
         end
         half = [];
-        if ~isempty(halfHeights), half = halfHeights(i); end
+        if ~isempty(halfHeights)
+            half = halfHeights(i); 
+        end
         [okP, whyP] = aux.pick_and_place(robot_arm, sim_interface, cfg, P(i,:), [spot cfg.TABLE_Z], objYaw, half);
         drawing.erase(sim_interface, hMove);
         if ~okP
@@ -121,9 +130,10 @@ function [nMoved, ok, why, parked] = clear_area(robot_arm, sim_interface, cfg, o
         end
         nMoved = nMoved + 1;
         if isempty(half), zc = P(i,3); else, zc = cfg.TABLE_Z + half; end   % centro, pousado na mesa
-        parked(end+1, :) = [objIds(i), spot, zc];           %#ok<AGROW>
+        parked(end+1, :) = [objIds(i), spot, zc];          
     end
 
+    % Passo 3: resultado
     % resultado: apagar a zona laranja e deixar um anel verde
     % (livre) ou vermelho (não ficou livre)
     if ok

@@ -23,11 +23,15 @@ function ok = move_joints(robot_arm, sim_interface, qTarget, jointSpeed, timeout
     end
     TOL = deg2rad(1);
 
+    % Passo 1: diferença entre a pose atual e a pretendida e duração do movimento
+    % (a junta que mais se move anda a jointSpeed)
     q0 = robot_arm.get_joints();
     dq = qTarget - q0;                      % as juntas têm limites: sem dar a volta
     T  = 1.5 * max(abs(dq)) / jointSpeed;   % 1.5: no perfil em S a velocidade máxima = 1.5x a média
     tS = sim_interface.get_simulation_time();
     ok = false;
+    % Passo 2: a cada passo de simulação, enviar a pose intermédia q0 + s*dq,
+    % com s a ir de 0 a 1 segundo um perfil em S (começa e acaba devagar)
     while true
         t = sim_interface.get_simulation_time();
         s = 1;
@@ -36,6 +40,7 @@ function ok = move_joints(robot_arm, sim_interface, qTarget, jointSpeed, timeout
         robot_arm.set_joints(q0 + s*dq);
         sim_interface.step_simulation();
 
+        % Passo 3: terminar quando o perfil acabou e as juntas chegaram (ou timeout)
         q = robot_arm.get_joints();
         if s >= 1 && max(abs(q - qTarget)) < TOL
             ok = true;

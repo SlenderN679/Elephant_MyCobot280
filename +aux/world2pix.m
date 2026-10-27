@@ -8,6 +8,9 @@ function uv = world2pix(cam, P)
 %   P   : N x 3 pontos [x y z] no MUNDO [m]
 %   uv  : N x 2 pixeis [coluna linha], na mesma convenção que det.pixel
 %         (NaN se o ponto está atrás da câmara)
+    % Para cada ponto: passar para o referencial da câmara (Rc' roda o mundo
+    % para a câmara), dividir pela profundidade r(3) (perspetiva) e converter em
+    % pixeis com a distância focal f, a partir do centro da imagem
     uv = nan(size(P, 1), 2);
     if isempty(cam), return; end
     for i = 1:size(P, 1)

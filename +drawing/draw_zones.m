@@ -29,6 +29,7 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
 % quando a simulação para; por isso esta função apaga primeiro os desenhos
 % da corrida anterior. Chamar depois de sim_interface.start_simulation().
 
+    % Passo 0: raios e mapa de alcance mínimo
     R_MIN  = 0.085;   R_SAFE = 0.23;   R_MAX = 0.35;     % raios [m]
 
     % alcance mínimo em cada direção (de 5 em 5 graus, no referencial da
@@ -52,6 +53,7 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
         sim.removeDrawingObject(sim.handle_all);
     catch
     end
+    % centro dos desenhos = eixo de J1 (posição da base no mundo)
     cx = basePos(1);  cy = basePos(2);
     z1 = tableZ + 0.003;       % camadas acima da mesa, separadas umas das
     z2 = tableZ + 0.005;       % outras e do chão (para não cintilarem)
@@ -64,6 +66,8 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
     end
 
     %% 1. zona junto à base onde o braço não chega (forma real, vermelho cheio)
+    % polígono com 72 pontos (um a cada 5 graus) à distância R_MIN_DIR do
+    % centro; preenchido com triângulos (centro, ponto i, ponto i+1) e contornado
     ang = deg2rad(0:5:355) + baseYaw;                   % ângulos no mundo
     px  = cx + R_MIN_DIR .* cos(ang);
     py  = cy + R_MIN_DIR .* sin(ang);
@@ -105,6 +109,9 @@ end
 function wedge(sim, trisType, cx, cy, baseYaw, j1Lim, off, side, rs, z, fillColor, lineColor)
 % desenha uma cunha da zona morta de J1 entre os raios rs(1) e rs(end)
 %   side = +1 pose normal, -1 pose dobrada; trisType = [] -> só contorno
+    % para cada raio: as duas fronteiras da cunha (J1 = -165 e +165 graus),
+    % corrigidas pelo desvio lateral psi; depois preenche entre raios seguidos
+    % com 2 triângulos e desenha o contorno
     w = zeros(numel(rs), 2, 2);                  % pontos das duas fronteiras (mundo)
     for i = 1:numel(rs)
         psi = atan2(sqrt(rs(i)^2 - off^2), off);

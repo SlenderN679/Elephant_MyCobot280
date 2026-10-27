@@ -21,13 +21,15 @@ function ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointO
 %   2. Movimento suave das juntas (todas arrancam e param juntas) até à pose inicial.
 %   3. Verifica as leituras das juntas: termina quando estão todas a menos de 1 grau.
 
-    if nargin < 6 || isempty(jointOffset), jointOffset = zeros(1,6); end
-    if nargin < 7 || isempty(qHome),       qHome = zeros(1,6);       end   % [rad]
+    if nargin < 7 || isempty(jointOffset), jointOffset = zeros(1,6); end
+    if nargin < 8 || isempty(qHome),       qHome = zeros(1,6);       end   % [rad]
+    % parâmetros do movimento
     SAFE_Z      = 0.15;           % altura da garra considerada segura [m, referencial da base]
     LIFT_SPEED  = 0.03;           % [m/s]
     JOINT_SPEED = deg2rad(30);    % [rad/s] da junta que mais se move
     TOL         = deg2rad(1);
 
+    % abrir a garra e ler as juntas atuais (únicas medidas usadas: os encoders)
     robot_arm.open_hand();
     sim_interface.step_simulation();
     q = robot_arm.get_joints() - jointOffset;
@@ -36,6 +38,8 @@ function ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointO
     %% 1. subir na vertical se a garra estiver baixa
     [tip, approach] = movement.direct_kin(q, Links);
     if tip(3) < SAFE_Z
+        % a garra está baixa: subir aos poucos (1,5 mm por passo) mantendo a mesma
+        % inclinação, com inverse_kin a cada passo
         pitch = asin(max(-1, min(1, -approach(3))));   % manter a inclinação atual
         p = tip;  qCmd = q;
         while p(3) < SAFE_Z
@@ -61,6 +65,7 @@ function ok = go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, jointO
     else
         fprintf('go_home: pose inicial NÃO alcançada, juntas [graus] %s\n', sprintf('%7.1f', rad2deg(q)));
     end
+    % abanar a garra no fim, se pedido (SHAKE = 1)
     if SHAKE
         aux.wiggle(robot_arm, sim_interface, 1, deg2rad(30), 2);
     end

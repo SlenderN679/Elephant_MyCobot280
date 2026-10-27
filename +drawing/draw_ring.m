@@ -1,5 +1,13 @@
 function h = draw_ring(sim_interface, c, r, color, width)
 % circunferência de raio r centrada em c 
+    %
+    %   h = drawing.draw_ring(sim_interface, c, r, color, width)
+    %
+    %   c : centro [x y ...] no MUNDO [m];  r : raio [m];  color : [r g b]
+    %   width : espessura da linha [pixeis]
+    %   h : identificador do desenho (para drawing.erase); 0 se falhar
+    %
+    % A circunferência é feita de 40 segmentos de reta.
     h = 0;
     try
         sim = drawing.get_sim(sim_interface);

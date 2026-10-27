@@ -10,6 +10,25 @@
 %--------------------------------------------------------------------------
 
 
+% ==========================================================================
+% ÍNDICEm
+%   1. CONFIGURAÇÃO   - escolher o MODO (0..4) e os parâmetros (objetos,
+%                       tarefas, poses, opções de visão e de desenho)
+%   2. LIGAÇÃO        - ligar ao CoppeliaSim e ao braço (código do professor)
+%   3. ARRANQUE       - desenhar as zonas, (teste) pose aleatória, ir para a
+%                       pose inicial, abrir a garra
+%   4. cfg            - parâmetros do movimento usados por pick_and_place
+%   5. POSIÇÕES       - uma fotografia (vision.vision_snapshot) ou as posições
+%                       do simulador -> POS (uma linha por objeto) e YAW
+%   6. DESIMPEDIR     - tirar do alvo verde o que lá estiver (aux.clear_area)
+%   7. CONTEXTO ctx   - juntar tudo o que os modos precisam e chamar
+%                       modeFn('init') do modo escolhido (pasta +modes)
+%   8. CICLO          - a cada iteração: modeFn('step') faz uma parte do
+%                       trabalho; avança a simulação; para quando o modo acaba
+% Pastas: +movement (cinemática e movimentos), +aux (pick-and-place,
+% desimpedir, colisões, ...), +vision (câmara), +drawing (desenhos na mesa e
+% figura), +modes (um ficheiro por modo)
+% ==========================================================================
 function main()
     clear
     % need to choose the arm to control
@@ -17,6 +36,9 @@ function main()
     ROSWORKING = 0;
     VISIONWORKING = 0;
     
+    % ==========================================================================
+    % 1. CONFIGURAÇÃO
+    % ==========================================================================
     % Identifiador de cada objeto
     BLUE_CUBE = 1;
     BLUE_CYLINDER = 2;
@@ -43,13 +65,17 @@ function main()
 %       verde com outras peças das mesmas cores
 % (todos limpam o alvo, se CLEAR_TARGET = 1)
 %======================================================================
-    MODE = 0;
+   
+    MODE = 4;
+
+%----------------------------------    
     % Display do modo no terminal
     MODE_NAMES = {'Diagnóstico de cinemática', 'Pilha Pré-Definida', 'Pilha de pares', ...
                   'Pedido de cor', 'Copiar pilha'};       % (nomes dos modos 0, 1, 2, 3, 4)
     MODE_NAME = MODE_NAMES{MODE + 1};
     fprintf('MODO %d: %s\n', MODE, MODE_NAME);
     %-------
+    % de onde vêm as posições dos objetos (o modo pode obrigar a uma das opções)
     USE_VISION = 1;                         % se lê as posições com a câmera
     if MODE >= 2, 
         USE_VISION = 1;  % os modos de vigiar precisam da câmara
@@ -67,18 +93,20 @@ function main()
 %% ======================================================================
 % Configuração do exemplo pick-and-place
 %======================================================================
-    WORKING = 1;                % 1 - executa o modo escolhido (MODE); passa a 0
-                                            %     se o modo falhar ou acabar
+    WORKING = 1;                % 1 - executa o modo escolhido
+                                % 0 - se o modo falhar ou acabar
                                             
-    % Lista de tarefas: cada linha = [objeto, destino, desvio_x, desvio_y]
+    % Lista de tarefas (modo 1): cada linha = [objeto, destino, desvio_x, desvio_y, nível]
     %   objeto  : BLUE_CUBE, BLUE_CYLINDER ou RED_CYLINDER (é o /RedCube)
     %   destino : índice do alvo onde pousar (ex.: TARGET_GREEN)
     %   desvio  : deslocamento do ponto de pouso em relação ao centro do
     %             destino [m]
-    TASKS = [ BLOCK_ORANGE, TARGET_GREEN, 0, 0, 1;    % level 1 (on the target)
-              BLOCK_PINK, TARGET_GREEN, 0, 0, 2;    % on top of BLOCK_ORANGE
-              BLOCK_YELLOW, TARGET_GREEN, 0, 0, 3 ];
+    %   nível   : 1 = em cima do alvo, 2 = em cima do bloco do nível 1, ...
+    TASKS = [ BLOCK_ORANGE, TARGET_GREEN, 0, 0, 1;    % nível 1 (em cima do alvo)
+              BLOCK_PINK, TARGET_GREEN, 0, 0, 2;    % nível 2 (em cima do BLOCK_ORANGE)
+              BLOCK_YELLOW, TARGET_GREEN, 0, 0, 3];
 
+    % opções gerais (1 = ligado, 0 = desligado)
     IS_CUBE = @(obj) obj ~= BLUE_CYLINDER;  % cubos: J6 alinha os dedos com as faces
     RANDOM_START = 1;                       % 1 - (teste, só simulação) começar numa pose aleatória do braço
     SHOW_ZONES = 1;                         % 1 - desenhar na mesa as zonas de alcance e a zona morta de J1
@@ -92,32 +120,37 @@ function main()
     CLEAR_TARGET = 1;                       % 1 - desimpedir o alvo no início
     CLEAR_RADIUS = 0.05;                    % raio da zona a desimpedir [m]
     PICKABLE = [BLUE_CUBE BLUE_CYLINDER RED_CYLINDER BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW];  % objetos que se podem mover
+
     % metade da altura de cada objeto [m] (para os pousar à altura certa,
     % mesmo quando são tirados do topo de uma pilha)
     HALF_H = zeros(1, max(PICKABLE));
-    HALF_H([BLUE_CUBE BLUE_CYLINDER RED_CYLINDER]) = 0.04/2;   % cubos e cilindro do cenário: 4 cm
-    HALF_H([BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW]) = BLOCK_H/2;                % blocos
+    HALF_H([BLUE_CUBE BLUE_CYLINDER RED_CYLINDER]) = 0.04/2;      % cubos e cilindro do cenário: 4 cm
+    HALF_H([BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW]) = BLOCK_H/2;   % blocos
     CLEAR_SPOTS = [ -0.042  0.226;          % pontos de estacionamento [x y] no MUNDO [m]
                     -0.101  0.220;          
                     -0.155  0.198;          
-                    -0.201  0.162 ];        
+                    -0.201  0.162 ];      
+
     % Montagem - o que se sabe do espaço de trabalho. O código abaixo não usa
     % informação escondida do simulador, por isso serve também para o braço
     % real: o estado do robô vem só das leituras das juntas (encoders) e os
     % objetos de get_target_position (sistema de visão). 
     % Valores por defeito = mycobot280_vision.ttt;
     % !!!MEDIR na montagem real!!!
+    % onde está o robô e a mesa (referencial do MUNDO do CoppeliaSim)
     BASE_POSITION  = [-0.0497 0.0165 0.03]; % origem da base do robô [m]
     BASE_YAW       = -pi/2;                 % rotação da base do robô [rad]
     TABLE_Z        = 0;                     % altura da superfície da mesa [m]
     USE_OBJECT_YAW = (ROSWORKING == 0);     % orientação do cubo (alinhamento de J6): lida do simulador;
 
-    % [ACRESCENTADO] Visão (vision_colors.m): posições dos objetos pela câmara
-    %   /Vision_sensor em vez de get_target_position. A orientação (yaw) dos
-    %   cubos também vem da câmara (retângulo mínimo da face de cima).
+    % Visão (vision_colors.m): posições dos objetos pela câmara
+    %   A orientação (yaw) dos cubos também vem da câmara
     % (USE_VISION é escolhido pelo MODE, no início do programa)
+    % opções da visão e cor de cada objeto (as cores têm de existir em
+    % vision_colors.m: red, orange, yellow, green, blue, pink)
     COMPARE_VISION = 1;                    % 1 - escrever o erro visão vs. simulador (só testes)
     SHOW_VISION    = 1;                    % 1 - mostrar o resultado da visão (figura + marcas na mesa)
+
     OBJ_NAME = {'BlueCube','BlueCylinder','RedCylinder','TargetGreen','BLOCK_ORANGE','BLOCK_PINK','BLOCK_YELLOW'};
     % cor de cada objeto (índice = número do objeto). !!!CONFIRMAR no cenário!!!
     OBJ_COLOR = cell(1, BLOCK_YELLOW);
@@ -125,9 +158,9 @@ function main()
     OBJ_COLOR{BLUE_CYLINDER} = 'blue';
     OBJ_COLOR{RED_CYLINDER}  = 'red';
     OBJ_COLOR{TARGET_GREEN}  = 'green';
-    OBJ_COLOR{BLOCK_ORANGE}        = 'orange';
-    OBJ_COLOR{BLOCK_PINK}        = 'pink';
-    OBJ_COLOR{BLOCK_YELLOW}        = 'yellow';
+    OBJ_COLOR{BLOCK_ORANGE}  = 'orange';
+    OBJ_COLOR{BLOCK_PINK}    = 'pink';
+    OBJ_COLOR{BLOCK_YELLOW}  = 'yellow';
     % se há várias peças da mesma cor: qual é, por área na imagem (1 = a maior)
     OBJ_RANK = ones(1, BLOCK_YELLOW);
     OBJ_RANK(BLUE_CYLINDER) = 2;           % o cubo azul aparece maior que o cilindro
@@ -137,9 +170,11 @@ function main()
     % blocos que contam e intervalo entre fotografias dos modos de vigiar
     WATCH_COLORS  = {'yellow', 'pink', 'orange'};   % cores dos blocos a emparelhar
     WATCH_PERIOD  = 1.0;                   % intervalo entre fotografias [s de simulação]
+
+    % poses fixas do braço (em GRAUS; converter com deg2rad antes de usar)
     HOME_POSE     = [0 0 -90 0 0 0];       % pose inicial [GRAUS] (J1..J6); [0 0 0 0 0 0] = braço vertical
-    VISION_POSE   = [0 0 0 90 0 0];        % [ACRESCENTADO] pose para a fotografia [GRAUS] (fora da vista da câmara)
-    FAIL_POSE     = [0 0 0 90 0 0];        % pose de ERRO [GRAUS]: braço vertical com a garra a
+    VISION_POSE   = [0 0 0 90 0 0];        % pose para a fotografia [GRAUS] (fora da vista da câmara)
+    FAIL_POSE     = [90 0 0 90 0 0];       % pose de ERRO [GRAUS]: braço vertical com a garra a
                                            % apontar para cima; o robô vai para lá, abana a garra
                                            % e para as tarefas quando uma tarefa falha
 %% ======================================================================
@@ -155,6 +190,9 @@ function main()
     % sim_interface - pointer to class simulator_interface
     % error_sim = 1 - impossible to connect to simulator
     %----------------------------------------------------------------------
+    % ==========================================================================
+    %% 2. LIGAÇÃO ao simulador e ao braço (código do professor)
+    % ==========================================================================
     [sim_interface,error_sim] = simulator_interface(VISIONWORKING);
     if(error_sim==1)
         return;
@@ -180,12 +218,15 @@ function main()
     
     sim_interface.start_simulation(); % start simulation in CoppeliaSim
 
+    % ==========================================================================
+    %% 3. ARRANQUE
+    % ==========================================================================
     %% desenhar as zonas de alcance na mesa (só visual)
     if SHOW_ZONES == 1
         drawing.draw_zones(sim_interface, BASE_POSITION, BASE_YAW, TABLE_Z, deg2rad(165), ...
                    [0.1316 0.1104 0.0960 0.0731 0.0646 0.0456 0.1057]);
     else
-        % apagar desenhos de corridas anteriores (draw_zones também o faz)
+        % apagar desenhos de cexecuções anteriores (draw_zones também o faz)
         simD = sim_interface.get_connection().require('sim');
         try, simD.removeDrawingObject(simD.handle_all); catch, end
     end
@@ -207,14 +248,17 @@ function main()
     % (os valores acima são os do datasheet; estes coincidem exatamente com
     % o robô simulado). Ver direct_kin.m para o significado de cada um.
     Links = [0.1316 0.1104 0.0960 0.0731 0.0646 0.0456 0.1057];
+    
 
+    %---------------------------------
     %% TESTE (só simulação): começar numa pose aleatória em vez
     % da guardada no cenário, para verificar que o go_home funciona de qualquer pose
-    if RANDOM_START == 1 && ROSWORKING == 0
+    if RANDOM_START == 1 && ROSWORKING == 0   % ROSWORKING indica se é simulação ou não
         movement.random_start(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, ...
                      TABLE_Z - BASE_POSITION(3));
         pause(3);
     end
+    %---------------------------------
 
     % Levar o braço à pose inicial de forma suave,
     % seja qual for a pose de partida: primeiro sobe a garra se
@@ -255,14 +299,15 @@ function main()
     %------------------------------------------------------------------
     % Functions that allows open the hand
     %------------------------------------------------------------------
-    robot_arm.open_hand();      %send Open Hand
+    %robot_arm.open_hand();      %send Open Hand
 
 %% ======================================================================
 % Configuração do movimento (estrutura cfg, usada por pick_and_place / move_linear)
 %======================================================================
+    %% 4. cfg: tudo o que pick_and_place / move_linear / plan_vertical precisam
     cfg.Links = Links;  cfg.qMin = MinPositionJoint;  cfg.qMax = MaxPositionJoint;
     cfg.BASE_POSITION = BASE_POSITION;  cfg.BASE_YAW = BASE_YAW;  cfg.TABLE_Z = TABLE_Z;
-    cfg.LIFT   = 0.1;        % elevação por cima dos objetos [m]
+    cfg.LIFT   = 0.1;         % elevação por cima dos objetos [m]
     cfg.V_FAST = 0.06;        % velocidade da garra entre poses [m/s]
     cfg.V_SLOW = 0.01;        % velocidade da garra a descer/subir junto aos objetos [m/s]
     cfg.ACC    = 0.10;        % aceleração/travagem [m/s^2] (movimentos suaves)
@@ -286,6 +331,7 @@ function main()
     % câmara), antes de mexer em qualquer peça. Depois as posições são
     % atualizadas pelo próprio programa sempre que move uma peça (uma peça
     % empilhada tapa a de baixo, por isso não se volta a fotografar).
+    %% 5. POSIÇÕES DOS OBJETOS
     ALL_OBJ = 1:BLOCK_YELLOW;
     HALF_ALL = [HALF_H, zeros(1, BLOCK_YELLOW - numel(HALF_H))];
     HALF_ALL(TARGET_GREEN) = 0.001;        % o alvo é plano
@@ -374,7 +420,7 @@ function main()
         % peças não encontradas ficam fora da zona a desimpedir
         PICKABLE = PICKABLE(found(PICKABLE));
         if WORKING == 1      % (se falhou, fica na pose de erro)
-            movement.go_home(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(HOME_POSE));
+            movement.go_home(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(HOME_POSE));
         end
     else
         for k = ALL_OBJ
@@ -396,7 +442,8 @@ function main()
 % Desimpedir o alvo (comum a todos os modos)
 %======================================================================
     % a pilha de pares (modo 2) não usa o alvo; os outros modos fazem lá a pilha
-    needTarget = (MODE == 1 || MODE >= 3);
+    %% 6. DESIMPEDIR O ALVO
+    needTarget = (MODE ~= 2 );
     if MODE == 0, CLEAR_TARGET = 0; end    % o diagnóstico não mexe nas peças
     if WORKING == 1 && needTarget && any(isnan(POS(TARGET_GREEN, :)))
         disp('ERRO: o alvo verde não foi encontrado; não posso fazer a pilha');
@@ -420,6 +467,7 @@ function main()
 %% ======================================================================
 % Contexto para os modos (pasta +modes): tudo o que precisam de saber
 %======================================================================
+    %% 7. CONTEXTO: os modos não veem as variáveis do main; recebem tudo em ctx
     ctx.robot_arm = robot_arm;  ctx.sim_interface = sim_interface;  ctx.cfg = cfg;
     ctx.Links = Links;  ctx.qMin = MinPositionJoint;  ctx.qMax = MaxPositionJoint;
     ctx.HOME_POSE = HOME_POSE;  ctx.VISION_POSE = VISION_POSE;  ctx.FAIL_POSE = FAIL_POSE;
@@ -434,9 +482,12 @@ function main()
     ctx.SHOW_VISION = SHOW_VISION;  ctx.CELEBRATE = CELEBRATE;
     ctx.WATCH_COLORS = WATCH_COLORS;  ctx.WATCH_PERIOD = WATCH_PERIOD;
     ctx.COPY_BOTTOM = COPY_BOTTOM;  ctx.COPY_GAP = COPY_GAP;
+    ctx.SHAKE = SHAKE_HEAD;
 
     % cada modo é uma função da pasta +modes com duas ações:
     % 'init' - prepara & 'step' - um passo do trabalho
+    % escolher a função do modo (MODE + 1 porque o MATLAB conta a partir de 1)
+    % e prepará-la ('init'); se falhar logo aqui, o modo não corre
     MODE_FNS = {@modes.diagnostico_, @modes.pilha_pre_definida, @modes.pilha_pares, ...
                 @modes.pedido_cor, @modes.copiar_pilha};   % modos 0, 1, 2, 3, 4
     modeFn = MODE_FNS{MODE + 1};
@@ -453,6 +504,10 @@ function main()
 %======================================================================
 
     start = tic;
+    % ==========================================================================
+    %% 8. CICLO PRINCIPAL: ler sensores (código do professor), um 'step' do modo,
+    %    avançar a simulação; termina quando stop = 1 ou a simulação para
+    % ==========================================================================
     told=-1
     m=1;
     stop=0;
@@ -505,6 +560,8 @@ function main()
     % Modo escolhido (MODE): uma parte do trabalho por iteração
     %======================================================================
         if WORKING == 1
+            % o modo faz uma parte do trabalho e diz como está:
+            %   'running' - continuar | 'finished' - acabou bem | 'failed' - parou com erro
             [modeState, status] = modeFn('step', modeState, ctx);
             if strcmp(status, 'failed')
                 WORKING = 0;        % parar o modo (a simulação continua)
@@ -554,6 +611,7 @@ function main()
 
         m=m+1;
         %%------------- END OF YOUR CODE -------------
+        % avançar um passo da simulação (~50 ms) e esperar para ir a tempo real
         sim_interface.step_simulation();
         time = toc(start);
         if time<0.05
@@ -561,6 +619,7 @@ function main()
         end
         start = tic;
         t = sim_interface.get_simulation_time();
+        % se o tempo de simulação não avançou, a simulação foi parada no CoppeliaSim
         if t==told
             if ERASE_DRAWINGS == 1, drawing.erase_drawings(sim_interface); end
             sim_interface.terminate();   % era sim.terminate()
@@ -579,8 +638,10 @@ function main()
     disp('stop simulation')
 end
 
+% --------------------------------------------------------------------------
+% Corre sempre que main termina (fim normal, erro ou Ctrl+C) - ver onCleanup
 function myCleanupFun(sim_interface, eraseDrawings)
-    % corre também quando há um erro ou Ctrl+C: apagar os desenhos
+    % corre também quando há um erro ou terminação: apagar os desenhos
     if nargin > 1 && eraseDrawings == 1
         drawing.erase_drawings(sim_interface);
     end

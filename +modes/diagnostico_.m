@@ -1,4 +1,4 @@
-function [S, status] = diagnostico(action, S, ctx)
+function [S, status] = diagnostico(action, S, ctx, SHAKE)
 % DIAGNOSTICO  MODO 0: diagnóstico de cinemática (só no simulador).
 %              Leva a garra, a apontar para baixo, 6 cm acima de cada objeto
 %              e compara o modelo com o simulador:
@@ -26,6 +26,8 @@ function [S, status] = diagnostico(action, S, ctx)
     switch action
         case 'init'
             sim = ctx.sim_interface.get_connection().require('sim');
+            % INIT: identificadores do centro de preensão real e da base no CoppeliaSim
+            % (para medir onde a garra está realmente)
             S.hGrasp = sim.getObject('/graspCenter');
             S.hBase  = sim.getObject(ctx.robot_name);
             S.k = 1;                                 % próximo objeto
@@ -34,10 +36,12 @@ function [S, status] = diagnostico(action, S, ctx)
 
         case 'step'
             sim = ctx.sim_interface.get_connection().require('sim');
+            % STEP: um objeto por chamada; depois do último, o resumo
             n = numel(ctx.OBJ_NAME);
             if S.k <= n
                 k = S.k;  S.k = S.k + 1;
                 name = ctx.OBJ_NAME{k};
+                % 1. ponto 6 cm acima do objeto, no referencial da base, e juntas para lá chegar
                 pW = ctx.sim_interface.get_target_position(k);              % posição real (MUNDO)
                 p  = aux.world_to_base(pW, ctx.BASE_POSITION, ctx.BASE_YAW) + [0; 0; UP];
                 [q, ok] = movement.inverse_kin(p(1), p(2), p(3), ctx.Links, ctx.qMin, ctx.qMax);
@@ -47,13 +51,14 @@ function [S, status] = diagnostico(action, S, ctx)
                     return;
                 end
                 % ir pela vertical (evita varrer a mesa) e depois até ao ponto
-                movement.go_home(SHAKE_HEAD, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], zeros(1, 6));
                 movement.move_joints(ctx.robot_arm, ctx.sim_interface, q, SPEED);
                 for s = 1:SETTLE
                     ctx.sim_interface.step_simulation();
                 end
 
+                % 2. medir: juntas alcançadas, garra segundo o modelo e garra real; erros
                 qr = ctx.robot_arm.get_joints();
                 dk = movement.direct_kin(qr, ctx.Links);              % modelo (base)
                 gB = to_vec(sim.getObjectPosition(S.hGrasp, S.hBase));  % simulador (base)
@@ -90,7 +95,7 @@ function [S, status] = diagnostico(action, S, ctx)
                     fprintf(['modelo  = direct_kin vs. graspCenter real (erro do modelo do braço)\n' ...
                              'alcance = ponto pedido vs. graspCenter real (inclui o atraso das juntas)\n']);
                 end
-                movement.go_home(SHAKE_HEAD, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], deg2rad(ctx.HOME_POSE));
                 status = 'finished';
             end
@@ -103,6 +108,7 @@ function v = to_vec(c)
     if iscell(c), v = cell2mat(c(:)'); else, v = double(c(:)'); end
 end
 
+% marca '<- VER' quando o erro passa da tolerância
 function s = flag(e, tol)
     if e > tol, s = '<- VER'; else, s = 'OK'; end
 end

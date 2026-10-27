@@ -18,9 +18,11 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
     status = 'running';
     switch action
         case 'init'
+            % INIT: começa na tarefa 1, com uma cópia das posições (que vai sendo atualizada)
             S = struct('iTask', 1, 'POS', ctx.POS, 'hPlan', ctx.hPlan);
 
         case 'step'
+            % STEP: uma tarefa da lista TASKS por chamada; quando acabam, celebra e termina
             T = ctx.TASKS;
             if S.iTask <= size(T, 1)
                 if ctx.SHOW_VISION == 1                 % plano das TASKS
@@ -43,6 +45,7 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
                     objYaw = o(3);
                 end
 
+                % apanhar e pousar (bloqueante: só volta quando acabou ou falhou)
                 [okT, whyT] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
                                                  objPos, placePos, objYaw, ctx.HALF_H(obj));
                 if ~okT
@@ -61,9 +64,9 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
                     S.hPlan = show_tasks(ctx, S);
                 end
                 if ctx.CELEBRATE == 1
-                    aux.celebrate(ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax);
+                    aux.celebrate(ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ctx.SHAKE);
                 end
-                movement.go_home(SHAKE_HEAD, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], deg2rad(ctx.HOME_POSE));
                 status = 'finished';
             end
@@ -76,6 +79,8 @@ end
 % mesmo que a imagem seja a de antes)
 % =========================================================================
 function hOut = show_tasks(ctx, S)
+    % monta uma seta por tarefa (feitas a cinzento, a próxima grossa) sobre a
+    % fotografia inicial e chama drawing.show_vision
     hOut = S.hPlan;
     try
         POS = S.POS;  T = ctx.TASKS;  iTask = S.iTask;

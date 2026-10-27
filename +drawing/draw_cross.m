@@ -1,5 +1,12 @@
 function h = draw_cross(sim_interface, p, r, color)
 % X por cima de um objeto
+    %
+    %   h = drawing.draw_cross(sim_interface, p, r, color)
+    %
+    %   p     : centro do objeto [x y z] no MUNDO [m]
+    %   r     : meio comprimento de cada traço do X [m]
+    %   color : [r g b] entre 0 e 1
+    %   h     : identificador do desenho (para drawing.erase); 0 se falhar
     h = 0;
     try
         sim = drawing.get_sim(sim_interface);

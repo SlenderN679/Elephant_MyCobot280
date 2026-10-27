@@ -62,6 +62,10 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
         act = [];
         if nargin < 1 || isempty(sim_interface), return; end
     end
+    % Listas guardadas por cor (W.known{cor}, ...), cada linha um [x y] na mesa:
+    %   known  - blocos que já lá estavam (ou já foram tratados)
+    %   cand   - blocos novos vistos na fotografia anterior (candidatos)
+    %   ignore - blocos em que o robô já falhou (não voltar a tentar)
     nc = numel(W.colors);
     if numel(W.known) < nc                     % (se as cores foram mudadas depois de criar)
         W.known   = repmat({zeros(0,2)}, 1, nc);
@@ -107,12 +111,15 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
     [det, img, cam] = vision.vision_colors(sim_interface, W.colors, true);
     vNames = {};  vColors = {};  vPos = zeros(0, 3);  vPix = zeros(0, 2);  vYaw = zeros(0, 1);
     tz = W.target(3);                          % superfície do alvo
+    % uma cor de cada vez:
     for ci = 1:nc
         if isempty(det)
             D = det;
         else
             D = det(strcmpi({det.color}, W.colors{ci}));
         end
+        % (a) cada mancha -> posição na mesa, corrigida para a altura certa: pilha do
+        %     alvo (modo 3) ou pilha de um par feita antes (modo 2) ficam mais altas
         n = numel(D);
         P = zeros(n, 2);  Y = nan(n, 1);  X = zeros(n, 2);  onStack = false(n, 1);  Zc = zeros(n, 1);
         L = ones(n, 1);                        % nº de blocos em cada mancha (pilhas de pares)
@@ -138,6 +145,7 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
             Y(j) = D(j).yaw;
             X(j, :) = D(j).pixel;
         end
+        % (b) separar: pilha do alvo, ignorados e peças soltas que contam (F)
         label = repmat({'conhecido'}, n, 1);
         label(onStack) = {sprintf('pilha verde (%d)', W.nStack)};
         % blocos ignorados (tentativas falhadas) ficam de fora dos pares
@@ -145,6 +153,8 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
         label(~onStack & ~free) = {'ignorado'};
         F = find(free);                        % índices das peças soltas que contam
 
+        % (c) comparar com as listas: conhecido (perto de um known), novo, e novo
+        %     PARADO (no mesmo sítio que na fotografia anterior = "stable")
         if ~W.init                             % primeira fotografia: tudo é conhecido
             W.known{ci} = P(F, :);
         else
@@ -239,6 +249,7 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
             end
         end
 
+        % (d) etiquetas e posições para drawing.show_vision
         % para a visualização
         for j = 1:n
             if L(j) > 1 && ~any(strcmp(label{j}, {'DESTINO', 'fora do alcance'}))

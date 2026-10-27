@@ -32,16 +32,20 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw)
     MAX_JUMP = deg2rad(5);
     DZ       = 0.002;
 
+    % alturas a verificar: de 2 em 2 mm, de cima para baixo
     zs = pHigh(3):-DZ:pLow(3);
     if isempty(zs) || zs(end) > pLow(3), zs(end+1) = pLow(3); end
 
     ikOpts = struct('family', 'front', 'pitch', pi/2);
     ok = false;  qTop = [];
+    % experimentar inclinações a partir da vertical (90 graus), afastando de 5 em
+    % 5 graus para os dois lados; fica a primeira que funciona na descida toda
     for d = deg2rad(0:5:90)
         if d == 0, cands = pi/2; else, cands = [pi/2 + d, pi/2 - d]; end
         for psi = cands
             if psi > maxPitch || psi < minPitch, continue; end
             good = true;  qPrev = [];  qT = [];
+            % verificar cada altura: tem solução, não salta, não choca consigo próprio
             for z = zs
                 [q, reach] = movement.inverse_kin(pLow(1), pLow(2), z, cfg.Links, cfg.qMin, cfg.qMax, ...
                                          yaw, psi, 'front', true);

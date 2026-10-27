@@ -15,6 +15,9 @@ function pBase = world_to_base(pWorld, armPosition, baseYaw)
     if nargin < 3
         baseYaw = -pi/2;
     end
+    % 1. vetor da base do robô até ao ponto (ainda com os eixos do mundo)
+    % 2. rodar esse vetor de -baseYaw em torno de z (os eixos da base estão
+    %    rodados baseYaw em relação aos do mundo); a altura não muda
     d = pWorld(:) - armPosition(:);
     c = cos(baseYaw);  s = sin(baseYaw);
     pBase = [ c*d(1) + s*d(2);

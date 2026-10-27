@@ -24,15 +24,17 @@ function [pos, found, pix, img, det, yaw, cam] = vision_snapshot(sim_interface, 
 % ponto é recalculado ao longo do mesmo raio da câmara na altura certa da
 % face de cima de cada objeto (tableZ + 2*halfH) e depois baixado para o
 % centro (menos halfH).
-%
-% Atenção: a câmara só vê o que não está tapado. Chamar com o braço fora
-% do caminho (ex.: na vertical) e antes de empilhar peças em cima de outras.
 
+    % Passo 1: uma fotografia com todas as cores pedidas
     n = numel(objIds);
     pos = nan(n, 3);  found = false(n, 1);  pix = nan(n, 2);  yaw = nan(n, 1);
     [det, img, cam] = vision.vision_colors(sim_interface, unique(colors), true);
     if isempty(det), return; end
 
+    % Passo 2: para cada objeto, escolher a mancha da sua cor (a ranks(k)-ésima
+    % maior) e corrigir a altura ao longo do raio da câmara:
+    %   o ponto vem calculado no plano Z_PLANE; o verdadeiro está no mesmo raio
+    %   (reta câmara -> ponto), à altura da face de cima deste objeto
     for k = 1:n
         cand = det(strcmpi({det.color}, colors{k}));
         if numel(cand) < ranks(k), continue; end

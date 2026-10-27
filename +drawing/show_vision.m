@@ -33,6 +33,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
 % anel e uma cruz (alinhada com o yaw) em cada objeto e as setas do plano
 % na mesa (as 'done' não se desenham).
 
+    % ---- 0. valores por defeito dos argumentos opcionais ----
     if nargin < 9, truth = []; end
     if nargin < 10 || isempty(yaw), yaw = nan(numel(names), 1); end
     if nargin < 11, truthYaw = []; end
@@ -47,6 +48,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
 
     %% ---- 1. figura do MATLAB: imagem da câmara com as deteções e o plano ----
     if ~isempty(img)
+        % 1a. abrir (ou reutilizar) a janela "Visão" e mostrar a fotografia
         fig = findobj('Type', 'figure', 'Name', 'Visão');     % reutilizar a janela
         if isempty(fig), fig = figure('Name', 'Visão'); end
         figure(fig(1));  clf;
@@ -60,6 +62,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
             end
         end
 
+        % 1b. cada objeto: círculo da sua cor + etiqueta (nome, posição, erro, yaw)
         labs = struct('h', {}, 'u', {}, 'v', {}, 'c', {});   % etiquetas, arrumadas no fim
         fixed = zeros(0, 4);                     % caixas que as etiquetas não podem tapar
         for k = 1:n
@@ -81,7 +84,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
                 end
             end
             h = text(u + 12, v, txt, 'Color', 'w', 'BackgroundColor', [0 0 0], ...
-                     'EdgeColor', c, 'LineWidth', 1, 'FontSize', 7, 'Margin', 1, ...
+                     'EdgeColor', c, 'LineWidth', 1, 'FontSize', 7, 'Margin', 1, 'Interpreter', 'none', ...
                      'VerticalAlignment', 'middle', 'HorizontalAlignment', 'left');
             labs(end+1) = struct('h', h, 'u', u, 'v', v, 'c', c);   %#ok<AGROW>
             fixed(end+1, :) = [u - 10, u + 10, v - 10, v + 10];     %#ok<AGROW> (o próprio círculo)
@@ -102,7 +105,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
                 % fica presa ao meio da seta, com uma linha se tiver de sair dali
                 m = mean(uv, 1);
                 h = text(m(1), m(2), A.label, 'Color', 'k', 'BackgroundColor', c, ...
-                         'FontSize', 8, 'FontWeight', 'bold', 'Margin', 1, ...
+                         'FontSize', 8, 'FontWeight', 'bold', 'Margin', 1, 'Interpreter', 'none', ...
                          'HorizontalAlignment', 'left', 'VerticalAlignment', 'middle');
                 labs(end+1) = struct('h', h, 'u', m(1), 'v', m(2), 'c', c);   %#ok<AGROW>
             end
@@ -121,6 +124,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
         % [ACRESCENTADO] arrumar as etiquetas dos objetos para não se taparem
         place_labels(labs, fixed, size(img, 2), size(img, 1));
 
+        % 1c. título da janela
         missing = names(~found);
         if ~isempty(titleTxt)
             title(titleTxt, 'Interpreter', 'none');
@@ -139,6 +143,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
         for i = 1:numel(oldDraw)                 % apagar as marcas da chamada anterior
             try, sim.removeDrawingObject(oldDraw(i)); catch, end
         end
+        % 2a. em cada objeto: anel da sua cor e uma cruz alinhada com o yaw
         R = 0.022;                               % raio do anel [m]
         a = linspace(0, 2*pi, 25);
         for k = 1:n
@@ -163,6 +168,8 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
             A = extras.arrows(i);
             if strcmp(A.state, 'done'), continue; end
             [c, lw] = arrow_style(A);
+            % seta um pouco acima dos objetos; tracejada se 'todo'/'link', cheia se
+            % 'next'/'model'; ponta em todas menos 'link'
             z = max([2*A.from(3), 2*A.to(3), 0.03]) + 0.01;
             p0 = A.from(1:2);  p1 = A.to(1:2);
             d = p1 - p0;  L = norm(d);

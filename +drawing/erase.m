@@ -1,7 +1,7 @@
 function erase(sim_interface, handles)
-%ERASE Summary of this function goes here
+% ERASE  Apaga os desenhos indicados (identificadores devolvidos pelas funções
+%        draw_*). Ex.: drawing.erase(sim_interface, [hZone hMove])
 
-% apagar desenhos
     try
         sim = drawing.get_sim(sim_interface);
         for h = handles(handles > 0)

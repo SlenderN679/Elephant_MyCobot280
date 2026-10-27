@@ -77,7 +77,7 @@ function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
     if ownSim
         [sim_interface, err] = simulator_interface(0);
         if err == 1, det = []; img = []; cam = []; return; end
-        cleanup = onCleanup(@() sim_interface.terminate()); %#ok<NASGU>
+        cleanup = onCleanup(@() sim_interface.terminate()); 
         sim_interface.start_simulation();
     end
     sim = sim_interface.get_connection().require('sim');
@@ -91,10 +91,15 @@ function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
     %% ---- 1. imagem ----
     [imageData, res] = sim.getVisionSensorImg(hSensor);
     if iscell(res), W = res{1}; H = res{2}; else, W = res(1); H = res(2); end
+    % o sensor devolve os pixeis em linha (R,G,B,R,G,B,...) a começar por baixo:
+    % reorganizar numa imagem H x W x 3 com a linha 1 em cima e valores 0..1;
+    % depois converter para HSV (matiz, saturação, brilho), mais fácil para cores
     img = flip(permute(reshape(double(imageData(:)), 3, W, H), [3 2 1]), 1) / 255;   % H x W x 3, linha 1 = topo
     hsv = rgb2hsv(img);
     
     %% ---- 2. modelo da câmara (lido do simulador) ----
+    % posição e orientação do sensor no mundo + distância focal f (em pixeis),
+    % a partir do ângulo de visão: é o que permite passar de pixel a ponto da mesa
     M  = to_vec(sim.getObjectMatrix(hSensor, -1));      % 12 valores, matriz 3x4 por linhas
     M  = reshape(M, 4, 3)';
     Rc = M(:, 1:3);                                     % orientação do sensor no mundo
@@ -121,17 +126,21 @@ function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
         name = COLORS{ic, 1};
         if ~any(strcmpi(name, wanted)), continue; end
         
+        % 3a. máscara desta cor: pixeis com matiz no intervalo e saturação/brilho
+        %     suficientes
         hr = COLORS{ic, 2};
         if hr(1) <= hr(2), inH = Hh >= hr(1) & Hh <= hr(2);
         else,              inH = Hh >= hr(1) | Hh <= hr(2);   % vermelho: dá a volta
         end
         mask = inH & Ss >= COLORS{ic, 3} & Vv >= COLORS{ic, 4};
         
+        % 3b. separar a máscara em manchas ligadas (uma por peça); ignorar as pequenas
         [labels, n] = cc_label(mask);
         for b = 1:n
             [rows, cols] = find(labels == b);
             if numel(rows) < MIN_AREA, continue; end
             
+            % 3c. ficar só com a face de cima (os pixeis mais claros da mancha)
             rr = rows;  cc = cols;
             if TOP_FRAC > 0                                    % ficar só com a face de cima
                 vals = Vv(sub2ind([H W], rows, cols));
@@ -151,6 +160,7 @@ function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
                 Pw  = pix2world_many(cc - 0.5, rr - 0.5, W, H, f, Rc, pc, Z_PLANE, SIGN);
                 yaw = min_rect_yaw(Pw(1,:), Pw(2,:));
             end
+            % 3d. centro da mancha -> ponto da mesa (raio da câmara cortado no plano Z_PLANE)
             P = pix2world(u, v, W, H, f, Rc, pc, Z_PLANE, SIGN);
             if isempty(P), continue; end
             
@@ -160,6 +170,7 @@ function [det, img, cam] = vision_colors(sim_interface, wanted, quiet)
             width_cm = width_px / SCALE_PX_PER_CM;
             height_cm = height_px / SCALE_PX_PER_CM;
             
+            % 3e. guardar a deteção
             det(end+1) = struct('color', name, 'pixel', [u v], ...
                                 'area', numel(rows), 'world', P', ...
                                 'width_px', width_px, 'height_px', height_px, ...
@@ -252,6 +263,8 @@ function P = pix2world(u, v, W, H, f, Rc, pc, zPlane, sgn)
 % Pixel (u,v) -> ponto do mundo em z = zPlane.
 % Câmara do CoppeliaSim: olha segundo +z do sensor, +y do sensor aponta para o
 % topo da imagem e +x do sensor aponta para a ESQUERDA da imagem (sgn = [-1 -1]).
+    % 1. direção do raio no referencial do sensor (pixel relativo ao centro / f)
+    % 2. rodar para o mundo   3. andar ao longo do raio até à altura zPlane
     ray = [sgn(1)*(u - W/2)/f; sgn(2)*(v - H/2)/f; 1];
     d   = Rc * ray;                          % direção do raio no mundo
     if abs(d(3)) < 1e-9, P = []; return; end
@@ -274,6 +287,8 @@ function yaw = min_rect_yaw(x, y)
 % [ACRESCENTADO] ângulo [rad] do retângulo de área mínima que contém os pontos
 % (x, y). Basta procurar entre 0 e 90 graus (um quadrado repete-se a cada
 % 90 graus). Resultado entre -45 e 45 graus.
+    % rodar os pontos de 0 a 89,5 graus (passos de 0,5) e medir a área do
+    % retângulo alinhado que os contém; o ângulo de área mínima é o da peça
     x = x - mean(x);  y = y - mean(y);
     ang = deg2rad(0:0.5:89.5);
     area = zeros(size(ang));
@@ -315,6 +330,8 @@ function [labels, n] = cc_label(mask)
     idx = find(mask)';
     n = 0;
     stack = zeros(max(numel(idx), 1), 1);
+    % para cada pixel ainda sem etiqueta: nova mancha; "pintar" com o mesmo
+    % número todos os pixeis ligados a ele (pilha de pixeis por visitar, 8 vizinhos)
     for p = idx
         if labels(p) ~= 0, continue; end
         n = n + 1;  labels(p) = n;

@@ -1,4 +1,4 @@
-function celebrate(robot_arm, sim_interface, Links, qMin, qMax)
+function celebrate(robot_arm, sim_interface, Links, qMin, qMax, SHAKE)
 % CELEBRATE  Pequena celebração do myCobot 280 (bloqueante, ~6 s).
 %
 %   celebrate(robot_arm, sim_interface, Links, qMin, qMax)
@@ -10,9 +10,11 @@ function celebrate(robot_arm, sim_interface, Links, qMin, qMax)
 % Termina com o braço na vertical e a garra aberta.
 
     T = 6;                                            % duração [s]
-    movement.go_home(robot_arm, sim_interface, Links, qMin, qMax, [], zeros(1,6));   % braço na vertical
+    movement.go_home(SHAKE, robot_arm, sim_interface, Links, qMin, qMax, [], zeros(1,6));   % braço na vertical
     disp('celebrate: \o/');
 
+    % a cada passo de simulação: J1 (base) faz uma onda lenta de +-20 graus em
+    % 6 s e J4 (pulso) uma onda rápida de +-20 graus a cada 2 s
     t0 = sim_interface.get_simulation_time();
     lastHand = -1;
     while true

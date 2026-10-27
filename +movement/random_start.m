@@ -15,10 +15,12 @@ function q = random_start(robot_arm, sim_interface, Links, qMin, qMax, tableZbas
 % com um movimento suave das juntas. Não usar com o braço real.
 
     MARGIN = 0.03;                  % manter tudo pelo menos 3 cm acima da mesa
+    % sortear poses até encontrar uma segura (no máximo 1000 tentativas)
     for tries = 1:1000
         q = qMin + rand(1,6).*(qMax - qMin);
         q(2:4) = 0.6*q(2:4);         % evitar dobras extremas (colisões com o próprio braço)
         tip   = movement.direct_kin(q, Links);
+        % alturas do cotovelo, J4 e J5 (para garantir que ficam acima da mesa)
         zEl   = Links(1) + Links(2)*cos(q(2));
         zJ4   = zEl + Links(3)*cos(q(2)+q(3));
         zJ5   = zJ4 + Links(4)*cos(q(2)+q(3)+q(4));

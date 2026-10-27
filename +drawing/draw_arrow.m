@@ -1,5 +1,14 @@
 function h = draw_arrow(sim_interface, p0, p1, color)
 % desenha uma seta entre 2 pontos
+    %
+    %   h = drawing.draw_arrow(sim_interface, p0, p1, color)
+    %
+    %   p0, p1 : início e fim da seta [x y ...] no MUNDO [m] (só x, y contam)
+    %   color  : [r g b] entre 0 e 1
+    %   h      : identificador do desenho (para drawing.erase); 0 se falhar
+    %
+    % A seta é desenhada rente à mesa: um traço de p0 a p1 e dois traços curtos
+    % na ponta, a +-30 graus (aprox.) para trás.
     h = 0;
     try
         sim = drawing.get_sim(sim_interface);

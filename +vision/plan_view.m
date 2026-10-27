@@ -15,6 +15,8 @@ function extras = plan_view(cam, steps, iNext, info, more)
 %           (ex.: o modelo no modo 4)
 
     if nargin < 5, more = []; end
+    % 1. uma seta por passo, com o estado conforme já foi feito ou não
+    % 2. juntar as setas extra   3. acrescentar o progresso ao painel
     arrows = struct('from', {}, 'to', {}, 'color', {}, 'label', {}, 'state', {});
     for i = 1:numel(steps)
         if i < iNext,      st = 'done';

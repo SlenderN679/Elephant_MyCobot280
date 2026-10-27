@@ -49,6 +49,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 %   pulso abaixo da base. As soluções "à frente" têm sempre prioridade sobre
 %   as soluções "atrás" (braço inclinado para trás por cima da base).
 
+    % Passo 0: valores por defeito dos argumentos opcionais
     if nargin < 5 || isempty(qMin)
         qMin = deg2rad([-165 -165 -165 -165 -165 -175]); % valores de defeito para limites min
     end
@@ -75,6 +76,8 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     isReachable = false;
     pitchUsed   = NaN;
 
+    % Passo 1: distância horizontal ao eixo de J1. O braço está desviado L5 para
+    % o lado, por isso a distância "em frente" no plano do braço é hFwd
     r = hypot(x, y);
     if r <= L(5)
         return;                         % dentro do desvio lateral: inalcançável
@@ -82,6 +85,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     hFwd = sqrt(r^2 - L(5)^2);          % distância em frente, no plano do braço
     v    = z - L(1);                    % altura relativa a J2
 
+    % Passo 2: limites de segurança da solução
     ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
     PITCH_MAX = deg2rad(135);           % garra no máximo 45 graus inclinada para a base
     PITCH_MIN = deg2rad(30);            % garra sempre pelo menos 30 graus abaixo da horizontal
@@ -99,6 +103,8 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     else
         dList = 0:STEP:(PITCH_MAX - PITCH_MIN);
     end
+    % Passo 3: procurar uma inclinação da garra que tenha solução, começando pela
+    % preferida e afastando-se de 5 em 5 graus (primeiro para a base, depois para fora)
     for ip = 1:numel(passes)
         sides = passes{ip}(1);  fam = passes{ip}{2};
         for d = dList
@@ -131,6 +137,8 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
                     psi = good;
                 end
 
+                % Passo 4: J6 alinha os dedos com as faces do cubo (só se a garra estiver
+                % quase vertical); J5 fica sempre a 0
                 q6 = 0;
                 if ~isempty(objYaw) && psi > deg2rad(45)
                     % os dedos fecham segundo a direção J1 - J6 (módulo 180 graus); um
@@ -146,6 +154,8 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     end
 end
 
+% --------------------------------------------------------------------------
+% Resolve J1..J4 para UMA inclinação psi da garra (geometria do braço planar)
 function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, sides, fam)
 % melhor solução "cotovelo para cima" [J1..J4] para a inclinação psi, ou [] se não houver
     wrap = @(t) atan2(sin(t), cos(t));
@@ -159,15 +169,18 @@ function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, side
         else
             phi = pi + psi; 
         end   
+        % J1: aponta o plano do braço para o alvo, descontando o desvio lateral L5
         q1 = atan2(y, x) - atan2(h, L(5));
 
         % posição do pulso (J4) no plano do braço
         Wh = h + L(4)*sin(phi) - D*cos(phi);
         Wv = v - L(4)*cos(phi) - D*sin(phi);
+        % lei dos cossenos no triângulo J2-J3-pulso: c = cos(J3)
         c  = (Wh^2 + Wv^2 - L(2)^2 - L(3)^2) / (2*L(2)*L(3));
         if abs(c) > 1
             continue;               % fora de alcance para esta inclinação
         end
+        % duas soluções possíveis para J3 (cotovelo para cima ou para baixo)
         for g = [acos(c), -acos(c)]
             a1 = atan2(Wv, Wh) - atan2(L(3)*sin(g), L(2) + L(3)*cos(g)); % ângulo do braço superior
             q  = wrap([q1, a1 - pi/2, g, phi - (a1 - pi/2) - g]);
@@ -184,6 +197,7 @@ function best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, side
             if min([zElbow zJ4 zJ5]) <= 0
                 continue;
             end
+            % de todas as soluções válidas, fica a de cotovelo mais alto
             if zElbow > bestElbow   % preferir "cotovelo para cima"
                 best = q;  bestElbow = zElbow;
             end

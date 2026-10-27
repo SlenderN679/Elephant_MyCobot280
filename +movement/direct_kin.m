@@ -22,33 +22,28 @@ function [tip, approach, T] = direct_kin(q, Links)
 % Pose zero (todas as juntas a 0): braço vertical, garra horizontal a apontar
 % para +y. Eixos das juntas na pose zero: J1 +z, J2/J3/J4 +x, J5 +z, J6 +y.
 
+    % Passo 1: garantir 6 juntas (se vierem só 4, J5 e J6 ficam a 0)
     q = q(:)';
     if numel(q) == 4
         q = [q 0 0];    % bloquear J5 e J6
     end
     L = Links;
 
-    T = rotz(q(1)) * trans(0,0,L(1)) ...
-      * rotx(q(2)) * trans(0,0,L(2)) ...
-      * rotx(q(3)) * trans(L(5),0,L(3)) ...
-      * rotx(q(4)) * trans(0,0,L(4)) ...
-      * rotz(q(5)) * trans(0,L(6),0) ...
-      * roty(q(6)) * trans(0,L(7),0);
+    % Passo 2: percorrer o braço da base até à garra. Cada par "rodar a junta,
+    % avançar ao longo do elo" é uma matriz 4x4; multiplicá-las por ordem dá a
+    % pose da garra no referencial da base:
+    %   J1 roda em z, sobe L1 | J2 roda em x, sobe L2 | J3 roda em x, desvio L5 e
+    %   sobe L3 | J4 roda em x, sobe L4 | J5 roda em z, avança L6 | J6 roda em y,
+    %   avança L7 até ao centro de preensão
+    T = aux.matrix.rotz(q(1)) * aux.matrix.trans(0,0,L(1)) ...
+      * aux.matrix.rotx(q(2)) * aux.matrix.trans(0,0,L(2)) ...
+      * aux.matrix.rotx(q(3)) * aux.matrix.trans(L(5),0,L(3)) ...
+      * aux.matrix.rotx(q(4)) * aux.matrix.trans(0,0,L(4)) ...
+      * aux.matrix.rotz(q(5)) * aux.matrix.trans(0,L(6),0) ...
+      * aux.matrix.roty(q(6)) * aux.matrix.trans(0,L(7),0);
 
+    % Passo 3: a última coluna de T é a posição; a 2.ª coluna é o eixo y da garra,
+    % que é para onde a garra aponta
     tip      = T(1:3,4);
     approach = T(1:3,2);
-end
-
-function M = trans(x,y,z)
-    M = eye(4);  
-    M(1:3,4) = [x;y;z];
-end
-function M = rotx(t)
-    M = [1 0 0 0; 0 cos(t) -sin(t) 0; 0 sin(t) cos(t) 0; 0 0 0 1];
-end
-function M = roty(t)
-    M = [cos(t) 0 sin(t) 0; 0 1 0 0; -sin(t) 0 cos(t) 0; 0 0 0 1];
-end
-function M = rotz(t)
-    M = [cos(t) -sin(t) 0 0; sin(t) cos(t) 0 0; 0 0 1 0; 0 0 0 1];
 end
