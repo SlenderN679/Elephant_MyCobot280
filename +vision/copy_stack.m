@@ -54,14 +54,13 @@ function [plan, view, R] = copy_stack(sim_interface, R)
     %% ---- a fotografia (só uma) ----
     % (também o verde: a mesma fotografia corrige a posição do alvo, que na
     %  fotografia inicial podia estar meio tapado por peças retiradas depois)
-    [det, img, cam] = vision.vision_colors(sim_interface, [R.colors(:)' {'green'}], true);
+    [det, img, cam] = vision.vision_colors(sim_interface, [R.colors(:)' {'green'}]);
     if ~isempty(det)
         isG = strcmpi({det.color}, 'green');
         if ~any(strcmpi(R.colors, 'green')) && any(isG)
             G = det(isG);
             [~, g] = max([G.area]);                  % a maior mancha verde = o alvo
-            c = G(g).cam;  w = G(g).world;
-            p = c + (R.target(3) - c(3)) / (w(3) - c(3)) * (w - c);   % à altura do alvo
+            p = vision.at_height(G(g), R.target(3));         % à altura do alvo
             if hypot(p(1) - R.target(1), p(2) - R.target(2)) < 0.03
                 fprintf('copy_stack: alvo corrigido de [%.3f %.3f] para [%.3f %.3f]\n', ...
                         R.target(1:2), p(1:2));
@@ -75,8 +74,7 @@ function [plan, view, R] = copy_stack(sim_interface, R)
     n = numel(det);
     P = zeros(n, 2);  Y = nan(n, 1);  X = zeros(n, 2);  C = cell(n, 1);
     for j = 1:n
-        c = det(j).cam;  w = det(j).world;
-        p = c + (R.tableZ + R.blockH - c(3)) / (w(3) - c(3)) * (w - c);   % bloco na mesa
+        p = vision.at_height(det(j), R.tableZ + R.blockH);   % bloco na mesa
         P(j,:) = p(1:2);  Y(j) = det(j).yaw;  X(j,:) = det(j).pixel;  C{j} = det(j).color;
     end
     label = repmat({'peça'}, n, 1);

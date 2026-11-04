@@ -50,7 +50,7 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
                                                  objPos, placePos, objYaw, ctx.HALF_H(obj));
                 if ~okT
                     fprintf('ERRO na tarefa %d: %s\n', S.iTask, whyT);
-                    aux.signal_failure(ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
+                    aux.signal_failure(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
                                        ctx.qMin, ctx.qMax, ctx.FAIL_POSE);
                     status = 'failed';
                     return;
@@ -86,7 +86,7 @@ function hOut = show_tasks(ctx, S)
         POS = S.POS;  T = ctx.TASKS;  iTask = S.iTask;
         n = size(POS, 1);
         top = [POS(:,1:2), POS(:,3) + ctx.HALF_ALL(:)];      % face de cima de cada objeto
-        pix = aux.world2pix(ctx.VIS.cam, top);
+        pix = vision.cam_map(ctx.VIS.cam, top);
         found = all(~isnan(POS), 2);
         names = ctx.OBJ_NAME(1:n);
         steps = struct('from', {}, 'to', {}, 'color', {}, 'label', {});

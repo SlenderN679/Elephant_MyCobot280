@@ -93,7 +93,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
         % setas do plano (por cima das etiquetas, para se verem bem)
         for a = 1:numel(extras.arrows)
             A = extras.arrows(a);
-            uv = aux.world2pix(extras.cam, [A.from; A.to]) + 0.5;
+            uv = vision.cam_map(extras.cam, [A.from; A.to]) + 0.5;
             if any(isnan(uv(:))), continue; end
             [c, lw, ls] = arrow_style(A);
             plot(uv(:,1), uv(:,2), ls, 'Color', c, 'LineWidth', lw);

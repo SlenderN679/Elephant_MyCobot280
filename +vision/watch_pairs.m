@@ -108,7 +108,7 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
 
     %% ---- uma fotografia ----
     act = [];
-    [det, img, cam] = vision.vision_colors(sim_interface, W.colors, true);
+    [det, img, cam] = vision.vision_colors(sim_interface, W.colors);
     vNames = {};  vColors = {};  vPos = zeros(0, 3);  vPix = zeros(0, 2);  vYaw = zeros(0, 1);
     tz = W.target(3);                          % superfície do alvo
     % uma cor de cada vez:
@@ -124,20 +124,17 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
         P = zeros(n, 2);  Y = nan(n, 1);  X = zeros(n, 2);  onStack = false(n, 1);  Zc = zeros(n, 1);
         L = ones(n, 1);                        % nº de blocos em cada mancha (pilhas de pares)
         for j = 1:n
-            c = D(j).cam;  w = D(j).world;
             % ponto da face de cima de um bloco pousado na mesa
-            p = c + (W.tableZ + W.blockH - c(3)) / (w(3) - c(3)) * (w - c);
+            p = vision.at_height(D(j), W.tableZ + W.blockH);
             % em cima do alvo? então é a pilha (face de cima mais alta)
             onStack(j) = W.nStack > 0 && hypot(p(1) - W.target(1), p(2) - W.target(2)) < W.targetR;
             if onStack(j)
-                zTop = tz + W.nStack*W.blockH;
-                p = c + (zTop - c(3)) / (w(3) - c(3)) * (w - c);
+                p = vision.at_height(D(j), tz + W.nStack*W.blockH);
                 Zc(j) = tz + W.nStack*W.blockH/2;
             else
                 L(j) = stack_level(W, p(1:2), ci);  % pilha de um par feita antes?
                 if L(j) > 1
-                    zTop = W.tableZ + L(j)*W.blockH;
-                    p = c + (zTop - c(3)) / (w(3) - c(3)) * (w - c);
+                    p = vision.at_height(D(j), W.tableZ + L(j)*W.blockH);
                 end
                 Zc(j) = W.tableZ + L(j)*W.blockH/2;
             end

@@ -45,6 +45,7 @@ classdef simulator_interface < handle
             obj.TargetNames{5} = '/Block1';
             obj.TargetNames{6} = '/Block2';
             obj.TargetNames{7} = '/Block3';
+            obj.TargetNames{8} = '/Block4';
 
             [~,obj.TARGET_Number]=size(obj.TargetNames);
 

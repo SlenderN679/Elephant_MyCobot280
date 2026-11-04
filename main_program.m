@@ -11,7 +11,7 @@
 
 
 % ==========================================================================
-% ÍNDICEm
+% ÍNDICE
 %   1. CONFIGURAÇÃO   - escolher o MODO (0..4) e os parâmetros (objetos,
 %                       tarefas, poses, opções de visão e de desenho)
 %   2. LIGAÇÃO        - ligar ao CoppeliaSim e ao braço (código do professor)
@@ -47,6 +47,7 @@ function main()
     BLOCK_ORANGE = 5;
     BLOCK_PINK = 6;
     BLOCK_YELLOW = 7;
+    BLOCK_RED = 8;
 
     BLOCK_H = 0.0192;   % altura dos blocos (m)
 %% ======================================================================
@@ -55,7 +56,7 @@ function main()
 %       cada objeto e compara direct_kin / inverse_kin com o /graspCenter real
 %       do CoppeliaSim; no fim escreve um resumo dos erros
 %   1 - PILHA PRÉ-DEFINIDA: executa a lista TASKS (empilhar no alvo verde),
-%       com as posições dadas pela câmara                         
+%       com as posições dadas pela câmara                       
 %   2 - PILHA DE PARES: vigia a mesa; quando entra um bloco da mesma cor de
 %       outro, empilha um em cima do outro
 %   3 - PEDIDO DE COR: vigia a mesa; um bloco novo da mesma cor de outro é um
@@ -102,9 +103,10 @@ function main()
     %   desvio  : deslocamento do ponto de pouso em relação ao centro do
     %             destino [m]
     %   nível   : 1 = em cima do alvo, 2 = em cima do bloco do nível 1, ...
-    TASKS = [ BLOCK_ORANGE, TARGET_GREEN, 0, 0, 1;    % nível 1 (em cima do alvo)
+    TASKS = [ BLOCK_RED, TARGET_GREEN, 0, 0, 1;    % nível 1 (em cima do alvo)
               BLOCK_PINK, TARGET_GREEN, 0, 0, 2;    % nível 2 (em cima do BLOCK_ORANGE)
-              BLOCK_YELLOW, TARGET_GREEN, 0, 0, 3];
+              BLOCK_YELLOW, TARGET_GREEN, 0, 0, 3;
+              BLOCK_ORANGE, TARGET_GREEN, 0, 0, 4;];
 
     % opções gerais (1 = ligado, 0 = desligado)
     IS_CUBE = @(obj) obj ~= BLUE_CYLINDER;  % cubos: J6 alinha os dedos com as faces
@@ -119,13 +121,13 @@ function main()
     % CLEAR_RADIUS do destino são levados para os pontos CLEAR_SPOTS
     CLEAR_TARGET = 1;                       % 1 - desimpedir o alvo no início
     CLEAR_RADIUS = 0.05;                    % raio da zona a desimpedir [m]
-    PICKABLE = [BLUE_CUBE BLUE_CYLINDER RED_CYLINDER BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW];  % objetos que se podem mover
+    PICKABLE = [BLUE_CUBE BLUE_CYLINDER RED_CYLINDER BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW, BLOCK_RED];  % objetos que se podem mover
 
     % metade da altura de cada objeto [m] (para os pousar à altura certa,
     % mesmo quando são tirados do topo de uma pilha)
     HALF_H = zeros(1, max(PICKABLE));
     HALF_H([BLUE_CUBE BLUE_CYLINDER RED_CYLINDER]) = 0.04/2;      % cubos e cilindro do cenário: 4 cm
-    HALF_H([BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW]) = BLOCK_H/2;   % blocos
+    HALF_H([BLOCK_ORANGE BLOCK_PINK BLOCK_YELLOW BLOCK_RED]) = BLOCK_H/2;   % blocos
     CLEAR_SPOTS = [ -0.042  0.226;          % pontos de estacionamento [x y] no MUNDO [m]
                     -0.101  0.220;          
                     -0.155  0.198;          
@@ -151,9 +153,9 @@ function main()
     COMPARE_VISION = 1;                    % 1 - escrever o erro visão vs. simulador (só testes)
     SHOW_VISION    = 1;                    % 1 - mostrar o resultado da visão (figura + marcas na mesa)
 
-    OBJ_NAME = {'BlueCube','BlueCylinder','RedCylinder','TargetGreen','BLOCK_ORANGE','BLOCK_PINK','BLOCK_YELLOW'};
+    OBJ_NAME = {'BlueCube','BlueCylinder','RedCylinder','TargetGreen','BLOCK_ORANGE','BLOCK_PINK','BLOCK_YELLOW', 'BLOCK_RED'};
     % cor de cada objeto (índice = número do objeto). !!!CONFIRMAR no cenário!!!
-    OBJ_COLOR = cell(1, BLOCK_YELLOW);
+    OBJ_COLOR = cell(1, BLOCK_RED);
     OBJ_COLOR{BLUE_CUBE}     = 'blue';
     OBJ_COLOR{BLUE_CYLINDER} = 'blue';
     OBJ_COLOR{RED_CYLINDER}  = 'red';
@@ -161,9 +163,25 @@ function main()
     OBJ_COLOR{BLOCK_ORANGE}  = 'orange';
     OBJ_COLOR{BLOCK_PINK}    = 'pink';
     OBJ_COLOR{BLOCK_YELLOW}  = 'yellow';
-    % se há várias peças da mesma cor: qual é, por área na imagem (1 = a maior)
-    OBJ_RANK = ones(1, BLOCK_YELLOW);
-    OBJ_RANK(BLUE_CYLINDER) = 2;           % o cubo azul aparece maior que o cilindro
+    OBJ_COLOR{BLOCK_RED}  = 'red';
+    % se há várias peças da mesma cor, a visão separa-as (vision_snapshot):
+    %   1. pela FORMA da face de cima: 'square' (cubo, bloco), 'round' (cilindro)
+    %   2. pelo TAMANHO da face de cima [m] (0 = não usar); os valores medidos
+    %      aparecem a correr vision.vision_check() com o braço fora da vista
+    %   3. só se não houver forma nem tamanho: pela área na imagem (1 = a maior)
+    OBJ_SHAPE = repmat({''}, 1, BLOCK_RED);
+    OBJ_SHAPE{BLUE_CUBE}     = 'square';
+    OBJ_SHAPE{BLUE_CYLINDER} = 'round';
+    OBJ_SHAPE{RED_CYLINDER}  = 'square';   % é o /RedCube (quadrado, 4 cm de altura)
+    OBJ_SHAPE{BLOCK_RED}     = 'square';
+    OBJ_SIZE = zeros(1, BLOCK_RED);
+    % os dois vermelhos são quadrados: só o tamanho os separa. !!!PREENCHER com
+    % os valores de vision.vision_check()!!! (ex.: 0.040 e 0.031)
+    OBJ_SIZE(RED_CYLINDER)   = 0;
+    OBJ_SIZE(BLOCK_RED)      = 0;
+    OBJ_RANK = ones(1, BLOCK_RED);
+    OBJ_RANK(BLOCK_RED) = 2;               % sem tamanhos: o cubo vermelho (4 cm de altura,
+                                           % vê-se também dos lados) aparece maior que o bloco
     USE_VISION_YAW = 1;                    % 1 - alinhar a garra com o yaw medido pela câmara
 
     % Modos 2-4 (+modes/pilha_pares, pedido_cor, copiar_pilha): cores dos
@@ -332,97 +350,43 @@ function main()
     % atualizadas pelo próprio programa sempre que move uma peça (uma peça
     % empilhada tapa a de baixo, por isso não se volta a fotografar).
     %% 5. POSIÇÕES DOS OBJETOS
-    ALL_OBJ = 1:BLOCK_YELLOW;
-    HALF_ALL = [HALF_H, zeros(1, BLOCK_YELLOW - numel(HALF_H))];
+    ALL_OBJ = 1:BLOCK_RED;
+    HALF_ALL = [HALF_H, zeros(1, BLOCK_RED - numel(HALF_H))];
     HALF_ALL(TARGET_GREEN) = 0.001;        % o alvo é plano
-    POS = zeros(BLOCK_YELLOW, 3);
+    % descrição de cada objeto para a visão (índice = número do objeto)
+    OBJ = struct('name', OBJ_NAME, 'color', OBJ_COLOR, 'shape', OBJ_SHAPE, ...
+                 'size', num2cell(OBJ_SIZE), 'rank', num2cell(OBJ_RANK), ...
+                 'halfH', num2cell(HALF_ALL));
     % dados da fotografia inicial, para voltar a mostrar o plano
     % (no modo 1 as marcas seguem as posições guardadas em POS)
-    VIS = struct('img', [], 'det', [], 'cam', [], 'truth', [], 'truthYaw', []);
+    VIS = struct('img', [], 'det', [], 'cam', [], 'pix', [], 'truth', [], 'truthYaw', []);
     hPlan = [];                            % desenhos do plano no CoppeliaSim
-    YAW = nan(BLOCK_YELLOW, 1);                  % orientação de cada objeto [rad] (NaN = desconhecida)
     if USE_VISION == 1
-        % (as poses estão em GRAUS: go_home quer radianos -> deg2rad)
+        % 5a. fotografia com o braço fora da vista (poses em GRAUS -> deg2rad)
         movement.go_home(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(VISION_POSE));
-        % (com try/catch: um erro na visão não deve fechar a simulação; o
-        %  onCleanup do programa termina a simulação em qualquer erro)
-        try
-            [POS, found, pix, img, det, YAW, camV] = vision.vision_snapshot(sim_interface, ALL_OBJ, OBJ_COLOR(ALL_OBJ), ...
-                                           OBJ_RANK(ALL_OBJ), HALF_ALL(ALL_OBJ), TABLE_Z);
-        catch errV
-            fprintf(2, 'ERRO na visão: %s\n', errV.message);
-            fprintf(2, '  em %s (linha %d)\n', errV.stack(1).name, errV.stack(1).line);
-            POS = nan(BLOCK_YELLOW, 3);  found = false(BLOCK_YELLOW, 1);
-            pix = nan(BLOCK_YELLOW, 2);  img = [];  det = [];  YAW = nan(BLOCK_YELLOW, 1);  camV = [];
-        end
-        if USE_VISION_YAW ~= 1
-            YAW(:) = NaN;                    % não usar a orientação da câmara
-        end
-        truth = [];  truthYaw = [];
-        if COMPARE_VISION == 1           % só no simulador: posições reais, para ver o erro
-            truth = zeros(BLOCK_YELLOW, 3);  truthYaw = zeros(BLOCK_YELLOW, 1);
-            for k = ALL_OBJ
-                truth(k,:) = sim_interface.get_target_position(k);
-                o = sim_interface.get_target_orientation(k);
-                truthYaw(k) = o(3);
-            end
-        end
-        for k = ALL_OBJ
-            if found(k)
-                fprintf('visão: %-12s (%s) em [%.3f %.3f %.3f]', OBJ_NAME{k}, OBJ_COLOR{k}, POS(k,:));
-                if ~isempty(truth)
-                    fprintf('   erro %.1f mm', 1000*norm(POS(k,1:2) - truth(k,1:2)));
-                end
-                if ~isnan(YAW(k)) && IS_CUBE(k)
-                    fprintf('   yaw %5.1f°', rad2deg(YAW(k)));
-                    if ~isempty(truthYaw)    % erro a menos de 90 graus (face quadrada)
-                        fprintf(' (erro %.1f°)', rad2deg(mod(YAW(k) - truthYaw(k) + pi/4, pi/2) - pi/4));
-                    end
-                end
-                fprintf('\n');
-            else
-                fprintf('visão: %-12s (%s) NÃO ENCONTRADO\n', OBJ_NAME{k}, OBJ_COLOR{k});
-            end
-        end
-        VIS = struct('img', img, 'det', {det}, 'cam', camV, 'truth', truth, 'truthYaw', truthYaw);
-        % feedback visual: imagem com as deteções + marcas na mesa
-        % (no modo 1 o plano das TASKS é mostrado antes de cada tarefa)
+        [POS, YAW, found, VIS] = vision.locate_objects(sim_interface, OBJ, TABLE_Z, ...
+            struct('useYaw', USE_VISION_YAW == 1, 'compare', COMPARE_VISION == 1, 'isCube', IS_CUBE));
+
+        % 5b. feedback visual (no modo 1 o plano das TASKS é mostrado antes de cada tarefa)
         if SHOW_VISION == 1 && MODE ~= 1
-            try
-                info = {sprintf('MODO %d: %s', MODE, upper(MODE_NAME)), ...
-                        'fotografia inicial: objetos com nome', ...
-                        'a seguir: desimpedir o alvo'};
-                hPlan = drawing.show_vision(sim_interface, img, det, OBJ_NAME(ALL_OBJ), OBJ_COLOR(ALL_OBJ), ...
-                            POS, pix, found, truth, YAW, truthYaw, hPlan, ...
-                            sprintf('Modo %d: fotografia inicial', MODE), ...
-                            struct('cam', camV, 'info', {info}));
-            catch errS          % o feedback é só visual: avisar e continuar
-                fprintf(2, 'AVISO show_vision: %s\n', errS.message);
-                fprintf(2, '  em %s (linha %d)\n', errS.stack(1).name, errS.stack(1).line);
-            end
+            hPlan = show_first_photo(sim_interface, VIS, OBJ, POS, found, YAW, MODE, MODE_NAME);
         end
-        % sem as peças das tarefas (ou o destino) não se pode continuar
-        if MODE ~= 1
-            % modos 2-4: não há TASKS; só o alvo interessa (para o desimpedir)
-            needed = [];
-            if CLEAR_TARGET == 1 && ~found(TARGET_GREEN)
-                disp('AVISO: a visão não encontrou o alvo; não vou desimpedir a zona do alvo');
-                CLEAR_TARGET = 0;
-            end
-        else
-            needed = unique([TASKS(:,1); TASKS(:,2)])';
-        end
-        if any(~found(needed))
-            fprintf('ERRO: a visão não encontrou o(s) objeto(s) %s\n', mat2str(needed(~found(needed))));
-            aux.signal_failure(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
+
+        % 5c. sem as peças das tarefas (ou o destino) não se pode continuar
+        [missing, CLEAR_TARGET] = missing_objects(found, MODE, TASKS, TARGET_GREEN, CLEAR_TARGET);
+        if ~isempty(missing)
+            fprintf('ERRO: a visão não encontrou o(s) objeto(s) %s\n', mat2str(missing));
+            aux.signal_failure(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
             WORKING = 0;
         end
-        % peças não encontradas ficam fora da zona a desimpedir
-        PICKABLE = PICKABLE(found(PICKABLE));
+        PICKABLE = PICKABLE(found(PICKABLE));  % peças não encontradas ficam fora da zona a desimpedir
         if WORKING == 1      % (se falhou, fica na pose de erro)
             movement.go_home(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, [], deg2rad(HOME_POSE));
         end
     else
+        % sem visão: posições lidas do simulador
+        POS = zeros(BLOCK_RED, 3);
+        YAW = nan(BLOCK_RED, 1);               % orientação [rad] (NaN = desconhecida)
         for k = ALL_OBJ
             POS(k,:) = sim_interface.get_target_position(k);
         end
@@ -447,7 +411,7 @@ function main()
     if MODE == 0, CLEAR_TARGET = 0; end    % o diagnóstico não mexe nas peças
     if WORKING == 1 && needTarget && any(isnan(POS(TARGET_GREEN, :)))
         disp('ERRO: o alvo verde não foi encontrado; não posso fazer a pilha');
-        aux.signal_failure(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
+        aux.signal_failure(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
         WORKING = 0;
     end
     if WORKING == 1 && CLEAR_TARGET == 1
@@ -459,7 +423,7 @@ function main()
         end
         if ~okC
             fprintf('ERRO ao desimpedir o alvo: %s\n', whyC);
-            aux.signal_failure(robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
+            aux.signal_failure(SHAKE_HEAD, robot_arm, sim_interface, Links, MinPositionJoint, MaxPositionJoint, FAIL_POSE);
             if needTarget, WORKING = 0; end   % sem o alvo livre não há pilha
         end
     end
@@ -653,3 +617,38 @@ end
 
 
 %-------
+
+% =========================================================================
+function hPlan = show_first_photo(sim_interface, VIS, OBJ, POS, found, YAW, MODE, MODE_NAME)
+% mostrar a fotografia inicial com os objetos com nome (janela "Visão" e
+% marcas na mesa); o feedback é só visual: um erro aqui só dá um aviso
+    hPlan = [];
+    try
+        info = {sprintf('MODO %d: %s', MODE, upper(MODE_NAME)), ...
+                'fotografia inicial: objetos com nome', ...
+                'a seguir: desimpedir o alvo'};
+        hPlan = drawing.show_vision(sim_interface, VIS.img, VIS.det, {OBJ.name}, {OBJ.color}, ...
+                    POS, VIS.pix, found, VIS.truth, YAW, VIS.truthYaw, [], ...
+                    sprintf('Modo %d: fotografia inicial', MODE), ...
+                    struct('cam', VIS.cam, 'info', {info}));
+    catch errS
+        fprintf(2, 'AVISO show_vision: %s\n', errS.message);
+        fprintf(2, '  em %s (linha %d)\n', errS.stack(1).name, errS.stack(1).line);
+    end
+end
+
+function [missing, clearTarget] = missing_objects(found, MODE, TASKS, TARGET_GREEN, clearTarget)
+% objetos necessários que a visão não encontrou
+%   modo 1   : as peças e os destinos das TASKS
+%   modos 2-4: nenhum; mas sem o alvo não se pode desimpedir a zona dele
+    if MODE == 1
+        needed  = unique([TASKS(:,1); TASKS(:,2)])';
+        missing = needed(~found(needed));
+    else
+        missing = [];
+        if clearTarget == 1 && ~found(TARGET_GREEN)
+            disp('AVISO: a visão não encontrou o alvo; não vou desimpedir a zona do alvo');
+            clearTarget = 0;
+        end
+    end
+end

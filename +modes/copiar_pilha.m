@@ -61,7 +61,7 @@ function [S, status] = copiar_pilha(action, S, ctx)
                 % a peça está agora na pilha: atualizar a vista (sem nova fotografia)
                 k = st.blob;
                 S.view.pos(k,:) = [st.place(1:2), st.place(3) + ctx.BLOCK_H/2];
-                S.view.pix(k,:) = aux.world2pix(S.view.cam, [st.place(1:2), st.place(3) + ctx.BLOCK_H]);
+                S.view.pix(k,:) = vision.cam_map(S.view.cam, [st.place(1:2), st.place(3) + ctx.BLOCK_H]);
                 S.view.names{k} = sprintf('%s: pilha verde (nível %d)', st.color, st.level);
                 S.iStep = S.iStep + 1;
             else

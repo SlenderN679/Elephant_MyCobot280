@@ -71,10 +71,10 @@ function [S, status] = diagnostico(action, S, ctx, SHAKE)
                 fprintf(' objetivo (base)      : %7.4f %7.4f %7.4f\n', p);
                 fprintf(' q pedido    [graus]  : %s\n', sprintf('%7.1f', rad2deg(q)));
                 fprintf(' q alcançado [graus]  : %s\n', sprintf('%7.1f', rad2deg(qr)));
-                fprintf(' direct_kin (base)    : %7.4f %7.4f %7.4f\n', dk(1:3));
+                fprintf(' movement.direct_kin (base)    : %7.4f %7.4f %7.4f\n', dk(1:3));
                 fprintf(' graspCenter (base)   : %7.4f %7.4f %7.4f   <- simulador\n', gB);
                 fprintf(' graspCenter (mundo)  : %7.4f %7.4f %7.4f\n', gW);
-                fprintf(' world_to_base(mundo) : %7.4f %7.4f %7.4f\n', ...
+                fprintf(' aux.world_to_base(mundo) : %7.4f %7.4f %7.4f\n', ...
                         aux.world_to_base(gW, ctx.BASE_POSITION, ctx.BASE_YAW));
                 fprintf(' erros: modelo %.1f mm %s | alcance %.1f mm %s | juntas %.1f graus\n', ...
                         eModel, flag(eModel, TOL_MM), eReach, flag(eReach, TOL_MM), eJoint);
@@ -95,6 +95,9 @@ function [S, status] = diagnostico(action, S, ctx, SHAKE)
                     fprintf(['modelo  = direct_kin vs. graspCenter real (erro do modelo do braço)\n' ...
                              'alcance = ponto pedido vs. graspCenter real (inclui o atraso das juntas)\n']);
                 end
+                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                                 [], deg2rad(ctx.VISION_POSE));
+                vision.vision_check(ctx.sim_interface);
                 movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], deg2rad(ctx.HOME_POSE));
                 status = 'finished';
