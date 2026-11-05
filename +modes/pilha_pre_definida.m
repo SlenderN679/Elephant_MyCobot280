@@ -46,8 +46,9 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
                 end
 
                 % apanhar e pousar (bloqueante: só volta quando acabou ou falhou)
-                [okT, whyT] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
-                                                 objPos, placePos, objYaw, ctx.HALF_H(obj));
+                [okT, whyT, placeUsed] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
+                                                 objPos, placePos, objYaw, ctx.HALF_H(obj), top_color(ctx, T, S.iTask), ...
+                                                 pick_color(ctx, obj));
                 if ~okT
                     fprintf('ERRO na tarefa %d: %s\n', S.iTask, whyT);
                     aux.signal_failure(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
@@ -55,8 +56,11 @@ function [S, status] = pilha_pre_definida(action, S, ctx)
                     status = 'failed';
                     return;
                 end
+                % se a pilha tinha sido mexida, o destino mudou com ela
+                tgt = T(S.iTask, 2);
+                S.POS(tgt, 1:2) = S.POS(tgt, 1:2) + placeUsed(1:2) - placePos(1:2);
                 % a peça está agora no destino (guardar o seu centro)
-                S.POS(obj, :) = [placePos(1:2), ctx.TABLE_Z + (T(S.iTask, 5) - 1)*ctx.BLOCK_H + ctx.HALF_H(obj)];
+                S.POS(obj, :) = [placeUsed(1:2), ctx.TABLE_Z + (T(S.iTask, 5) - 1)*ctx.BLOCK_H + ctx.HALF_H(obj)];
                 S.iTask = S.iTask + 1;
             else
                 % todas as tarefas feitas: mostrar, celebrar e voltar à pose inicial
@@ -108,4 +112,27 @@ function hOut = show_tasks(ctx, S)
     catch errS
         fprintf(2, 'AVISO show_tasks: %s\n', errS.message);
     end
+end
+
+% -------------------------------------------------------------------------
+function c = top_color(ctx, T, i)
+% cor do que está no topo do destino da tarefa i, para a confirmação antes
+% de pousar (vision.check_place): no nível 1 o próprio destino (o alvo verde),
+% senão a peça pousada no nível anterior do mesmo destino. false = não confirmar
+    c = false;
+    if ctx.USE_VISION ~= 1, return; end
+    tgt = T(i, 2);  lvl = T(i, 5);
+    if lvl <= 1
+        c = ctx.OBJ_COLOR{tgt};
+    else
+        j = find(T(1:i-1, 2) == tgt & T(1:i-1, 5) == lvl - 1, 1, 'last');
+        if isempty(j), c = true; else, c = ctx.OBJ_COLOR{T(j, 1)}; end
+    end
+end
+
+function c = pick_color(ctx, obj)
+% cor da peça a apanhar, para a confirmar com a câmara antes de a ir buscar
+% ('' = não confirmar: sem visão)
+    c = '';
+    if ctx.USE_VISION == 1, c = ctx.OBJ_COLOR{obj}; end
 end

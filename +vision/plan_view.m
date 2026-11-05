@@ -1,5 +1,5 @@
 function extras = plan_view(cam, steps, iNext, info, more)
-% PLAN_VIEW  [ACRESCENTADO] Plano de uma lista de movimentos (TASKS no modo 1,
+% PLAN_VIEW  Plano de uma lista de movimentos (TASKS no modo 1,
 %            passos do modelo no modo 4) para show_vision: uma seta por
 %            movimento - feitos a cinzento, o próximo grosso, os outros
 %            tracejados - e o painel de estado.

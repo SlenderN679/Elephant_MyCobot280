@@ -338,6 +338,8 @@ function main()
     cfg.DROP_HEIGHT   = 0.015;% altura da queda quando DROP_ON_PLACE = 1 [m]
     cfg.CLEAR_SPACING = 0.05; % distância mínima livre à volta de um ponto de estacionamento [m]
     cfg.CHECK_COLLISIONS = 1; % 1 - rejeitar poses em que o braço choca consigo próprio (arm_collision)
+    cfg.CHECK_PLACE = 1;      % 1 - antes de pousar numa pilha, confirmar com a câmara onde
+                              %     ela está e corrigir se foi mexida (vision.check_place)
     cfg.SHOW_CLEAR = 1;       % 1 - desenhar na mesa a zona a desimpedir, os
                               % estacionamentos e a peça a retirar (clear_area)
 

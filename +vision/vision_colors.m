@@ -26,6 +26,10 @@ function [det, img, cam] = vision_colors(sim_interface, wanted)
 %                 (lado de um quadrado, diâmetro de um círculo)
 %         fill  - quanto a face de cima enche o seu retângulo mínimo:
 %                 ~1 quadrado, ~0,79 círculo (pi/4)
+%         pale  - fração dos pixeis da mancha muito claros (V >= 0,9) e já perto
+%                 do limite de saturação desta cor (S < smin + 0,15): luz a
+%                 mais, a cor está "lavada" e uma parte da peça pode já ter
+%                 ficado de fora da máscara
 %   img : imagem RGB (H x W x 3, 0..1) usada na deteção (para show_vision.m)
 %   cam : modelo da câmara (W, H, f, Rc, pc, sgn) para vision.cam_map
 % Como funciona
@@ -48,11 +52,14 @@ function [det, img, cam] = vision_colors(sim_interface, wanted)
     % limiares HSV: {nome, [hmin hmax], smin, vmin}  (H em 0..1; vermelho dá a volta)
     COLORS = { ...
         'red',    [0.95 0.04], 0.45, 0.15; ...
-        'orange', [0.05 0.125],0.40, 0.30; ...
-        'yellow', [0.13 0.21], 0.40, 0.25; ...
+        'orange', [0.05 0.145],0.40, 0.30; ...
+        'yellow', [0.145 0.21],0.40, 0.25; ...
         'green',  [0.22 0.47], 0.40, 0.15; ...
         'blue',   [0.55 0.72], 0.45, 0.15; ...
         'pink',   [0.72 0.92], 0.12, 0.50 };
+    % (laranja/amarelo: com luz forte o vermelho satura e o laranja "puxa" para
+    %  o amarelo: um laranja lavado mede H ~0,12-0,13 e o amarelo ~0,17, por
+    %  isso a fronteira está em 0,145 e não há intervalo entre os dois)
     TOP_FRAC  = 0.85;     % só conta a face de cima: pixeis com brilho >= TOP_FRAC * brilho
                           % típico da mancha (as faces laterais são mais escuras e
                           % deslocavam o centro). 0 = usar a mancha toda.
@@ -91,7 +98,7 @@ function [det, img, cam] = vision_colors(sim_interface, wanted)
 
     %% ---- 3. deteção por cor ----
     det = struct('color', {}, 'pixel', {}, 'area', {}, 'world', {}, ...
-                 'cam', {}, 'yaw', {}, 'size', {}, 'fill', {});
+                 'cam', {}, 'yaw', {}, 'size', {}, 'fill', {}, 'pale', {});
     Hh = hsv(:,:,1);  Ss = hsv(:,:,2);  Vv = hsv(:,:,3);
     for ic = 1:size(COLORS, 1)
         name = COLORS{ic, 1};
@@ -137,10 +144,14 @@ function [det, img, cam] = vision_colors(sim_interface, wanted)
                 fill = hull_area(Pw(:,1), Pw(:,2)) / max(rectA, eps);
             end
 
-            % 3f. guardar a deteção
+            % 3f. luz a mais: pixeis muito claros e quase sem saturação suficiente
+            idx  = sub2ind([H W], rows, cols);
+            pale = mean(Vv(idx) >= 0.9 & Ss(idx) < COLORS{ic, 3} + 0.15);
+
+            % 3g. guardar a deteção
             det(end+1) = struct('color', name, 'pixel', [u v], 'area', numel(rows), ...
                                 'world', P, 'cam', cam.pc(:)', ...
-                                'yaw', yaw, 'size', sz, 'fill', fill);   %#ok<AGROW>
+                                'yaw', yaw, 'size', sz, 'fill', fill, 'pale', pale);   %#ok<AGROW>
         end
     end
 end

@@ -25,7 +25,7 @@ function [S, status] = vigiar(action, S, ctx, kind)
             W.target = ctx.POS(ctx.TARGET_GREEN, :);         % pedido de cor: pilha no alvo verde
             movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                              [], deg2rad(ctx.VISION_POSE));
-            S = struct('W', W, 'lastWatch', -inf, 'hWatch', []);
+            S = struct('W', W, 'lastWatch', -inf, 'hWatch', [], 'topColor', 'green');
             disp('modo vigiar: à espera de blocos novos da mesma cor...');
 
         case 'step'
@@ -61,8 +61,20 @@ function [S, status] = vigiar(action, S, ctx, kind)
             end
             yawW = [];
             if ctx.USE_VISION_YAW == 1 && ~isnan(act.yaw), yawW = act.yaw; end
-            [okW, whyW] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
-                                             act.pick, act.place, yawW, ctx.BLOCK_H/2);
+            % cor do topo da pilha de destino (só essa cor conta antes de pousar):
+            % pedido de cor - a última peça pousada no alvo (verde se vazio);
+            % pares - um bloco da mesma cor
+            if strcmp(S.W.mode, 'request'), topW = S.topColor; else, topW = act.color; end
+            [okW, whyW, placeUsed] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
+                                             act.pick, act.place, yawW, ctx.BLOCK_H/2, topW, act.color);
+            if okW && norm(placeUsed(1:2) - act.place(1:2)) > 0
+                % a pilha tinha sido mexida: guardar onde ficou
+                if strcmp(S.W.mode, 'request')
+                    S.W.target(1:2) = S.W.target(1:2) + placeUsed(1:2) - act.place(1:2);
+                end
+                act.place(1:2) = placeUsed(1:2);
+            end
+            if okW && strcmp(S.W.mode, 'request'), S.topColor = act.color; end
             if ~okW
                 % não deu (ex.: fora do alcance): avisar, ignorar esse bloco e continuar
                 fprintf('AVISO: não consegui levar a peça %s para a pilha (%s)\n', act.color, whyW);

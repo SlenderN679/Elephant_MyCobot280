@@ -42,6 +42,9 @@ function [S, status] = copiar_pilha(action, S, ctx)
             if S.iStep <= numel(S.plan)
                 % STEP: executar o passo iStep do plano (apanhar a peça e pô-la no nível certo)
                 st = S.plan(S.iStep);
+                % cor do que está no topo da pilha (o alvo verde no 1.º nível):
+                % a confirmação antes de pousar só procura essa cor
+                if S.iStep == 1, topColor = 'green'; else, topColor = S.plan(S.iStep - 1).color; end
                 if ctx.SHOW_VISION == 1
                     S.hPlan = show_copy(ctx, S);
                 end
@@ -49,15 +52,21 @@ function [S, status] = copiar_pilha(action, S, ctx)
                         S.iStep, numel(S.plan), st.color, st.level);
                 yawC = [];
                 if ctx.USE_VISION_YAW == 1 && ~isnan(st.yaw), yawC = st.yaw; end
-                [ok, why] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
-                                               st.pick, st.place, yawC, ctx.BLOCK_H/2);
+                [ok, why, placeUsed] = aux.pick_and_place(ctx.robot_arm, ctx.sim_interface, ctx.cfg, ...
+                                               st.pick, st.place, yawC, ctx.BLOCK_H/2, topColor, st.color);
                 if ~ok
                     fprintf('ERRO no passo %d: %s\n', S.iStep, why);
-                    aux.signal_failure(ctx. SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
+                    aux.signal_failure(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ...
                                        ctx.qMin, ctx.qMax, ctx.FAIL_POSE);
                     status = 'failed';
                     return;
                 end
+                % se a pilha tinha sido mexida, os níveis seguintes vão para o novo sítio
+                shift = placeUsed(1:2) - st.place(1:2);
+                for j = S.iStep:numel(S.plan)
+                    S.plan(j).place(1:2) = S.plan(j).place(1:2) + shift;
+                end
+                st.place(1:2) = placeUsed(1:2);
                 % a peça está agora na pilha: atualizar a vista (sem nova fotografia)
                 k = st.blob;
                 S.view.pos(k,:) = [st.place(1:2), st.place(3) + ctx.BLOCK_H/2];
