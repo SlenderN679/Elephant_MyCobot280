@@ -121,7 +121,7 @@ function hDraw = show_vision(sim_interface, img, det, names, colors, pos, pix, f
             if ~isempty(hp), fixed(end+1, :) = text_box(hp(1)); end
         end
 
-        % [ACRESCENTADO] arrumar as etiquetas dos objetos para não se taparem
+        % arrumar as etiquetas dos objetos para não se taparem
         place_labels(labs, fixed, size(img, 2), size(img, 1));
 
         % 1c. título da janela
@@ -238,7 +238,7 @@ function b = text_box(h)
 end
 
 function place_labels(labs, fixed, W, H)
-% [ACRESCENTADO] coloca cada etiqueta junto do seu objeto sem tapar as outras:
+% coloca cada etiqueta junto do seu objeto sem tapar as outras:
 % experimenta à direita e à esquerda, cada vez mais acima/abaixo, e escolhe
 % a primeira posição livre dentro da imagem. Se a etiqueta saiu do lado do
 % objeto, desenha uma linha fina a ligá-la ao objeto.

@@ -1,5 +1,5 @@
 function fix_packages(root, apply)
-% FIX_PACKAGES  [ACRESCENTADO] Acrescenta o nome do pacote às chamadas de
+% FIX_PACKAGES  Acrescenta o nome do pacote às chamadas de
 %               funções que estão em pastas +pacote (ex.: direct_kin(...) ->
 %               movement.direct_kin(...)), em TODOS os .m do projeto.
 %

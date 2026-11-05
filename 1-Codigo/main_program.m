@@ -52,7 +52,7 @@ function main()
     BLOCK_H = 0.0192;   % altura dos blocos (m)
 %% ======================================================================
 % MODO DE FUNCIONAMENTO:
-%   0 - DIAGNÓSTICO DE CINEMÁTICA: leva a garra 6 cm acima de
+%   0 - DIAGNÓSTICO: leva a garra 6 cm acima de
 %       cada objeto e compara direct_kin / inverse_kin com o /graspCenter real
 %       do CoppeliaSim; no fim escreve um resumo dos erros
 %   1 - PILHA PRÉ-DEFINIDA: executa a lista TASKS (empilhar no alvo verde),
@@ -326,7 +326,6 @@ function main()
     cfg.Links = Links;  cfg.qMin = MinPositionJoint;  cfg.qMax = MaxPositionJoint;
     cfg.BASE_POSITION = BASE_POSITION;  cfg.BASE_YAW = BASE_YAW;  cfg.TABLE_Z = TABLE_Z;
     cfg.LIFT   = 0.1;         % elevação por cima dos objetos [m]
-    cfg.V_FAST = 0.06;        % velocidade da garra entre poses [m/s]
     cfg.V_SLOW = 0.01;        % velocidade da garra a descer/subir junto aos objetos [m/s]
     cfg.ACC    = 0.10;        % aceleração/travagem [m/s^2] (movimentos suaves)
     cfg.FINGER_EXTRA = 0.015; % quanto as pontas dos dedos passam do centro de preensão [m]

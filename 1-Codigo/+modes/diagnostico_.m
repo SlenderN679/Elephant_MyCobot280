@@ -1,4 +1,4 @@
-function [S, status] = diagnostico(action, S, ctx, SHAKE)
+function [S, status] = diagnostico_(action, S, ctx, SHAKE)
 % DIAGNOSTICO  MODO 0: diagnóstico completo (só no simulador).
 %              Junta num só modo todos os testes que usam informação que só
 %              o simulador tem:
@@ -132,9 +132,6 @@ function [S, status] = diagnostico(action, S, ctx, SHAKE)
                 % 5. (CLOSE_TEST) fechar, levantar 3 cm e ver onde a peça ficou na garra;
                 %    depois pousá-la outra vez no mesmo sítio e abrir
                 if CLOSE_TEST == 1 && ~isempty(pName) && ~isnan(eGrip)
-                    % dedos da garra antes de fechar (no referencial do graspCenter)
-                    if ~isfield(S, 'fingers'), S.fingers = finger_handles(sim, S.hGrasp); end
-                    f0 = finger_pos(sim, S.fingers, S.hGrasp);
                     [a0, t0] = in_grip(sim, hP, S.hGrasp);        % peça na garra: aberta
                     ctx.robot_arm.close_hand();
                     wait_steps(ctx.sim_interface, cfg.T_CLOSE);
@@ -145,19 +142,12 @@ function [S, status] = diagnostico(action, S, ctx, SHAKE)
                     pW2 = to_vec(sim.getObjectPosition(hP, -1));
                     o2  = to_vec(sim.getObjectOrientation(hP, -1));
                     held = 1000*(pW2 - gW2);                         % peça - garra [mm]
-                    % no referencial do graspCenter (x, y da garra): mostra se o desvio
-                    % é na direção em que os dedos fecham ou ao longo deles
                     [a2, t2] = in_grip(sim, hP, S.hGrasp);        % levantada 3 cm
                     fprintf(' peça no ref. da garra    x      y      z [mm]   inclinação (para x, para y)\n');
                     fprintf('   aberta            : %6.1f %6.1f %6.1f      (%5.1f°, %5.1f°)\n', a0, t0);
                     fprintf('   fechada (na mesa) : %6.1f %6.1f %6.1f      (%5.1f°, %5.1f°)\n', a1, t1);
                     fprintf('   levantada 3 cm    : %6.1f %6.1f %6.1f      (%5.1f°, %5.1f°)\n', a2, t2);
                     fprintf('   rotação da peça (yaw) ao fechar: %.1f°\n', rad2deg(mod(o2(3) - pYaw + pi/4, pi/2) - pi/4));
-                    f1 = finger_pos(sim, S.fingers, S.hGrasp);
-                    for i = find(vecnorm(f1 - f0, 2, 2)' > 0.001)
-                        fprintf(' dedo %-28s aberto (%5.1f, %5.1f, %5.1f) -> fechado (%5.1f, %5.1f, %5.1f) mm\n', ...
-                                S.fingers(i).name, 1000*f0(i, :), 1000*f1(i, :));
-                    end
                     tilt = rad2deg(acos(max(-1, min(1, cos(o2(1))*cos(o2(2))))));
                     if pW2(3) < cfg.TABLE_Z + 0.015
                         fprintf(' na garra            : a peça NÃO subiu (ficou na mesa)  <- VER\n');
@@ -272,29 +262,6 @@ function wait_steps(sim_interface, T)
     end
 end
 
-function F = finger_handles(sim, hGrasp)
-% objetos da garra: tudo o que está pendurado no mesmo elo que o graspCenter
-% (sobe 2 níveis para apanhar a garra inteira). Mostra os nomes uma vez e
-% guarda as formas (shapes) que se mexem ao fechar, que são os dedos
-    F = struct('h', {}, 'name', {});
-    try
-        h0 = sim.getObjectParent(hGrasp);
-        h1 = sim.getObjectParent(h0);  if h1 ~= -1, h0 = h1; end
-        all = to_vec(sim.getObjectsInTree(h0, sim.handle_all, 0));
-    catch
-        fprintf(' (não consegui ler a árvore da garra)\n');  return;
-    end
-    fprintf(' objetos da garra (%d):', numel(all));
-    for h = all
-        a = char(sim.getObjectAlias(h, 1));
-        fprintf(' %s', a);
-        if sim.getObjectType(h) == sim.object_shape_type
-            F(end+1) = struct('h', h, 'name', a);                 %#ok<AGROW>
-        end
-    end
-    fprintf('\n');
-end
-
 function [p, t] = in_grip(sim, hP, hG)
 % posição da peça no referencial da garra [mm] e inclinação do seu eixo z
 % para o x e para o y da garra [graus]
@@ -302,14 +269,6 @@ function [p, t] = in_grip(sim, hP, hG)
     p = 1000*m([4 8 12]);
     z = m([3 7 11]);                                   % eixo z da peça visto da garra
     t = rad2deg([atan2(z(1), z(3)), atan2(z(2), z(3))]);
-end
-
-function P = finger_pos(sim, F, hRef)
-% posição de cada dedo no referencial hRef [m]
-    P = nan(numel(F), 3);
-    for i = 1:numel(F)
-        P(i, :) = to_vec(sim.getObjectPosition(F(i).h, hRef));
-    end
 end
 
 function y = pYawOrNaN(name, yaw)

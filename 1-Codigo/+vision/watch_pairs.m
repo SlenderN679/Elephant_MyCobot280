@@ -261,7 +261,7 @@ function [act, W, view] = watch_pairs(sim_interface, W, done, ok)
     end
     W.init = true;
 
-    % [ACRESCENTADO] plano para a visualização: setas + painel de estado
+    % plano para a visualização: setas + painel de estado
     arrows = struct('from', {}, 'to', {}, 'color', {}, 'label', {}, 'state', {});
     if strcmp(W.mode, 'pairs')
         info = {'MODO 2: PILHA DE PARES', ...
