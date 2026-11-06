@@ -1,21 +1,24 @@
-\chapter{Fundamentos Teóricos}
-\label{ch:fund-teor}
+\chapter{Formulação da cinemática direta}
+\label{ch:dir_kin}
 %
-Do modo a se colmatar as necessidades teóricas para o desenvolvimento do robô foram estudadas as seguintes ferramentas: 
+A cinemática direta permita obter a posição da garra $(x, y, z)$ apartir do ângulo das juntas $(J1, \dots, J6)$. A solução é única e sempre existente.
 
-\underline{\textit{Autodesk Fusion 360}}, uma excelente ferramenta \textit{CAD} para a modelação precisa de objetos 2D e 3D. Na qual, existem vários ambientes de trabalho, cada um fornecendo ao utilizador características e opções distintas. O ambiente de trabalho usado por defeito nesta ferramenta é o \textit{Design}, sendo possível alterar a qualquer altura.  
+Cada junta do robô apresenta diferentes comportamentos, logo teremos que alterar a abordagem para cada junta:
 
-Neste ambiente de trabalho, a modelação 3D de um objeto é inicialmente feita usando esboços. Primeiro, é feita a escolha de um plano para o esboço e, em seguida desenhado o esboço 2D recorrendo a funcionalidades como linhas, curvas e outros elementos 2D simples. Por fim, é possível adicionar espessura ao esboço de modo a criar um objeto 3D. 
+\begin{itemize}
+    \item A \underline{junta 1} é responsável pela rotação do braço, em relação ao eixo vertical, logo define o plano vertical no qual o braço se movimenta.;
+    \item As \underline{juntas 2 e 3} comportam-se como um braço de 2 DOFs, logo é possível aplicar uma abordagem geométrica para obter a posição de J4 \textit{(Pulso)};
+    \item A \underline{junta 4} é responsável pela orintação de L4 e da garra, logo a partir da posição de J4 é possível obter a posição de J5;
+    \item A \underline{junta 5} é fixada a 0 graus, para a garra se manter no plano do braço;
+    \item A \underline{junta 6} é responsável pela rotação da garra \textit{(Yaw)}, logo não afeta a posição da garra.
+\end{itemize}
 
-Este ambiente de trabalho permite também a criação de vários objetos em ficheiros separados, que podem ser juntos ou não num novo ficheiro. 
-
-\textit{\underline{CoppeliaSim}}, ferramenta muito usada na educação relacionada com robótica, principalmente a nível de criação de modelos físicos e ambientes de simulação. 
-
-Dada a complexidade das formas criadas em \textit{CAD}, um ficheiro \textit{CAD} não é normalmente usado também como modelo físico uma vez que tornaria este demasiado complexo. Sendo desta forma, vantajoso a procura da criação de um modelo físico mais básico usando o \textit{CoppeliaSim}. 
-
-A criação de um modelo fisíco através do \textit{CoppeliaSim} pode ser realizada recorrendo a diversas formas primitivas como, \textit{plane, disc, cuboid, sphere} e \textit{cylinder}, e/ou a modelos pré-criados. Devendo peças que terão movimento relativamente a outras serem colocadas separadamente e hierarquicamente na \textit{scene hierarchy}. 
-
-De modo a complementar o modelo físico criado em \textit{CoppeliaSim}, é possível utilizar o modelo gráfico criado em \textit{CAD} tornado assim o modelo mais apelativo visualmente e simplista fisicamente. Esta junção implica que ficheiros \textit{CAD} sejam gravados com formatos interpretados pelo \textit{CoppeliaSim}, como \textit{obj, dxf, ply} e \textit{stl} de modo a serem posteriormente importados e realizada a \textit{mesh}.  
+\begin{figure}[h]
+  \centering
+  \input{./graph/vista_lateral.tex}
+  \caption{Vista lateral do braço no seu plano vertical.}
+  \label{fig:lateral}
+\end{figure}
 
 \underline{Navegação autónoma}, exige a criação de algoritmos de modo a tornar possíveis vários fatores essenciais no seu processo, tais como: 
 \begin{itemize}
@@ -31,18 +34,22 @@ Dinâmica de navegação:
 
 \begin{figure*}[!h]
 \centering
-    \includegraphics[width=0.3\textwidth]{./img/eq-1.1}
-    \caption*{Equação (1.1)}
-\label{eq:1.1}
+    \begin{equation}
+        \theta\textsubscript{A} = q\textsubscript{2} + \frac{\pi}{2},
+        \label{eq:2.1}
+    \end{equation}
+    \caption*{Equação (2.1)}
 \end{figure*}
 
 Onde,
-%
+
 \begin{figure*}[!h] 
 \centering
-    \includegraphics[width=0.5\textwidth]{./img/eq-1.2}
-    \caption*{Equação (1.2)}
-\label{eq:1.2}
+    \begin{equation}
+        \frac{a^2 + b^2}{c^2} = 1
+        \label{eq:2.2}
+    \end{equation}
+    \caption*{Equação (2.2)}
 \end{figure*}
 
 Dinâmica da velocidade linear: 

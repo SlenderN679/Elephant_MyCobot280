@@ -10,7 +10,7 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw)
 %                 (mesmo x, y; só muda a altura)
 %   yaw         : orientação do cubo (para J6), ou []
 %   ikOpts      : estrutura para move_linear / inverse_kin:
-%                   ikOpts.family = 'front' (cotovelo para cima)
+%                   ikOpts.family = 'up' (cotovelo para cima)
 %                   ikOpts.pitch  = inclinação da garra [rad] (fixa)
 %   ok          : false se nenhuma inclinação funciona
 %   qTop        : juntas no ponto de cima (pHigh)
@@ -36,7 +36,7 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw)
     zs = pHigh(3):-DZ:pLow(3);
     if isempty(zs) || zs(end) > pLow(3), zs(end+1) = pLow(3); end
 
-    ikOpts = struct('family', 'front', 'pitch', pi/2);
+    ikOpts = struct('family', 'up', 'pitch', pi/2);
     ok = false;  qTop = [];
     % experimentar inclinações a partir da vertical (90 graus), afastando de 5 em
     % 5 graus para os dois lados; fica a primeira que funciona na descida toda
@@ -48,7 +48,7 @@ function [ikOpts, ok, qTop] = plan_vertical(pLow, pHigh, cfg, yaw)
             % verificar cada altura: tem solução, não salta, não choca consigo próprio
             for z = zs
                 [q, reach] = movement.inverse_kin(pLow(1), pLow(2), z, cfg.Links, cfg.qMin, cfg.qMax, ...
-                                         yaw, psi, 'front', true);
+                                         yaw, psi, 'up', true);
                 if ~reach || (~isempty(qPrev) && max(abs(q(1:4) - qPrev(1:4))) > MAX_JUMP)
                     good = false;  break;
                 end
