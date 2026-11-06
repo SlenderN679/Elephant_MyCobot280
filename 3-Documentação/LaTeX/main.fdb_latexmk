@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1793995790.23935 "c:/Users/Geral/Documents/1-Mestrado/SAI/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex" "main.pdf" "main" 1793995793.15585 0
+["pdflatex"] 1794006284.87262 "c:/Users/Geral/Documents/1-Mestrado/SAI/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex" "main.pdf" "main" 1794006287.97374 0
   "C:/Users/Geral/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1793920556 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/Geral/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1440.pk" 1793917976 52860 dff0091eb7df04340df1d3e9a9f736c5 ""
   "C:/Users/Geral/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1200.pk" 1793917982 31952 73fece5025370f22ec1bdb9b47604e20 ""
@@ -215,7 +215,7 @@
   "C:/Users/Geral/AppData/Local/Programs/MiKTeX/tex/latex/xfor/xfor.sty" 1233849756 2689 44855b72da58344b1c1d9b3087bce6ca ""
   "C:/Users/Geral/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "c:/Users/Geral/Documents/1-Mestrado/SAI/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex" 1793994919 2438 67aef27139a02d08a584dc59af4ad7ce ""
-  "graph/vista_lateral.tex" 1793995790 1357 69cdeb6a6b1bbccb6345ab77e86b6182 ""
+  "graph/vista_lateral.tex" 1794001853 1383 c59edcf94e95dd4a2db8405f85712bfa ""
   "img/1.11.png" 1793917627 1926 6bb59293bc5fb3864284fc60506b4fd2 ""
   "img/base.png" 1793917627 108326 60f47f88af7fd4879a5f9f2e267744cd ""
   "img/bateria.png" 1793917627 83597 fa7b8e6a848d730f464951ff6f568b0c ""
@@ -263,12 +263,12 @@
   "listing/RobDyn_robot.m" 1793917627 9600 8eafd00359dbbda03f6ead6abd636f08 ""
   "listing/RobDyn_robot2.m" 1793917627 9651 5a3d7c145edb404a24f7231b6402b528 ""
   "listing/program_dyn_EB_tar_obs.m" 1793917627 12414 d77826d1f6c90422a3cf4d3289579b79 ""
-  "main.aux" 1793995792 14107 48848501853e95c0ef4c1aa656a8eef6 "pdflatex"
-  "main.glsdefs" 1793995792 1120 5806c87e1f14fa9f5f9148788e90f68e "pdflatex"
-  "main.lof" 1793995792 2805 3a4858cf2ed7154b95d0395115387df1 "pdflatex"
-  "main.out" 1793995792 3139 1bb4539a143ceeacbf333dbbacc7e2ec "pdflatex"
+  "main.aux" 1794006287 14108 9e87fc24cc17b94d7b22a2a4a039365b "pdflatex"
+  "main.glsdefs" 1794006287 1120 5806c87e1f14fa9f5f9148788e90f68e "pdflatex"
+  "main.lof" 1794006287 2805 3a4858cf2ed7154b95d0395115387df1 "pdflatex"
+  "main.out" 1794006287 3139 1bb4539a143ceeacbf333dbbacc7e2ec "pdflatex"
   "main.tex" 1793994919 2438 67aef27139a02d08a584dc59af4ad7ce ""
-  "main.toc" 1793995792 1411 4887fd66f10f9c42f68e968934456c95 "pdflatex"
+  "main.toc" 1794006287 1411 4887fd66f10f9c42f68e968934456c95 "pdflatex"
   "sec/acronyms.tex" 1793917627 119 121ab2983987f999f702ad0b7125ac55 ""
   "sty/dissert.sty" 1793917627 1992 00359c77547a4e0804bff6da50022478 ""
   "sty/listing.sty" 1793917627 941 d5cbbd906b895dbc94e5342887349feb ""
@@ -285,7 +285,7 @@
   "tex/Chap/4-Resultados/resultados.tex" 1793917627 3010 074c7b98e8747778cf22517c48ce5247 ""
   "tex/Chap/5-Conclusao/CONC.tex" 1793917627 1885 96ee8127fc55b78f811d8a0595a576d5 ""
   "tex/Chap/6-Bibliografia/BIB.tex" 1793917627 491 ccec52003710d3893057ec61d5223e8a ""
-  "title.tex" 1793921519 1888 021a675214ee3885ae12980554a56de6 ""
+  "title.tex" 1794006282 1888 021a675214ee3885ae12980554a56de6 ""
   (generated)
   "main.acn"
   "main.aux"
