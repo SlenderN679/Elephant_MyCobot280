@@ -1,0 +1,175 @@
+This is a reference manual for command usage in Latex for the IEEEtran class.
+It is based on the reference manual: % https://mirrors.up.pt/pub/CTAN/macros/latex/contrib/IEEEtran/IEEEtran_HOWTO.pdf
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Workflow %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dissertation.tex is the main file. 
+There are inputted the secondary files for writing, representing the main logical
+division of the document.
+Additional logical division can be performed by inputting files in the secondary files,
+i.e. nesting, which may be useful in larger projects.
+
+Thus, a suitable workflow can be:
+1) Write out your part in any of the secondary files, adding a new sectioning command (see Sections)
+2) If your part is too big, you may prefer to input it as new secondary file inside a main secondary file.
+3) Define symbols and acronyms as suitable, so they can be easily referenced inside the doc (see Acronyms and Symbols)
+4) Always label all relevant elements (see References)
+5) Cite other people's work (see Citations and Bibliography)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Sections %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Sections are the highest sectioning command available for the IEEEtran class,
+enabling the division of the document into logical portions.
+
+The IEEEtran allows:
+- section: % \section{Analysis}%
+- subsection
+- subsubsection
+- paragraph
+- subparagraph
+
+If a starred environment is used, e.g., section*, it will not be numbered,
+unlike the default section.
+
+Example:
+% SECTION - Introduction -------------------------
+\section{Introduction}%
+\label{sec:introduction}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% References %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+References are a mechanism to visit key places in the document, such as:
+- figures
+- tables
+- sections
+- listings
+
+References require a label (where to jump) and a reference (invoking the jump).
+
+They should be added to all these elements, i.e. labelled, using:
+% \label{<elem>:name}
+% where <elem> can be: sec, fig, tab, lst
+
+To reference it in another part of the text, use:
+%\ref{<elem>:name}
+
+NOTE: every element must be referenced in the text before it appears.
+
+Example:
+The \gls{imu} was attached to textile band, positioned in the lower body of an
+individual, according to the axes orientation defined in Fig.~\ref{fig:fig2}.
+% Fig 1
+\begin{figure*} 
+\centering
+    \includegraphics[width=1.0\textwidth]{./img/fig2.png}
+  \caption{System used for inertial
+    data acquisition: orientation of the \gls{imu} during the data acquisition
+    and orientation after the compensation; acquisition protocol (withdrawn from~\cite{cav-enunc})}% 
+\label{fig:fig2}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Symbols %%%%%%%%%%%%%%%%%%%%%%%%
+Acronyms and Symbols are used to ease the writing:
+- acronyms refer to abbreviations of concepts
+- symbols refer to mathematical/physical symbols
+
+Together, they are used to build a glossary.
+
+Acronyms are:
+- defined in /sec/acronyms.tex
+- referenced in text, using: \gls{<acr_key>}, e.g., \gls{imu}
+
+Symbols are:
+- defined in /sec/symbols.tex
+- referenced in text, using: \gls{<symb_key>}, e.g., \gls{varphi-a}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Citations and Bibliography %%%%%%%%%%%%%%%%%%%%
+Citations are used to give credits to someone else's work. 
+It requires a bibliography file, containing the citations' keys, and a 
+citation to that key.
+
+Usage:
+1. Define the bibliography entry in /bib/dissert.bib. The easiest way to do this is:
+  1) Search the work in Google scholar: https://scholar.google.pt/
+  2) Click on the " (Citar) below the search entry
+  3) Select Bibtex
+  4) Copy the entry and place it in the bib file.
+2. Cite using: %\cite{bibKey}
+
+Example:
+% Bib file
+%@article{mccarron2013low,
+%  title={Low-cost IMU implementation via sensor fusion algorithms in the Arduino environment},
+%  author={McCarron, Brandon},
+%  year={2013}
+%}
+... as they only sense these variations and do not have a fixed frame of
+reference~\cite{mccarron2013low}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%% Figures %%%%%%%%%%%%%%%%%%%%%%%%%
+Images should be added to folder /img/.
+
+% figure*: double-column
+% figure: single column
+% position [!hbt]: not used - class will select where to place the float
+
+% double-column
+\begin{figure*} 
+\centering
+    \includegraphics[width=1.0\textwidth]{./img/fig2.png}
+  \caption{System used for inertial
+    data acquisition: orientation of the \gls{imu} during the data acquisition
+    and orientation after the compensation; acquisition protocol (withdrawn from~\cite{cav-enunc})}%
+\label{fig:fig2}
+\end{figure*}
+
+% single-column
+\begin{figure}
+\centering
+    \includegraphics[width=0.9\columnwidth]{./img/kalmanf.png}
+  \caption{KF procedure overview (withdrawn from~\cite{mccarron2013low})}%
+\label{fig:kalmanf}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%% Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% table is also a float, so it can be used similarly
+% for table creation use: https://www.tablesgenerator.com/#
+% table*: double-column
+% table: single column
+% position [!hbt]: not used - class will select where to place the float
+
+% double-column
+\begin{table*}
+   \centering
+   \caption{Defined assumptions for KF}%
+   \label{tab:parameter} 
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+  %\rowcolor[HTML]{DAE8FC} 
+  Symbol & Definition                           & Value & Assumption                                                                                                   \\ \hline
+  u\_k   & Control input                        & 0     & \begin{tabular}[c]{@{}l@{}}State of system does not\\  change between steps\end{tabular}                     \\ \hline
+  H      & Relates current state to measurement & 1     & \begin{tabular}[c]{@{}l@{}}Measurement state is \\ equivalent current state\end{tabular}                     \\ \hline
+  Q      & Process noise covariance             & 0.1   & \begin{tabular}[c]{@{}l@{}}Constant chosen to tune \\ filter as in ref. doc.7\end{tabular} \\ \hline
+  R      & Measurement Noise                    & 5     & \begin{tabular}[c]{@{}l@{}}Driven by accelerometer \\ raw output jitter
+                                                          \end{tabular}
+  \\ \hline
+\end{tabular}
+\end{table*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Listings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Listings' style is defined in /sty/listing.sty.
+- To define a new style, just copy the default one and change the appropriate parameters.
+
+To include a listing:
+1. Add the code to /listing/ (e.g., /listing/KF_main_short.m)
+2. Include the listing in the text, using:
+%
+\lstinputlisting[language=matlab, firstline=17,caption={KF main implementation in \matlab},label=lst:kf-main-short,
+style=custom-matlab]{./listing/KF_main_short.m}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+

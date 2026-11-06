@@ -1,0 +1,22 @@
+% MATLAB: src: https://tex.stackexchange.com/a/75124
+\definecolor{greenmb}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{lilasmb}{RGB}{170,55,241}
+\lstdefinestyle{custom-matlab}{
+  % \lstset{language=Matlab,%
+  language=Matlab,
+    %basicstyle=\color{red},
+  basicstyle=\scriptsize\ttfamily,
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{lilasmb},
+    commentstyle=\color{greenmb},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
+}

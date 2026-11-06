@@ -1,0 +1,23 @@
+\section{Matlab}
+\label{sec:matlab}
+
+Por último, recorrendo ao código utilizado na unidade curricular de Sistemas Dinâmicos Não Lineares, foram efetuados alguns ajustes e alterações de acordo com as propriedades do robô desenvolvido.
+
+No ficheiro program\_dyn\_EB\_tar\_obs, foram ajustados os parâmetros da velocidade do robô, taxa de decaimento, magnitude de repulsão e a magnitude do ruído, bem como foram acrescentadas/alteradas algumas partes do código. Uma vez que foi desenvolvido o controlo autónomo de dois robôs, ainda neste ficheiro, foram duplicadas as linhas de código de forma a controlar tanto o veículo 1 como o 2. De forma a ser possível visualizar graficamente dados relativos ao movimento do robô foram acrescentadas linhas de código com os plots. Todas estas alterações estão visíveis nas figuras seguintes.
+
+Relativamente ao ficheiro RobDyn\_robot, alteraram-se as dimensões do robô e o número de sensores aplicados, de forma a corresponder ao robô desenvolvido. Para além disto, este ficheiro foi duplicado, RobDyn\_robot2, tendo sido nele alterados nomes de variáveis e funções uma vez que com a utilização de dois robôs, é necessário que estes tenham variáveis e funções com nomes distintos. Para além destes ficheiros, foi utilizado o ficheiro RobDyn\_simulation para tornar possível a conexão dos dois robôs no \textit{CoppeliaSim}.
+
+De modo a testar o funcionamento do robô e validar a navegação autónoma foi testado um cenário variando algumas características do mesmo.
+\clearpage
+
+\lstinputlisting[language=matlab, firstline=31, lastline=45,caption={Objeto RobDyn\_robot},label=lst:robdyn-robot,
+style=custom-matlab]{./listing/RobDyn_robot.m}
+%
+\lstinputlisting[language=matlab, firstline=31, lastline=45,caption={Objeto RobDyn\_robot2},label=lst:robdyn-robot2,
+style=custom-matlab]{./listing/RobDyn_robot2.m}
+%
+\lstinputlisting[language=matlab, firstline=15, lastline=16,caption={Instanciação dos veículos},label=lst:insanc,
+style=custom-matlab]{./listing/program_dyn_EB_tar_obs.m}
+%
+\lstinputlisting[language=matlab, firstline=144, lastline=223,caption={Código de navegação do veículo 1},label=lst:code,
+style=custom-matlab]{./listing/program_dyn_EB_tar_obs.m}

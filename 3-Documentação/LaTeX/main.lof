@@ -1,0 +1,26 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Ângulo segundo o qual o robot "vê", $\psi $\textsubscript {target}, o alvo em relação ao sistema dos eixos coordenados do mundo pode ser dado pelo sistema de visão do robot ou ser calculado se as coordenadas do alvo, (X\textsubscript {target},Y\textsubscript {target}), forem conhecidas e se tiver.}}{4}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces O sistema perde energia ao longo do tempo. O estado do sistema vai acabar por parar e ficar num estado de repouso final x* (atrator).}}{5}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Representação do comportamento dos sensores do Robot.}}{8}{figure.caption.22}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Base do robô}}{11}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Prateleira do robô}}{12}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Tampa do robô}}{12}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Suportes do robô}}{12}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Sensores do robô}}{13}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Bateria do robô}}{13}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Motores do robô}}{14}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Rodas motriz do robô}}{14}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Rodas Giratórias do robô}}{14}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Robô}}{15}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Propriedades dos sensores}}{16}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Propriedades dos motores}}{16}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Física das Rodas}}{17}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Modelo físico do robô}}{17}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Modelo total do robô}}{18}{figure.caption.45}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}}{21}{figure.caption.46}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}}{22}{figure.caption.47}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

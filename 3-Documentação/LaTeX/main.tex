@@ -1,0 +1,89 @@
+\documentclass[12pt]{report}
+\usepackage{./sty/dissert}% style
+\usepackage{comment}
+\usepackage[acronym]{glossaries}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={black!50!black},
+    citecolor={black!50!black},
+    urlcolor={black!80!black}
+}
+\titleformat{\chapter}{\LARGE}{\thechapter.}{20pt}{\LARGE\textbf}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+\renewcommand{\figurename}{Figura}
+\titleformat*{\section}{\large\bfseries}
+%
+\makeglossaries%
+ % ------------------- Document -----------------------------------------------------
+\begin{document}
+%\onehalfspacing
+\pagenumbering{roman}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\input{title}
+\input{sec/acronyms}
+%
+% --------------Indices------------------
+\renewcommand{\contentsname}{Índice}
+\renewcommand{\listfigurename}{Lista de Figuras}
+\renewcommand{\listtablename}{Lista de Tabelas}
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+%
+\phantomsection%
+%\addcontentsline{toc}{chapter}{Índice}
+%\printglossary[type=\acronymtype,title=Lista de Abreviações]
+\cleardoublepage%
+%
+% --------------TRABALHO------------------
+\renewcommand\chaptername{Capítulo}
+%----- INTRODUÇÃO -----------
+\pagenumbering{arabic}
+%
+%
+\input{tex/Chap/1-Intro/INTRO}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\input{tex/Chap/2-Fund-Teor/fund-teor}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\input{tex/Chap/3-Desenvolvimento/DESEN}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\input{tex/Chap/4-Resultados/RES}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\input{tex/Chap/5-Conclusao/CONC}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
+\input{tex/Chap/6-Bibliografia/BIB}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+%\input{tex/Chap/INTRO} % Introduction
+%\input{kalman_equations}
+%\input{ANALYSIS} % Analysis of the problem
+%\input{DESIGN} % Algorithms design and Workflow
+%\input{EX1} % Matlab implementation
+%\input{tex/Chap/NEURON-NO-SELF-EXCITATION} % EX1
+%\input{tex/Chap/NEURON-SELF-EXCITATION} % EX2
+%\input{tex/Chap/TWO-NEURONS} % EX3
+%\input{tex/Chap/TARGET-SELECTION} % EX4
+%\input{TESTS} % Testing
+%\input{tex/Chap/CONCLUSION} % Conclusions and Future Work
+%
+% -------------- BIBLIO ---------------------
+%\bookmarksetup{startatroot} % Ends last part.
+%\bibliographystyle{unsrtnat}
+%\renewcommand{\bibname}{Referências} 
+%\bibliography{bib/dissert}
+
+
+\end{document}

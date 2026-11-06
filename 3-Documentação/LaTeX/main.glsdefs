@@ -1,0 +1,56 @@
+\glsdefs@newdocentry{eeic}%
+{%
+name={\acronymfont {\glsentryshort {eeic}}},%
+sort={EEIC},%
+type={acronym},%
+first={EEIC},%
+firstplural={EEICs},%
+text={EEIC},%
+plural={EEICs},%
+description={Engenharia Eletrónica Industrial e de Computadores},%
+descriptionplural={Engenharia Eletrónica Industrial e de Computadores},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Engenharia Eletrónica Industrial e de Computadores},%
+longplural={Engenharia Eletrónica Industrial e de Computadoress},%
+short={EEIC},%
+shortplural={EEICs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{um}%
+{%
+name={\acronymfont {\glsentryshort {um}}},%
+sort={UM},%
+type={acronym},%
+first={UM},%
+firstplural={UMs},%
+text={UM},%
+plural={UMs},%
+description={Universidade do Minho},%
+descriptionplural={Universidade do Minho},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Universidade do Minho},%
+longplural={Universidade do Minhos},%
+short={UM},%
+shortplural={UMs},%
+counter={page},%
+parent={},%
+%
+}%
+
