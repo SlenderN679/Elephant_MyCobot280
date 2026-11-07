@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1794007716.36136 "c:/Users/nadia/Desktop/GITUB-CONTROLO/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex" "main.pdf" "main" 1794007719.04555 0
+["pdflatex"] 1794007827.5589 "c:/Users/nadia/Desktop/GITUB-CONTROLO/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex" "main.pdf" "main" 1794007830.34282 0
   "C:/Users/nadia/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1794006827 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/nadia/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1440.pk" 1794006834 52860 801d7da17c8254922a342e528405bc91 ""
   "C:/Users/nadia/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1200.pk" 1794006842 31952 25bb6e2df42f69991f09f0efa32d5e13 ""
@@ -263,12 +263,12 @@
   "listing/RobDyn_robot.m" 1794006595 9862 8eafd00359dbbda03f6ead6abd636f08 ""
   "listing/RobDyn_robot2.m" 1794006595 9915 5a3d7c145edb404a24f7231b6402b528 ""
   "listing/program_dyn_EB_tar_obs.m" 1794006595 12861 d77826d1f6c90422a3cf4d3289579b79 ""
-  "main.aux" 1794007718 14108 9e87fc24cc17b94d7b22a2a4a039365b "pdflatex"
-  "main.glsdefs" 1794007718 1120 5806c87e1f14fa9f5f9148788e90f68e "pdflatex"
-  "main.lof" 1794007718 2805 3a4858cf2ed7154b95d0395115387df1 "pdflatex"
-  "main.out" 1794007718 3139 1bb4539a143ceeacbf333dbbacc7e2ec "pdflatex"
+  "main.aux" 1794007830 14108 9e87fc24cc17b94d7b22a2a4a039365b "pdflatex"
+  "main.glsdefs" 1794007830 1120 5806c87e1f14fa9f5f9148788e90f68e "pdflatex"
+  "main.lof" 1794007830 2805 3a4858cf2ed7154b95d0395115387df1 "pdflatex"
+  "main.out" 1794007830 3139 1bb4539a143ceeacbf333dbbacc7e2ec "pdflatex"
   "main.tex" 1794006595 2530 67aef27139a02d08a584dc59af4ad7ce ""
-  "main.toc" 1794007718 1411 4887fd66f10f9c42f68e968934456c95 "pdflatex"
+  "main.toc" 1794007830 1411 4887fd66f10f9c42f68e968934456c95 "pdflatex"
   "sec/acronyms.tex" 1794006595 120 121ab2983987f999f702ad0b7125ac55 ""
   "sty/dissert.sty" 1794006595 2067 00359c77547a4e0804bff6da50022478 ""
   "sty/listing.sty" 1794006595 963 d5cbbd906b895dbc94e5342887349feb ""
@@ -285,7 +285,7 @@
   "tex/Chap/4-Resultados/resultados.tex" 1794006595 3037 074c7b98e8747778cf22517c48ce5247 ""
   "tex/Chap/5-Conclusao/CONC.tex" 1794006595 1897 96ee8127fc55b78f811d8a0595a576d5 ""
   "tex/Chap/6-Bibliografia/BIB.tex" 1794006595 505 ccec52003710d3893057ec61d5223e8a ""
-  "title.tex" 1794007715 1971 0a6c28fe74a54a6c2009b9ca790d0e19 ""
+  "title.tex" 1794007826 1976 927a0883d2f8212bca252730576402e4 ""
   (generated)
   "main.acn"
   "main.aux"
