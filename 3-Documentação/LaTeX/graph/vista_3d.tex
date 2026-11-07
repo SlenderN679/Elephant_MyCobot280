@@ -1,0 +1,86 @@
+\begin{tikzpicture}[x={(0.10cm,-0.11cm)}, y={(0.26cm,0.04cm)}, z={(0.00cm,0.25cm)}, >=stealth,
+                    link/.style={line width=2.4pt, line cap=round, join=round},
+                    sombra/.style={line width=2.4pt, line cap=round, gray!30},
+                    eixo/.style={->, thin, red!70!black},
+                    cota3/.style={dashed, thick, blue!60!black},
+                    junta/.style={circle, fill=blue!50, draw=blue!40!black, inner sep=2.2pt}]
+  % Coordenadas
+    \coordinate (J1) at (0.0,0.0,0.0);
+    \coordinate (J2) at (0.0,0.0,13.2);
+    \coordinate (J3) at (-1.9,3.3,23.5);
+    \coordinate (O) at (3.7,6.5,23.5);
+    \coordinate (J4) at (-1.0,14.7,21.9);
+    \coordinate (J5) at (-4.7,21.0,21.9);
+    \coordinate (J6) at (-4.7,21.0,17.3);
+    \coordinate (G) at (-4.7,21.0,6.7);
+
+  % Eixos
+    \fill[gray!8] (-12,-6,0) -- (14,-6,0) -- (14,30,0) -- (-12,30,0) -- cycle;
+    \draw[->] (0,0,0) -- (14,0,0) node[below] {$x$};
+    \draw[->] (0,0,0) -- (0,30,0) node[right] {$y$};
+    \draw[->] (0,0,0) -- (0,0,34) node[above] {$z$};
+
+  % Projeção
+   \draw[sombra] (0.0,0.0,0) -- (0.0,0.0,0) -- (-1.9,3.3,0) -- (3.7,6.5,0) -- (-1.0,14.7,0) -- (-4.7,21.0,0) -- (-4.7,21.0,0) -- (-4.7,21.0,0);
+  
+  % Base
+    \fill[gray!35] plot[domain=0:360, samples=48, variable=\t] ({4*cos(\t)},{4*sin(\t)},0);
+    \fill[gray!25] plot[domain=0:360, samples=48, variable=\t] ({4*cos(\t)},{4*sin(\t)},3);
+    \draw[gray!60!black] plot[domain=0:360, samples=48, variable=\t] ({4*cos(\t)},{4*sin(\t)},3);
+    \draw[gray!60!black] (1.4,3.8,0) -- (1.4,3.8,3);
+    \draw[gray!60!black] (-1.4,-3.8,0) -- (-1.4,-3.8,3);
+  
+  % Braços
+    \draw[link] (J1) -- node[left] {$L_1$} (J2);
+    \draw[link] (J2) -- node[left] {$L_2$} (J3);
+    \draw[link] (O) -- node[above] {$L_3$} (J4);
+    \draw[link] (J4) -- node[above left] {$L_4$} (J5);
+    \draw[link] (J5) -- node[right] {$L_6$} (J6);
+    \coordinate (palma) at (-4.7,21.0,9.3);
+    \draw[link] (J6) -- node[right] {$L_7$} (palma);
+ 
+  % Garra
+    \draw[line width=2pt, line cap=round] (-5.7,22.8,9.3) -- (-3.7,19.3,9.3);
+    \draw[line width=2pt, line cap=round] (-5.6,22.6,9.3) -- (-5.6,22.6,5.5);
+    \draw[line width=2pt, line cap=round] (-3.8,19.5,9.3) -- (-3.8,19.5,5.5);
+  
+  % Desvio lateral L5 (ao longo do eixo de J3)
+    \draw[line width=2.4pt, line cap=round, orange!85!black] (J3) -- (O);
+    \draw[thin, gray] (J3) -- (-1.9,3.3,29.0) (O) -- (3.7,6.5,29.0);
+    \draw[<->, thin] (-1.9,3.3,28.7) -- node[above=7pt, align=center, font=\small] {$L_5$\\desvio lateral} (3.7,6.5,28.7);
+  
+  % Cotas
+    \coordinate (S) at (5.6,3.2,0.0);
+    \coordinate (F) at (-4.7,21.0,0.0);
+    \draw[cota3] (0,0,0) -- node[pos=0.6, below=1pt] {$L_5$} (S);
+    \draw[cota3] (S) -- node[below=2pt] {$d$} (F);
+    \draw[cota3] (F) -- node[pos=0.5, right=2pt] {$h$} (G);
+    \draw[blue!60!black, thin] (4.9,4.4,0.0) -- (3.8,3.7,0.0) -- (4.5,2.6,0.0);
+    \draw[blue!60!black, thin] (-4.7,21.0,1.3) -- (-4.0,19.9,1.3) -- (-4.0,19.9,0.0);
+  
+  % Eixos de rotação das juntas
+    \draw[eixo] (0.0,0.0,-2.8) -- (0.0,0.0,3.2);
+    \draw[eixo] (-2.4,-1.4,13.2) -- (2.8,1.6,13.2);
+    \draw[eixo] (-6.2,0.8,23.5) -- (3.2,6.2,23.5);
+    \draw[eixo] (-3.4,13.3,21.9) -- (1.8,16.3,21.9);
+    \draw[eixo] (-3.3,18.6,21.9) -- (-6.3,23.8,21.9);
+    \draw[eixo] (-4.7,21.0,20.1) -- (-4.7,21.0,14.1);
+  
+  % Juntas
+    \node[junta] at (J1) {};
+    \node[junta] at (J2) {};
+    \node[junta] at (J3) {};
+    \node[junta] at (J4) {};
+    \node[junta] at (J5) {};
+    \node[junta] at (J6) {};
+    \node[right=6pt] at (J1) {J1 (base)};
+    \node[left=6pt] at (J2) {J2 (ombro)};
+    \node[below left=2pt and 4pt] at (J3) {J3 (cotovelo)};
+    \node[below=7pt] at (J4) {J4 (pulso)};
+    \node[right=7pt] at (J5) {J5};
+    \node[right=6pt] at (J6) {J6};
+    \fill (G) circle (1.5pt);
+    \node[right=12pt, font=\small] at (G) {centro de preensão};
+    \draw[eixo] ([shift={(-4.6cm,-0.2cm)}]current bounding box.north east) -- ++(0.7cm,0) node[right, black] {\small eixo de rotação da junta};
+
+  \end{tikzpicture}

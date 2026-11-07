@@ -1,24 +1,56 @@
 \chapter{Formulação da cinemática direta}
 \label{ch:dir_kin}
 %
-A cinemática direta permita obter a posição da garra $(x, y, z)$ apartir do ângulo das juntas $(J1, \dots, J6)$. A solução é única e sempre existente.
+A cinemática direta permita obter a posição da garra $(x, y, z)$ apartir do ângulo das juntas $(J1, \dots, J6)$. 
+Ao contrário da cinemática inversa, a solução existe sempre e é única: para cada conjunto de ângulos há uma, e só uma, posição da garra.
 
-Cada junta do robô apresenta diferentes comportamentos, logo teremos que alterar a abordagem para cada junta:
+Seguindo a abordagem geométrica da aula, o braço é decomposto em duas partes mais simples: um braço planar, que se move num plano vertical, e uma rotação desse plano em torno do eixo vertical. 
+Cada junta tem, por isso, um papel diferente:
 
 \begin{itemize}
-    \item A \underline{junta 1} é responsável pela rotação do braço, em relação ao eixo vertical, logo define o plano vertical no qual o braço se movimenta.;
-    \item As \underline{juntas 2 e 3} comportam-se como um braço de 2 DOFs, logo é possível aplicar uma abordagem geométrica para obter a posição de J4 \textit{(Pulso)};
-    \item A \underline{junta 4} é responsável pela orintação de L4 e da garra, logo a partir da posição de J4 é possível obter a posição de J5;
-    \item A \underline{junta 5} é fixada a 0 graus, para a garra se manter no plano do braço;
-    \item A \underline{junta 6} é responsável pela rotação da garra \textit{(Yaw)}, logo não afeta a posição da garra.
+    \item A \textbf{junta 1} roda o braço em torno do eixo vertical, logo define a orientação do plano vertical no qual o braço se movimenta;
+    \item As \textbf{juntas 2 e 3} comportam-se como um braço planar de 2 DOF, logo é possível aplicar a abordagem geométrica da aula para obter a posição de J4 \textit{(pulso)};
+    \item A \textbf{junta 4} define a orientação de $L_4$ e da garra no plano do braço, logo, a partir da posição de J4, permite obter a posição de J5 e do centro de preensão;
+    \item A \textbf{junta 5} é fixada a $0^\circ$, para a garra se manter no plano do braço;
+    \item A \textbf{junta 6} roda a garra em torno do seu próprio eixo \textit{(yaw)}, logo não afeta a posição do centro de preensão, apenas a direção em que os dedos fecham.
 \end{itemize}
 
-\begin{figure}[h]
+A Figura~\ref{fig:3d} mostra o braço numa pose genérica, com os elos, os eixos de rotação de cada junta e a decomposição da posição da garra usada neste capítulo: um desvio lateral $L_5$, uma distância $d$ em frente, no plano do braço, e uma altura $h$.
+
+% Vista 3D do braço
+\begin{figure}[H]
   \centering
-  \input{./graph/vista_lateral.tex}
-  \caption{Vista lateral do braço no seu plano vertical.}
-  \label{fig:lateral}
+  \resizebox{0.5\textwidth}{!}{\input{./graph/vista_3d.tex}}
+  \caption{Vista 3D do braço.}
+  \label{fig:3d}
 \end{figure}
+
+O cálculo faz-se em dois passos. Primeiro, no plano lateral, obtêm-se $(d, h)$ a partir de $q_2$, $q_3$ e $q_4$ (Secção~\ref{sec:plano_lateral}). Depois, no plano horizontal, a rotação $q_1$ leva esse ponto para as coordenadas $(x, y, z)$ da base (Secção~\ref{sec:plano_horizontal}).
+ 
+\begin{table}[H]
+  \centering
+  \caption{Comprimentos dos elos, medidos no cenário do CoppeliaSim.}
+  \label{tab:elos}
+  \begin{tabular}{llc}
+    \hline
+    Símbolo & Ligação & Comprimento [m] \\
+    \hline
+    $L_1$ & base $\rightarrow$ J2 (altura do ombro) & 0,1316 \\
+    $L_2$ & J2 $\rightarrow$ J3 & 0,1104 \\
+    $L_3$ & J3 $\rightarrow$ J4 & 0,0960 \\
+    $L_4$ & J4 $\rightarrow$ J5 & 0,0731 \\
+    $L_5$ & desvio lateral J3 $\rightarrow$ J4 & 0,0646 \\
+    $L_6$ & J5 $\rightarrow$ J6 & 0,0456 \\
+    $L_7$ & J6 $\rightarrow$ centro de preensão & 0,1057 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+% Secções do capítulo
+\input{tex/Chap/2-Direct_Kin/plano_lateral}
+\input{tex/Chap/2-Direct_Kin/plano_horizontal}
+
+
 
 \underline{Navegação autónoma}, exige a criação de algoritmos de modo a tornar possíveis vários fatores essenciais no seu processo, tais como: 
 \begin{itemize}

@@ -1,48 +1,69 @@
 %Vista lateral do robô
-\begin{tikzpicture}[scale=0.2,
+\begin{tikzpicture}[scale=0.3,
                     % Estilos
-                    link/.style={line width=2pt, line cap=round},
-                    junta/.style={circle, draw, fill=blue!50, line width=1pt, inner sep=2pt}]
+                        link/.style={line width=2.2pt, line cap=round},
+                        junta/.style={circle, draw, fill=white, line width=1pt, inner sep=2.2pt},
+                        cota/.style={gray!70!black, thin},
+                        ang/.style={->, thin},
+                        qang/.style={->, thin, red!70!black}]
 
   % Coordenadas das juntas
-    \coordinate (J1) at (1,1);
-    \coordinate (J2) at (1,14);
-    \coordinate (J3) at (4,24);
-    \coordinate (J4) at (14,22);
-    \coordinate (J5) at (21,22);
-    \coordinate (J6) at (21,10);
+    \coordinate (J1) at (0,0);
+    \coordinate (J2) at (0,13.2);
+    \coordinate (J3) at (3.8,23.5);
+    \coordinate (J4) at (13.2,21.9);
+    \coordinate (J5) at (20.5,21.9);
+    \coordinate (J6) at (20.5,6.7);
+
+  % Eixos
+    \draw[->, thin] (-4,0) -- (26.5,0) node[below left] {$d$};
+    \draw[->, thin] (J1) -- (0,28) node[left] {$h$};
 
   % Base
-    \draw[fill=gray!30] (0,0) rectangle (2,0.5);
-    \draw[fill=gray!30] (0.5,0.5) rectangle (1.5,1);
-  
-  % Juntas
-    \draw[junta] (J1) circle (0.2);
-    \draw[junta] (J2) circle (0.2);
-    \draw[junta] (J3) circle (0.2);
-    \draw[junta] (J4) circle (0.2);
-    \draw[junta] (J5) circle (0.2);
-    \draw[junta] (J6) circle (0.2);
+    \fill[gray!25] (-3,-0.8) rectangle (3,0);
+    \draw[thick] (-5,0) -- (26,0);
   
   % Braços
-    \draw[link] (J1) -- (J2);
-    \draw[link] (J2) -- (J3);
-    \draw[link] (J3) -- (J4);
-    \draw[link] (J4) -- (J5);
-    \draw[link] (J5) -- (J6);
+    \draw[link] (J1)  -- node[pos=0.8, right] {$L_1$} (J2);
+    \draw[link] (J2) -- node[pos=0.45, right] {$L_2$} (J3);
+    \draw[link] (J3) -- node[pos=0.3, below=1pt] {$L_3$} (J4);
+    \draw[link] (J4) -- node[above] {$L_4$} (J5);
+    \draw[link] (J5) -- node[right] {$D = L_6 + L_7$} (J6);
+  
+  % Juntas
+    \node[junta] at (J2) {};  \node[left=5pt]  at (J2) {J2 (ombro)};
+    \node[junta] at (J3) {};  \node[above left=2pt] at (J3) {J3 (cotovelo)};
+    \node[junta] at (J4) {};  \node[below left=4pt and -6pt] at (J4) {J4 (pulso)};
+    \node[junta] at (J5) {};  \node[above=4pt] at (J5) {J5};
+    \fill (J6) circle (6pt);   \node[below right=1pt and 4pt] at (J6) {centro de preensão $(d, h)$};
   
   % Garra
-  \draw[fill=red!50] (0.8,3) rectangle (1.2,3.4);
+    \draw[line width=1.4pt] (19.4,8.2) -- (19.4,6.2) (21.7,8.2) -- (21.7,6.2);
+    \draw[line width=1.4pt] (19.4,8.2) -- (21.7,8.2);
   
-  % Eixos
-  \draw[dashed] (-0.5,0) -- (-0.5,4);
-  \draw[dashed] (-0.5,4) -- (2.5,4);
+  % Guias
+    \draw[cota, dashed] (J6) -- (20.5,0);
+    \draw[cota, dashed] (J6) -- (0,6.7);
+
   
-  % Labels
-  \node[left=5mm] at (J1) {Base};
-  \node[left=5mm] at (J2) {Ombro};
-  \node[left=5mm] at (J3) {Cotovelo};
-  \node[above=5mm] at (J4) {Pulso};
-  \node[right=5mm] at (J6) {Garra};
+  % Ângulos absolutos (a partir da horizontal)
+    \draw[cota, dashed] (J2) -- ++(6,0);
+    \draw[ang] ($(J2)+(4,0)$) arc[start angle=0, end angle=70, radius=4] node[pos=0.6, right=1pt] {$\theta_A$};
+    \draw[cota, dashed] (J3) -- ++(7.5,0);
+    \draw[ang] ($(J3)+(6.5,0)$) arc[start angle=0, end angle=-10, radius=6.5] node[pos=0.6, right=2pt] {$\theta_B$};
+    \draw[cota, dashed] (J5) -- ++(4.5,0);
+    \draw[ang] ($(J5)+(3,0)$) arc[start angle=0, end angle=-90, radius=3] node[pos=0.5, right=2pt] {$\alpha$};
+
+  % Ângulos das juntas (relativos: a partir do elo anterior)
+    \draw[qang] ($(J2)+(90:8)$) arc[start angle=90, end angle=70, radius=8] node[pos=0.3, above left=1pt and 0pt, red!70!black] {$q_2 < 0$};
+    \draw[cota, dashed, red!50] (J3) -- ++(70:5);
+    \draw[qang] ($(J3)+(70:3)$) arc[start angle=70, end angle=-10, radius=3] node[pos=0.3, right=1pt, red!70!black] {$q_3 < 0$};
+    \draw[cota, dashed, red!50] (J4) -- ++(-10:6);
+    \draw[qang] ($(J4)+(-10:5)$) arc[start angle=-10, end angle=0, radius=5] node[pos=0, below=2pt, xshift=-6pt, red!70!black] {$q_4 > 0$};
+
+  % Convenção de sinal
+    \draw[->, thick, red!70!black] (27,26) ++(-30:1.6) arc[start angle=-30, end angle=250, radius=1.6];
+    \node[red!70!black] at (27,26) {$+$};
+    \node[right=2pt, align=left, font=\small] at (28.8,26) {ângulo positivo:\\sentido anti-horário};
 
 \end{tikzpicture}

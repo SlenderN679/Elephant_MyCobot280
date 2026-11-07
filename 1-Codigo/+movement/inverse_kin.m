@@ -19,7 +19,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 %               para apanhar objetos). Acima de pi/2 a garra aponta para baixo
 %               e um pouco para a base.
 %
-%   family    : (opcional) solução do braço de 2 elos:
+%   family    : (opcional) solução do braço de 2 elos (solution_type das aulas):
 %               'up'   (por defeito) - cotovelo para cima  (J3 <= 0)
 %               'down' - cotovelo para baixo (J3 >= 0)
 %   fixedPitch: (opcional) true -> usar SÓ a inclinação prefPitch (sem procurar
@@ -34,7 +34,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 % com o ângulo do pulso imposto + rotação da base):
 %   1. J1 (base): theta1 = atan2(y, x). O plano do braço está desviado L5 do
 %      eixo de J1 e com J1 = 0 o braço aponta para +y, por isso
-%      J1 = atan2(y,x) - atan2(h, L5), h = distância em frente no plano do braço.
+%      J1 = atan2(y,x) - atan2(d, L5), d = distância em frente no plano do braço.
 %   2. Impõe-se o ângulo da garra alpha3 (3 incógnitas, 2 equações no plano ->
 %      fixa-se a inclinação): o ponto do pulso (J4) = alvo menos o elo J4->J5
 %      e o desvio J5->centro de preensão (x3d = xd - Lc*cos(alpha3), ...).
@@ -75,13 +75,13 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     pitchUsed   = NaN;
 
     % Passo 1: distância horizontal ao eixo de J1. O braço está desviado L5 para
-    % o lado, por isso a distância "em frente" no plano do braço é hFwd
+    % o lado, por isso a distância "em frente" no plano do braço é dFwd
     r = hypot(x, y);
     if r <= L(5)
         return;                         % dentro do desvio lateral: inalcançável
     end
-    hFwd = sqrt(r^2 - L(5)^2);          % distância em frente, no plano do braço
-    v    = z - L(1);                    % altura relativa a J2
+    dFwd = sqrt(r^2 - L(5)^2);          % d: distância em frente, no plano do braço
+    hJ2  = z - L(1);                    % h: altura relativa a J2 (ombro)
 
     % Passo 2: limites de segurança da solução
     ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
@@ -112,7 +112,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
             if ~fixedPitch && (psi > PITCH_MAX || psi < PITCH_MIN)
                 continue;
             end
-            best = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, family);
+            best = solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
             if isempty(best)
                 continue;
             end
@@ -124,7 +124,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
                 good = psi;  bad = psi - sign(psi - prefPitch)*STEP;
                 for it = 1:15
                     mid = (good + bad)/2;
-                    qm  = solve_pitch(mid, x, y, hFwd, v, L, D, qMin, qMax, ELBOW_MAX, family);
+                    qm  = solve_pitch(mid, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
                     if isempty(qm), bad = mid; else, good = mid; best = qm; end
                 end
                 psi = good;
@@ -148,22 +148,22 @@ end
 
 % --------------------------------------------------------------------------
 % Resolve J1..J4 para UMA inclinação psi da garra (braço planar das aulas)
-function q = solve_pitch(psi, x, y, hFwd, v, L, D, qMin, qMax, elbowMax, family)
+function q = solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, elbowMax, family)
 % solução [J1..J4] para a inclinação psi, ou [] se não houver
     wrap = @(t) atan2(sin(t), cos(t));
     q = [];
 
     % Passo 1: J1 aponta o plano do braço para o alvo (theta1 = atan2(y,x)),
     % descontando o desvio lateral L5 e a frente do braço ser +y com J1 = 0
-    q1 = atan2(y, x) - atan2(hFwd, L(5));
+    q1 = atan2(y, x) - atan2(dFwd, L(5));
 
     % Passo 2: ângulo do pulso imposto. alpha3 = ângulo da garra no plano do
     % braço (a partir da horizontal; -90 graus = vertical para baixo). O ponto
     % do pulso (J4) obtém-se recuando ao longo da garra (D) e do elo J4->J5 (L4),
     % que é perpendicular à garra:  x3d = xd - Lc*cos(alpha3), ...
     alpha3 = -psi;
-    x3d = hFwd - D*cos(alpha3) - L(4)*cos(alpha3 + pi/2);
-    y3d = v    - D*sin(alpha3) - L(4)*sin(alpha3 + pi/2);
+    x3d = dFwd - D*cos(alpha3) - L(4)*cos(alpha3 + pi/2);
+    y3d = hJ2  - D*sin(alpha3) - L(4)*sin(alpha3 + pi/2);
 
     % Passo 3: braço planar de 2 elos (J2 -> J3 -> pulso) até (x3d, y3d)
     [theta1, theta2, ok] = movement.ik_2dof(x3d, y3d, L(2), L(3), family);
