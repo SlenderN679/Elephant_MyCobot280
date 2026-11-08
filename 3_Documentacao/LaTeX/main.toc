@@ -1,0 +1,27 @@
+\contentsline {chapter}{\numberline {1}Introdução}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Deducao}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Enquadramentos e objetivos}{1}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Formulação da cinemática direta}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}\textit {Plano lateral}}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}\textit {Plano horizontal}}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Desvio lateral}{6}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Rotação da base}{6}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Distância ao eixo da base}{7}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Estudo analítico do sistema dinâmico não linear, definido por (1.1) e (1.2):}{11}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Estudo analítico do sistema dinâmico linear, definido por (1.11)}{11}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Estudo analítico do sistema dinâmico não linear para o comportamento de evitar obstáculos:}{13}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Formulação da cinemática direta}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}\textit {Plano lateral}}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}\textit {Plano horizontal}}{18}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Desvio lateral}{18}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Rotação da base}{18}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Distância ao eixo da base}{19}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Estudo analítico do sistema dinâmico não linear, definido por (1.1) e (1.2):}{23}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Estudo analítico do sistema dinâmico linear, definido por (1.11)}{23}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Estudo analítico do sistema dinâmico não linear para o comportamento de evitar obstáculos:}{25}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Implementação em MATLAB}{27}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Resultados}{27}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Discussão}{28}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Resultados}{30}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusão}{33}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Bibliografia}{34}{chapter.6}%
