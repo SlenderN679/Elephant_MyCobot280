@@ -1,24 +1,16 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Geometria do braço na configuração $\mathbf {q}=(18{,}84^\circ ;\,-12{,}74^\circ ;\,-94{,}21^\circ ;\,16{,}95^\circ ;\,0^\circ ;\,0^\circ )$: vista lateral do plano do braço (esquerda) e vista de cima (direita).}}{6}{figure.caption.5}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Vista 3D do braço.}}{3}{figure.caption.5}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Vista lateral do braço no seu plano vertical.}}{4}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Somas das projeções dos elos do braço.}}{5}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Vista superior do braço no seu plano horizontal.}}{7}{figure.caption.9}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Vista 3D do braço.}}{7}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Vista lateral do braço no seu plano vertical.}}{8}{figure.caption.8}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Vista superior do braço no seu plano horizontal.}}{10}{figure.caption.10}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Ângulo segundo o qual o robot "vê", $\psi $\textsubscript {target}, o alvo em relação ao sistema dos eixos coordenados do mundo pode ser dado pelo sistema de visão do robot ou ser calculado se as coordenadas do alvo, (X\textsubscript {target},Y\textsubscript {target}), forem conhecidas e se tiver.}}{13}{figure.caption.14}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces O sistema perde energia ao longo do tempo. O estado do sistema vai acabar por parar e ficar num estado de repouso final x* (atrator).}}{14}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Representação do comportamento dos sensores do Robot.}}{16}{figure.caption.28}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Vista superior do braço no seu plano horizontal.}}{11}{figure.caption.10}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Vista lateral do braço no seu plano vertical.}}{12}{figure.caption.11}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Vista 3D do braço.}}{19}{figure.caption.37}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Vista lateral do braço no seu plano vertical.}}{20}{figure.caption.39}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Vista superior do braço no seu plano horizontal.}}{22}{figure.caption.41}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Ângulo segundo o qual o robot "vê", $\psi $\textsubscript {target}, o alvo em relação ao sistema dos eixos coordenados do mundo pode ser dado pelo sistema de visão do robot ou ser calculado se as coordenadas do alvo, (X\textsubscript {target},Y\textsubscript {target}), forem conhecidas e se tiver.}}{25}{figure.caption.45}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces O sistema perde energia ao longo do tempo. O estado do sistema vai acabar por parar e ficar num estado de repouso final x* (atrator).}}{26}{figure.caption.48}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Representação do comportamento dos sensores do Robot.}}{28}{figure.caption.59}%
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}}{31}{figure.caption.68}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}}{32}{figure.caption.69}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}}{35}{figure.caption.71}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}}{35}{figure.caption.72}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}}{13}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}}{13}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}}{16}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}}{16}{figure.caption.17}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

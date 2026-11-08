@@ -1,8 +1,9 @@
 \chapter{Formulação da cinemática direta}
 \label{ch:dir_kin}
 %
-A cinemática direta permita obter a posição da garra $(x, y, z)$ apartir do ângulo das juntas $(J1, \dots, J6)$. 
-Ao contrário da cinemática inversa, a solução existe sempre e é única: para cada conjunto de ângulos há uma, e só uma, posição da garra.
+A cinemática direta é uma das componentes fundamentais no estudo e controlo de manipuladores robóticos: permite determinar a posição e a orientação do elemento terminal do robô a partir dos ângulos das suas juntas. Neste projeto é usada para calcular a posição da garra do myCobot~280 $(x, y, z)$ a partir dos ângulos das juntas $(q_1, \dots, q_6)$ e das dimensões dos elos. Ao contrário da cinemática inversa, a solução existe sempre e é única: para cada conjunto de ângulos há uma, e só uma, posição da garra.
+
+O myCobot~280 é um manipulador com seis juntas rotativas. Cada junta introduz uma rotação em torno de um eixo e os elos estabelecem as distâncias entre os eixos de rotação. Na pose zero (todas as juntas a $0^\circ$) o braço está na vertical e a garra horizontal, a apontar para $+y$; nessa pose, J1 roda em torno de $z$, J2, J3 e J4 rodam em torno de $x$, J5 roda em torno de $z$ e J6 roda em torno de $y$, o eixo da própria garra. Para conhecer a posição final da garra é necessário combinar os movimentos de todas as juntas com as dimensões do braço.
 
 Seguindo a abordagem geométrica da aula, o braço é decomposto em duas partes mais simples: um braço planar, que se move num plano vertical, e uma rotação desse plano em torno do eixo vertical. 
 Cada junta tem, por isso, um papel diferente:
@@ -45,6 +46,8 @@ O cálculo faz-se em dois passos. Primeiro, no plano lateral, obtêm-se $(d, h)$
     \hline
   \end{tabular}
 \end{table}
+
+Os comprimentos foram medidos no cenário de simulação e podem diferir ligeiramente dos valores do fabricante. $L_1$ é a altura da base até à segunda junta, $L_2$, $L_3$, $L_4$ e $L_6$ são as distâncias entre juntas consecutivas, $L_5$ é o desvio lateral da estrutura e $L_7$ é a distância da última junta ao centro de preensão.
 
 % Secções do capítulo
 \input{tex/Chap/2-Direct_Kin/plano_lateral}

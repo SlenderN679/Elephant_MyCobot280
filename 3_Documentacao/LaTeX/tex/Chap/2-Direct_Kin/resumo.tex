@@ -16,6 +16,24 @@ Juntando os dois planos, a cinemática direta do myCobot 280, com $D = L_6 + L_7
 
 A direção para onde a garra aponta obtém-se da mesma forma, sem os comprimentos: $-\sin q_5$ para o lado, $\cos q_5\cos\alpha$ em frente e $\cos q_5\sin\alpha$ para cima.
 
-Para verificar as equações, a posição dada pela Equação~\eqref{eq:dk_final}, com os ângulos lidos das juntas no simulador, foi comparada com a posição real do centro de preensão no CoppeliaSim: a diferença ficou entre 1,2 e 4,0~mm. Verificou-se também que, aplicando a cinemática inversa a um ponto e a cinemática direta ao resultado, se volta ao mesmo ponto.
+\subsection{Resultados para o nosso caso}
+
+Para verificar o modelo, avaliou-se a cinemática direta em duas configurações.
+
+A primeira é a \underline{pose zero}, com todas as juntas a $0^\circ$. Pela Equação~\eqref{eq:angulos}, $\theta_A = \theta_B = \theta_C = 90^\circ$ e $\alpha = 0^\circ$: o braço fica vertical e a garra horizontal, a apontar para $+y$. As equações reduzem-se a
+\begin{equation}
+    d = L_6 + L_7, \qquad h = L_1 + L_2 + L_3 + L_4 \qquad \Rightarrow \qquad (x,\, y,\, z) = (L_5,\; d,\; h)
+    \label{eq:pose_zero}
+\end{equation}
+Com os comprimentos da Tabela~\ref{tab:elos}, obteve-se $(x, y, z) = (0{,}0646;\ 0{,}1513;\ 0{,}4111)$~m e a garra a apontar para $(0, 1, 0)$, o que está de acordo com a geometria do braço.
+
+A segunda é uma \underline{configuração de trabalho}, com a garra a apontar para baixo:
+\begin{equation}
+    \mathbf{q} = (18{,}84^\circ;\ -12{,}74^\circ;\ -94{,}21^\circ;\ 16{,}95^\circ;\ 0^\circ;\ 0^\circ)
+    \label{eq:q_trabalho}
+\end{equation}
+Neste caso, $\theta_A = 77{,}26^\circ$, $\theta_B = -16{,}95^\circ$, $\theta_C = 0^\circ$ e $\alpha = -90^\circ$, ou seja, a garra aponta na vertical para baixo. O plano lateral dá $d = 0{,}1893$~m e $h = 0{,}0600$~m, e o plano horizontal $(x, y, z) = (0{,}0000;\ 0{,}2000;\ 0{,}0600)$~m: a garra fica 20~cm à frente da base, a 6~cm de altura.
+
+Por fim, a posição dada pela Equação~\eqref{eq:dk_final}, com os ângulos lidos das juntas no simulador, foi comparada com a posição real do centro de preensão no CoppeliaSim: a diferença ficou entre 1,2 e 4,0~mm. Verificou-se também que, aplicando a cinemática inversa a um ponto e a cinemática direta ao resultado, se volta ao mesmo ponto.
 
 \clearpage
