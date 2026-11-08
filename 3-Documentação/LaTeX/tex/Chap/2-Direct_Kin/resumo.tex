@@ -1,0 +1,21 @@
+\section{Resumo e verificação}
+\label{sec:dk_resumo}
+
+Juntando os dois planos, a cinemática direta do myCobot 280, com $D = L_6 + L_7$ e os ângulos absolutos da Equação~\eqref{eq:angulos}, é:
+
+\begin{equation}
+    \boxed{
+    \begin{aligned}
+        d &= L_2\cos\theta_A + L_3\cos\theta_B + L_4\cos\theta_C + D\cos q_5\cos\alpha\\
+        h &= L_1 + L_2\sin\theta_A + L_3\sin\theta_B + L_4\sin\theta_C + D\cos q_5\sin\alpha\\
+        l &= L_5 - D\sin q_5\\[4pt]
+        x &= l\cos q_1 - d\sin q_1, \qquad y = l\sin q_1 + d\cos q_1, \qquad z = h
+    \end{aligned}}
+    \label{eq:dk_final}
+\end{equation}
+
+A direção para onde a garra aponta obtém-se da mesma forma, sem os comprimentos: $-\sin q_5$ para o lado, $\cos q_5\cos\alpha$ em frente e $\cos q_5\sin\alpha$ para cima.
+
+Para verificar as equações, a posição dada pela Equação~\eqref{eq:dk_final}, com os ângulos lidos das juntas no simulador, foi comparada com a posição real do centro de preensão no CoppeliaSim: a diferença ficou entre 1,2 e 4,0~mm. Verificou-se também que, aplicando a cinemática inversa a um ponto e a cinemática direta ao resultado, se volta ao mesmo ponto.
+
+\clearpage

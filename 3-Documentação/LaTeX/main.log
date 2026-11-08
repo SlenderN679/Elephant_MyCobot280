@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  7 NOV 2026 17:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  7 NOV 2026 21:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -793,7 +793,47 @@ Package glossaries Info: Writing glossary file main.acn on input line 22.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count396
-) (main.aux)
+) (main.aux
+
+LaTeX Warning: Label `sec:plano_horizontal' multiply defined.
+
+
+LaTeX Warning: Label `fig:topo' multiply defined.
+
+
+LaTeX Warning: Label `eq:xyz' multiply defined.
+
+
+LaTeX Warning: Label `eq:r' multiply defined.
+
+
+LaTeX Warning: Label `sec:plano_lateral' multiply defined.
+
+
+LaTeX Warning: Label `fig:traj-2' multiply defined.
+
+
+LaTeX Warning: Label `sec:resultados' multiply defined.
+
+
+LaTeX Warning: Label `fig:traj' multiply defined.
+
+
+LaTeX Warning: Label `fig:traj-2' multiply defined.
+
+
+LaTeX Warning: Label `sec:disc' multiply defined.
+
+
+LaTeX Warning: Label `fig:traj-2' multiply defined.
+
+
+LaTeX Warning: Label `sec:disc' multiply defined.
+
+
+LaTeX Warning: Label `fig:traj-2' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -834,6 +874,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring ON on input line 24.
+ (main.out) (main.out)
 \@outlinefile=\write8
 \openout8 = `main.out'.
 
@@ -878,7 +919,7 @@ Package caption Info: float package is loaded.
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
 (main.glsdefs) (title.tex
-<img/logo.png, id=6, 321.2pt x 132.495pt>
+<img/logo.png, id=118, 321.2pt x 132.495pt>
 File: img/logo.png Graphic file (type png)
 <use img/logo.png>
 Package pdftex.def Info: img/logo.png  used on input line 13.
@@ -898,8 +939,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \@gls@deffile=\write9
 \openout9 = `main.glsdefs'.
 
-)
-No file main.toc.
+) (main.toc)
 \tf@toc=\write10
 \openout10 = `main.toc'.
 
@@ -910,12 +950,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has b
 l.36 \newpage
               [1
 
-]
-No file main.lof.
+] (main.lof)
 \tf@lof=\write11
 \openout11 = `main.lof'.
 
-[2
+ [2
 
 ] (tex/Chap/1-Intro/INTRO.tex
 Capítulo 1.
@@ -924,446 +963,47 @@ Capítulo 1.
 
 ])) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [2]
 Capítulo 2.
+(graph/vista_3d.tex) [3
 
-LaTeX Warning: Reference `fig:3d' on page 3 undefined on input line 18.
+] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [4] (graph/soma_projecoes.tex) [5] [6]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [7
 
-(graph/vista_3d.tex)
+] [8]) (tex/Chap/2-Direct_Kin/resumo.tex [9
 
-LaTeX Warning: Reference `sec:plano_lateral' on page 3 undefined on input line 28.
-
-
-LaTeX Warning: Reference `sec:plano_horizontal' on page 3 undefined on input line 28.
-
-[3
-
-] (tex/Chap/2-Direct_Kin/plano_lateral.tex
-
-LaTeX Warning: Reference `fig:lateral' on page 4 undefined on input line 4.
-
-(graph/vista_lateral.tex)
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[4] [5]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex
-
-LaTeX Warning: Reference `fig:topo' on page 6 undefined on input line 4.
-
-
-LaTeX Warning: Reference `sec:plano_lateral' on page 6 undefined on input line 5.
-
-(graph/vista_cima.tex)
-
-LaTeX Warning: Reference `fig:topo' on page 6 undefined on input line 17.
-
-[6
-
-]
-
-LaTeX Warning: Reference `eq:xyz' on page 7 undefined on input line 37.
-
-
-LaTeX Warning: Reference `fig:topo' on page 7 undefined on input line 46.
-
-[7])
-
-LaTeX Warning: Reference `fig:obs-e-target' on page 8 undefined on input line 63.
-
-<./img/eq-1.3.png, id=91, 108.405pt x 42.1575pt>
-File: ./img/eq-1.3.png Graphic file (type png)
-<use ./img/eq-1.3.png>
-Package pdftex.def Info: ./img/eq-1.3.png  used on input line 91.
-(pdftex.def)             Requested size: 86.72267pt x 33.72731pt.
-<./img/obs-e-target.png, id=92, 321.6015pt x 161.403pt>
-File: ./img/obs-e-target.png Graphic file (type png)
-<use ./img/obs-e-target.png>
-Package pdftex.def Info: ./img/obs-e-target.png  used on input line 98.
-(pdftex.def)             Requested size: 303.53267pt x 152.337pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[8
-
- <./img/eq-1.3.png>]
-
-LaTeX Warning: Reference `fig:ex-energia' on page 9 undefined on input line 108.
-
-<./img/eq-1.4.png, id=103, 83.1105pt x 33.12375pt>
-File: ./img/eq-1.4.png Graphic file (type png)
-<use ./img/eq-1.4.png>
-Package pdftex.def Info: ./img/eq-1.4.png  used on input line 113.
-(pdftex.def)             Requested size: 65.04034pt x 25.92183pt.
-<./img/eq-1.5.png, id=104, 78.2925pt x 37.94176pt>
-File: ./img/eq-1.5.png Graphic file (type png)
-<use ./img/eq-1.5.png>
-Package pdftex.def Info: ./img/eq-1.5.png  used on input line 122.
-(pdftex.def)             Requested size: 65.04034pt x 31.52058pt.
-<./img/ex-energia.png, id=105, 193.32225pt x 144.54pt>
-File: ./img/ex-energia.png Graphic file (type png)
-<use ./img/ex-energia.png>
-Package pdftex.def Info: ./img/ex-energia.png  used on input line 129.
-(pdftex.def)             Requested size: 173.44534pt x 129.68338pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./img/eq-1.6-1.png, id=106, 91.542pt x 30.1125pt>
-File: ./img/eq-1.6-1.png Graphic file (type png)
-<use ./img/eq-1.6-1.png>
-Package pdftex.def Info: ./img/eq-1.6-1.png  used on input line 138.
-(pdftex.def)             Requested size: 86.72267pt x 28.52766pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/eq-1.6-1.png Graphic file (type png)
-<use ./img/eq-1.6-1.png>
-Package pdftex.def Info: ./img/eq-1.6-1.png  used on input line 147.
-(pdftex.def)             Requested size: 86.72267pt x 28.52766pt.
-[9 <./img/obs-e-target.png> <./img/eq-1.4.png> <./img/eq-1.5.png>]
-<./img/eq-1.7.png, id=118, 210.18526pt x 56.6115pt>
-File: ./img/eq-1.7.png Graphic file (type png)
-<use ./img/eq-1.7.png>
-Package pdftex.def Info: ./img/eq-1.7.png  used on input line 156.
-(pdftex.def)             Requested size: 195.12767pt x 52.55829pt.
-<./img/eq-1.8.png, id=119, 250.536pt x 42.75975pt>
-File: ./img/eq-1.8.png Graphic file (type png)
-<use ./img/eq-1.8.png>
-Package pdftex.def Info: ./img/eq-1.8.png  used on input line 167.
-(pdftex.def)             Requested size: 216.81pt x 37.00362pt.
-<./img/eq-1.9.png, id=120, 218.0145pt x 40.35075pt>
-File: ./img/eq-1.9.png Graphic file (type png)
-<use ./img/eq-1.9.png>
-Package pdftex.def Info: ./img/eq-1.9.png  used on input line 176.
-(pdftex.def)             Requested size: 195.12767pt x 36.11707pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./img/eq-1.10.png, id=121, 155.3805pt x 35.53275pt>
-File: ./img/eq-1.10.png Graphic file (type png)
-<use ./img/eq-1.10.png>
-Package pdftex.def Info: ./img/eq-1.10.png  used on input line 185.
-(pdftex.def)             Requested size: 151.76964pt x 34.70796pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./img/1.11.png, id=122, 104.18925pt x 51.19125pt>
-File: ./img/1.11.png Graphic file (type png)
-<use ./img/1.11.png>
-Package pdftex.def Info: ./img/1.11.png  used on input line 196.
-(pdftex.def)             Requested size: 108.405pt x 53.26262pt.
-[10 <./img/ex-energia.png> <./img/eq-1.6-1.png> <./img/eq-1.7.png> <./img/eq-1.8.png>]
-<./img/estabilidade.png, id=138, 340.27126pt x 99.9735pt>
-File: ./img/estabilidade.png Graphic file (type png)
-<use ./img/estabilidade.png>
-Package pdftex.def Info: ./img/estabilidade.png  used on input line 204.
-(pdftex.def)             Requested size: 281.85036pt x 82.81322pt.
-<./img/eq-1.11.png, id=139, 231.264pt x 40.953pt>
-File: ./img/eq-1.11.png Graphic file (type png)
-<use ./img/eq-1.11.png>
-Package pdftex.def Info: ./img/eq-1.11.png  used on input line 223.
-(pdftex.def)             Requested size: 216.81pt x 38.39519pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./img/estabilidade-2.png, id=140, 327.02174pt x 52.39575pt>
-File: ./img/estabilidade-2.png Graphic file (type png)
-<use ./img/estabilidade-2.png>
-Package pdftex.def Info: ./img/estabilidade-2.png  used on input line 237.
-(pdftex.def)             Requested size: 260.17465pt x 41.68799pt.
-
-LaTeX Warning: Reference `fig:sensores' on page 11 undefined on input line 241.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[11 <./img/eq-1.9.png> <./img/eq-1.10.png> <./img/1.11.png> <./img/estabilidade.png>]
-<./img/sensores.png, id=154, 238.491pt x 133.6995pt>
-File: ./img/sensores.png Graphic file (type png)
-<use ./img/sensores.png>
-Package pdftex.def Info: ./img/sensores.png  used on input line 246.
-(pdftex.def)             Requested size: 216.81pt x 121.54636pt.
-<./img/eq-2.1.png, id=155, 287.27325pt x 34.9305pt>
-File: ./img/eq-2.1.png Graphic file (type png)
-<use ./img/eq-2.1.png>
-Package pdftex.def Info: ./img/eq-2.1.png  used on input line 255.
-(pdftex.def)             Requested size: 260.17465pt x 31.63754pt.
-<./img/eq-2.2.png, id=156, 223.43475pt x 46.9755pt>
-File: ./img/eq-2.2.png Graphic file (type png)
-<use ./img/eq-2.2.png>
-Package pdftex.def Info: ./img/eq-2.2.png  used on input line 264.
-(pdftex.def)             Requested size: 216.81pt x 45.5848pt.
-<./img/eq-2.3.png, id=157, 184.89075pt x 34.9305pt>
-File: ./img/eq-2.3.png Graphic file (type png)
-<use ./img/eq-2.3.png>
-Package pdftex.def Info: ./img/eq-2.3.png  used on input line 265.
-(pdftex.def)             Requested size: 173.44534pt x 32.7707pt.
-<./img/eq-2.4.png, id=158, 107.2005pt x 34.9305pt>
-File: ./img/eq-2.4.png Graphic file (type png)
-<use ./img/eq-2.4.png>
-Package pdftex.def Info: ./img/eq-2.4.png  used on input line 280.
-(pdftex.def)             Requested size: 108.405pt x 35.32428pt.
-<./img/eq-2.5.png, id=159, 86.724pt x 31.91925pt>
-File: ./img/eq-2.5.png Graphic file (type png)
-<use ./img/eq-2.5.png>
-Package pdftex.def Info: ./img/eq-2.5.png  used on input line 281.
-(pdftex.def)             Requested size: 108.405pt x 39.9009pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[12 <./img/eq-1.11.png> <./img/estabilidade-2.png> <./img/sensores.png> <./img/eq-2.1.png> <./img/eq-2.2.png> <./img/eq-2.3.png>]
-<./img/estabilidade-3.png, id=175, 317.988pt x 51.7935pt>
-File: ./img/estabilidade-3.png Graphic file (type png)
-<use ./img/estabilidade-3.png>
-Package pdftex.def Info: ./img/estabilidade-3.png  used on input line 304.
-(pdftex.def)             Requested size: 303.53267pt x 49.4414pt.
-<./img/lambda-obs.png, id=176, 90.93974pt x 31.317pt>
-File: ./img/lambda-obs.png Graphic file (type png)
-<use ./img/lambda-obs.png>
-Package pdftex.def Info: ./img/lambda-obs.png  used on input line 319.
-(pdftex.def)             Requested size: 108.405pt x 37.33218pt.
-<./img/beta-1.png, id=177, 77.69025pt x 43.362pt>
-File: ./img/beta-1.png Graphic file (type png)
-<use ./img/beta-1.png>
-Package pdftex.def Info: ./img/beta-1.png  used on input line 327.
-(pdftex.def)             Requested size: 108.405pt x 60.50653pt.
-<./img/di.png, id=178, 136.1085pt x 25.2945pt>
-File: ./img/di.png Graphic file (type png)
-<use ./img/di.png>
-Package pdftex.def Info: ./img/di.png  used on input line 335.
-(pdftex.def)             Requested size: 173.44534pt x 32.23633pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./img/beta-1-2.png, id=179, 158.994pt x 42.75975pt>
-File: ./img/beta-1-2.png Graphic file (type png)
-<use ./img/beta-1-2.png>
-Package pdftex.def Info: ./img/beta-1-2.png  used on input line 343.
-(pdftex.def)             Requested size: 173.44534pt x 46.64894pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[13 <./img/eq-2.4.png> <./img/eq-2.5.png> <./img/estabilidade-3.png> <./img/lambda-obs.png> <./img/beta-1.png>]) (tex/Chap/3-Inverse_kin/INV_KIN.tex [14 <./img/di.png> <./img/beta-1-2.png>]
+])) (tex/Chap/3-Inverse_kin/INV_KIN.tex
 Capítulo 3.
+(tex/Chap/3-Inverse_Kin/plano_horizontal.tex (graph/vista_cima.tex)
 
-LaTeX Warning: Reference `fig:3d' on page 15 undefined on input line 18.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-(graph/vista_3d.tex)
-
-LaTeX Warning: Reference `sec:plano_lateral' on page 15 undefined on input line 28.
-
-
-LaTeX Warning: Reference `sec:plano_horizontal' on page 15 undefined on input line 28.
-
-[15
-
-] (tex/Chap/2-Direct_Kin/plano_lateral.tex
-
-LaTeX Warning: Reference `fig:lateral' on page 16 undefined on input line 4.
-
-(graph/vista_lateral.tex)
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[16] [17]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex
-
-LaTeX Warning: Reference `fig:topo' on page 18 undefined on input line 4.
+[10
 
 
-LaTeX Warning: Reference `sec:plano_lateral' on page 18 undefined on input line 5.
+] [11]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [12
 
-(graph/vista_cima.tex)
-
-LaTeX Warning: Reference `fig:topo' on page 18 undefined on input line 17.
-
-[18
-
-]
-
-LaTeX Warning: Reference `eq:xyz' on page 19 undefined on input line 37.
-
-
-LaTeX Warning: Reference `fig:topo' on page 19 undefined on input line 46.
-
-[19])
-
-LaTeX Warning: Reference `fig:obs-e-target' on page 20 undefined on input line 63.
-
-File: ./img/eq-1.3.png Graphic file (type png)
-<use ./img/eq-1.3.png>
-Package pdftex.def Info: ./img/eq-1.3.png  used on input line 91.
-(pdftex.def)             Requested size: 86.72267pt x 33.72731pt.
-File: ./img/obs-e-target.png Graphic file (type png)
-<use ./img/obs-e-target.png>
-Package pdftex.def Info: ./img/obs-e-target.png  used on input line 98.
-(pdftex.def)             Requested size: 303.53267pt x 152.337pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[20
-
-]
-
-LaTeX Warning: Reference `fig:ex-energia' on page 21 undefined on input line 108.
-
-File: ./img/eq-1.4.png Graphic file (type png)
-<use ./img/eq-1.4.png>
-Package pdftex.def Info: ./img/eq-1.4.png  used on input line 113.
-(pdftex.def)             Requested size: 65.04034pt x 25.92183pt.
-File: ./img/eq-1.5.png Graphic file (type png)
-<use ./img/eq-1.5.png>
-Package pdftex.def Info: ./img/eq-1.5.png  used on input line 122.
-(pdftex.def)             Requested size: 65.04034pt x 31.52058pt.
-File: ./img/ex-energia.png Graphic file (type png)
-<use ./img/ex-energia.png>
-Package pdftex.def Info: ./img/ex-energia.png  used on input line 129.
-(pdftex.def)             Requested size: 173.44534pt x 129.68338pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/eq-1.6-1.png Graphic file (type png)
-<use ./img/eq-1.6-1.png>
-Package pdftex.def Info: ./img/eq-1.6-1.png  used on input line 138.
-(pdftex.def)             Requested size: 86.72267pt x 28.52766pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/eq-1.6-1.png Graphic file (type png)
-<use ./img/eq-1.6-1.png>
-Package pdftex.def Info: ./img/eq-1.6-1.png  used on input line 147.
-(pdftex.def)             Requested size: 86.72267pt x 28.52766pt.
-[21]
-File: ./img/eq-1.7.png Graphic file (type png)
-<use ./img/eq-1.7.png>
-Package pdftex.def Info: ./img/eq-1.7.png  used on input line 156.
-(pdftex.def)             Requested size: 195.12767pt x 52.55829pt.
-File: ./img/eq-1.8.png Graphic file (type png)
-<use ./img/eq-1.8.png>
-Package pdftex.def Info: ./img/eq-1.8.png  used on input line 167.
-(pdftex.def)             Requested size: 216.81pt x 37.00362pt.
-File: ./img/eq-1.9.png Graphic file (type png)
-<use ./img/eq-1.9.png>
-Package pdftex.def Info: ./img/eq-1.9.png  used on input line 176.
-(pdftex.def)             Requested size: 195.12767pt x 36.11707pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/eq-1.10.png Graphic file (type png)
-<use ./img/eq-1.10.png>
-Package pdftex.def Info: ./img/eq-1.10.png  used on input line 185.
-(pdftex.def)             Requested size: 151.76964pt x 34.70796pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/1.11.png Graphic file (type png)
-<use ./img/1.11.png>
-Package pdftex.def Info: ./img/1.11.png  used on input line 196.
-(pdftex.def)             Requested size: 108.405pt x 53.26262pt.
-[22]
-File: ./img/estabilidade.png Graphic file (type png)
-<use ./img/estabilidade.png>
-Package pdftex.def Info: ./img/estabilidade.png  used on input line 204.
-(pdftex.def)             Requested size: 281.85036pt x 82.81322pt.
-File: ./img/eq-1.11.png Graphic file (type png)
-<use ./img/eq-1.11.png>
-Package pdftex.def Info: ./img/eq-1.11.png  used on input line 223.
-(pdftex.def)             Requested size: 216.81pt x 38.39519pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/estabilidade-2.png Graphic file (type png)
-<use ./img/estabilidade-2.png>
-Package pdftex.def Info: ./img/estabilidade-2.png  used on input line 237.
-(pdftex.def)             Requested size: 260.17465pt x 41.68799pt.
-
-LaTeX Warning: Reference `fig:sensores' on page 23 undefined on input line 241.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[23]
-File: ./img/sensores.png Graphic file (type png)
-<use ./img/sensores.png>
-Package pdftex.def Info: ./img/sensores.png  used on input line 246.
-(pdftex.def)             Requested size: 216.81pt x 121.54636pt.
-File: ./img/eq-2.1.png Graphic file (type png)
-<use ./img/eq-2.1.png>
-Package pdftex.def Info: ./img/eq-2.1.png  used on input line 255.
-(pdftex.def)             Requested size: 260.17465pt x 31.63754pt.
-File: ./img/eq-2.2.png Graphic file (type png)
-<use ./img/eq-2.2.png>
-Package pdftex.def Info: ./img/eq-2.2.png  used on input line 264.
-(pdftex.def)             Requested size: 216.81pt x 45.5848pt.
-File: ./img/eq-2.3.png Graphic file (type png)
-<use ./img/eq-2.3.png>
-Package pdftex.def Info: ./img/eq-2.3.png  used on input line 265.
-(pdftex.def)             Requested size: 173.44534pt x 32.7707pt.
-File: ./img/eq-2.4.png Graphic file (type png)
-<use ./img/eq-2.4.png>
-Package pdftex.def Info: ./img/eq-2.4.png  used on input line 280.
-(pdftex.def)             Requested size: 108.405pt x 35.32428pt.
-File: ./img/eq-2.5.png Graphic file (type png)
-<use ./img/eq-2.5.png>
-Package pdftex.def Info: ./img/eq-2.5.png  used on input line 281.
-(pdftex.def)             Requested size: 108.405pt x 39.9009pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[24]
-File: ./img/estabilidade-3.png Graphic file (type png)
-<use ./img/estabilidade-3.png>
-Package pdftex.def Info: ./img/estabilidade-3.png  used on input line 304.
-(pdftex.def)             Requested size: 303.53267pt x 49.4414pt.
-File: ./img/lambda-obs.png Graphic file (type png)
-<use ./img/lambda-obs.png>
-Package pdftex.def Info: ./img/lambda-obs.png  used on input line 319.
-(pdftex.def)             Requested size: 108.405pt x 37.33218pt.
-File: ./img/beta-1.png Graphic file (type png)
-<use ./img/beta-1.png>
-Package pdftex.def Info: ./img/beta-1.png  used on input line 327.
-(pdftex.def)             Requested size: 108.405pt x 60.50653pt.
-File: ./img/di.png Graphic file (type png)
-<use ./img/di.png>
-Package pdftex.def Info: ./img/di.png  used on input line 335.
-(pdftex.def)             Requested size: 173.44534pt x 32.23633pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: ./img/beta-1-2.png Graphic file (type png)
-<use ./img/beta-1-2.png>
-Package pdftex.def Info: ./img/beta-1-2.png  used on input line 343.
-(pdftex.def)             Requested size: 173.44534pt x 46.64894pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[25]) (tex/Chap/4-Implementação/IMP.tex [26]
+])) (tex/Chap/4-Implementação/IMP.tex
 Capítulo 4.
 (tex/Chap/4-Implementação/direct.tex
-<./img/trajetoria.png, id=297, 544.434pt x 265.59225pt>
+<./img/trajetoria.png, id=299, 544.434pt x 265.59225pt>
 File: ./img/trajetoria.png Graphic file (type png)
 <use ./img/trajetoria.png>
 Package pdftex.def Info: ./img/trajetoria.png  used on input line 9.
 (pdftex.def)             Requested size: 390.25536pt x 190.38736pt.
- [27
+ [13
+
 
  <./img/trajetoria.png>]
-<./img/trajetoria-2.png, id=306, 540.8205pt x 293.29575pt>
+<./img/trajetoria-2.png, id=305, 540.8205pt x 293.29575pt>
 File: ./img/trajetoria-2.png Graphic file (type png)
 <use ./img/trajetoria-2.png>
 Package pdftex.def Info: ./img/trajetoria-2.png  used on input line 22.
 (pdftex.def)             Requested size: 390.25536pt x 211.64267pt.
-) (tex/Chap/4-Implementação/inverse.tex [28 <./img/trajetoria-2.png>]
-<./img/conc.png, id=315, 467.346pt x 36.73724pt>
+) (tex/Chap/4-Implementação/inverse.tex [14 <./img/trajetoria-2.png>]
+<./img/conc.png, id=311, 467.346pt x 36.73724pt>
 File: ./img/conc.png Graphic file (type png)
 <use ./img/conc.png>
 Package pdftex.def Info: ./img/conc.png  used on input line 16.
 (pdftex.def)             Requested size: 303.53267pt x 23.85985pt.
- [29 <./img/conc.png>]) (tex/Chap/4-Implementação/move.tex
+ [15 <./img/conc.png>]) (tex/Chap/4-Implementação/move.tex
 File: ./img/trajetoria.png Graphic file (type png)
 <use ./img/trajetoria.png>
 Package pdftex.def Info: ./img/trajetoria.png  used on input line 9.
@@ -1372,33 +1012,76 @@ Package pdftex.def Info: ./img/trajetoria.png  used on input line 9.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[30]
+[16]
 File: ./img/trajetoria-2.png Graphic file (type png)
 <use ./img/trajetoria-2.png>
 Package pdftex.def Info: ./img/trajetoria-2.png  used on input line 22.
 (pdftex.def)             Requested size: 390.25536pt x 211.64267pt.
-)) [31]
+)) [17] (tex/Chap/5-Testes/TEST.tex [18]
+Capítulo 5.
+(tex/Chap/5-Testes/resultados.tex
+File: ./img/conc.png Graphic file (type png)
+<use ./img/conc.png>
+Package pdftex.def Info: ./img/conc.png  used on input line 16.
+(pdftex.def)             Requested size: 303.53267pt x 23.85985pt.
+ [19
 
-! LaTeX Error: File `tex/Chap/5-Resultados/TEST.tex' not found.
+]) (tex/Chap/5-Testes/discussao.tex [20]
+File: ./img/conc.png Graphic file (type png)
+<use ./img/conc.png>
+Package pdftex.def Info: ./img/conc.png  used on input line 16.
+(pdftex.def)             Requested size: 303.53267pt x 23.85985pt.
+ [21])) (tex/Chap/6-Conclusao/CONC.tex [22]
+Capítulo 6.
 
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: tex)
+Overfull \hbox (18.63208pt too wide) in paragraph at lines 4--5
+\T1/cmr/m/n/12 Atrav�s da re-al-iza-��o deste pro-jeto no �m-bito da Unidade Cur-ric-u-lar Sis-temas Aut�nomos
+ []
 
-Enter file name: 
-c:/Users/Geral/Documents/1-Mestrado/SAI/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex:67: Emergency stop.
-<read *> 
-         
-l.67 \input{tex/Chap/5-Resultados/TEST}
-                                       ^^M
-*** (cannot \read from terminal in nonstop modes)
+) (tex/Chap/7-Bibliografia/BIB.tex [23
 
- 
+]
+Underfull \hbox (badness 10000) in paragraph at lines 7--8
+[]\T1/cmr/m/n/12 Elephant Robotics, \T1/cmr/m/it/12 my-Cobot 280: doc-u-men-ta��o\T1/cmr/m/n/12 , [][]$\T1/cmtt/m/n/12 https : / / docs .
+ []
+
+
+Underfull \hbox (badness 2237) in paragraph at lines 13--14
+[]\T1/cmr/m/n/12 The Math-Works, \T1/cmr/m/it/12 MAT-LAB Doc-u-men-ta-tion\T1/cmr/m/n/12 , [][]$\T1/cmtt/m/n/12 https : / / www . mathworks . com /
+ []
+
+)
+
+Package glossaries Warning: No \printglossary or \printglossaries found. 
+(Remove \makeglossaries if you don't want any glossaries.) 
+This document will not have a glossary.
+
+[24
+
+] (main.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+ ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 92F144E922CD3D9348C9F790CFE4914A;4106.
+ ) 
 Here is how much of TeX's memory you used:
- 33447 strings out of 467871
- 654089 string characters out of 5418376
- 1070014 words of memory out of 5000000
- 61619 multiletter control sequences out of 15000+600000
- 646321 words of font info for 88 fonts, out of 8000000 for 9000
+ 33391 strings out of 467871
+ 653561 string characters out of 5418376
+ 1077072 words of memory out of 5000000
+ 61568 multiletter control sequences out of 15000+600000
+ 649141 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,10n,97p,2576b,840s stack positions out of 10000i,1000n,20000p,200000b,200000s
-c:/Users/Geral/Documents/1-Mestrado/SAI/Elephant_MyCobot280/3-Documentação/LaTeX/main.tex:67:  ==> Fatal error occurred, no output PDF file produced!
+ 90i,10n,97p,2576b,895s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1728.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on main.pdf (27 pages, 514019 bytes).
+PDF statistics:
+ 862 PDF objects out of 1000 (max. 8388607)
+ 94 named destinations out of 1000 (max. 500000)
+ 257 words of extra memory for PDF output out of 10000 (max. 10000000)
+

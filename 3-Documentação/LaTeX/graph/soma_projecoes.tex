@@ -1,0 +1,80 @@
+\begin{tikzpicture}[scale=0.3, >=stealth,
+    elo/.style={line width=2.2pt, line cap=round},
+    junta/.style={circle, draw, fill=white, line width=1pt, inner sep=2pt},
+    guia/.style={gray!60, thin, densely dotted},
+    seg/.style={line width=2.4pt},
+    every node/.style={font=\footnotesize}]
+  \colorlet{cL1}{gray!70!black}
+  \colorlet{cL2}{blue!70!black}
+  \colorlet{cL3}{orange!85!black}
+  \colorlet{cL4}{green!50!black}
+  \colorlet{cD}{violet!80!black}
+
+  % Coordenadas
+  \coordinate (B)  at (0,0);
+  \coordinate (J2) at (0,13.2);
+  \coordinate (J3) at (4.7,23.2);
+  \coordinate (J4) at (14.1,21.5);
+  \coordinate (J5) at (21.0,24.0);
+  \coordinate (G)  at (26.2,9.8);
+
+  % Eixos
+  \draw[->, thin] (-2,0) -- (36,0) node[below left] {$d$};
+  \draw[->, thin] (B) -- (0,28) node[left] {$h$};
+  \fill[gray!25] (-2.5,-0.8) rectangle (2.5,0);
+
+  % Guias
+  \foreach \P in {J3,J4,J5,G} \draw[guia] (\P) -- (\P |- 0,-2.2);
+  \draw[guia] (J2) -- (29,13.2);
+  \draw[guia] (J3) -- (30,23.2);
+  \draw[guia] (J4) -- (31,21.5);
+  \draw[guia] (J5) -- (32,24.0);
+  \draw[guia] (G)  -- (33,9.8);
+
+  % Braços
+  \draw[elo, cL1] (B)  -- (J2);
+  \draw[elo, cL2] (J2) -- node[left]  {$L_2$} (J3);
+  \draw[elo, cL3] (J3) -- node[pos=0.55, above] {$L_3$} (J4);
+  \draw[elo, cL4] (J4) -- node[above left] {$L_4$} (J5);
+  \draw[elo, cD]  (J5) -- node[right] {$D$} (G);
+  \foreach \P in {J2,J3,J4,J5} \node[junta] at (\P) {};
+  \fill (G) circle (6pt);
+  \node[left=4pt]  at (J2) {J2};
+  \node[above=3pt] at (J3) {J3};
+  \node[below=4pt] at (J4) {J4};
+  \node[above=3pt] at (J5) {J5};
+  \node[below left=2pt] at (G) {garra};
+
+  % Ângulos
+  \draw[guia] (J2) -- ++(3.5,0);  \draw[->, thin, cL2] ($(J2)+(2.5,0)$) arc[start angle=0, end angle=65, radius=2.5] node[pos=0.4, right] {$\theta_A$};
+  \draw[guia] (J3) -- ++(3.5,0);  \draw[->, thin, cL3] ($(J3)+(2.8,0)$) arc[start angle=0, end angle=-10, radius=2.8] node[pos=1, below right=-1pt] {$\theta_B$};
+  \draw[guia] (J4) -- ++(3.5,0);  \draw[->, thin, cL4] ($(J4)+(2.8,0)$) arc[start angle=0, end angle=20, radius=2.8] node[pos=0.6, right] {$\theta_C$};
+  \draw[guia] (J5) -- ++(3.5,0);  \draw[->, thin, cD]  ($(J5)+(2.5,0)$) arc[start angle=0, end angle=-70, radius=2.5] node[pos=0.6, right] {$\alpha$};
+
+  % Soma de d
+  \draw[seg, cL2] (0,-2.2)    -- (4.7,-2.2);
+  \draw[seg, cL3] (4.7,-2.2)  -- (14.1,-2.2);
+  \draw[seg, cL4] (14.1,-2.2) -- (21.0,-2.2);
+  \draw[seg, cD]  (21.0,-2.2) -- (26.2,-2.2);
+  \node[cL2, below=3pt] at (2.35,-2.2)  {$L_2\cos\theta_A$};
+  \node[cL3, above=3pt] at (9.4,-2.2)   {$L_3\cos\theta_B$};
+  \node[cL4, below=3pt] at (17.55,-2.2) {$L_4\cos\theta_C$};
+  \node[cD,  above=3pt] at (23.6,-2.2)  {$D\cos\alpha$};
+  \draw[|<->|, thin] (0,-5.2) -- node[fill=white, inner sep=1pt] {$d$} (26.2,-5.2);
+
+  % Soma de h
+  \draw[seg, cL1, ->] (29,0)    -- (29,13.2);
+  \draw[seg, cL2, ->] (30,13.2) -- (30,23.2);
+  \draw[seg, cL3, ->] (31,23.2) -- (31,21.5);
+  \draw[seg, cL4, ->] (32,21.5) -- (32,24.0);
+  \draw[seg, cD,  ->] (33,24.0) -- (33,9.8);
+  \draw[guia] (29,13.2) -- (30,13.2) (30,23.2) -- (31,23.2) (31,21.5) -- (32,21.5) (32,24.0) -- (33,24.0);
+  \node[cL1, left=1pt]  at (29,6.6)   {$L_1$};
+  \node[cL2, right=1pt] at (30,17.5)  {$L_2\sin\theta_A$};
+  \node[cL3, right=1pt] at (33.2,22.4) {$L_3\sin\theta_B < 0$};
+  \node[cL4, right=1pt] at (32,25.6)  {$L_4\sin\theta_C$};
+  \node[cD,  right=1pt] at (33,15.0)  {$D\sin\alpha < 0$};
+  \draw[|<->|, thin] (36,0) -- node[fill=white, inner sep=1pt] {$h$} (36,9.8);
+  \draw[guia] (33,9.8) -- (36,9.8);
+  
+\end{tikzpicture}

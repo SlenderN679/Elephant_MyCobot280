@@ -1,7 +1,7 @@
-\section{\textit{Plano lateral}}
+\section{Plano lateral}
 \label{sec:plano_lateral}
 
-No plano do braço, como é possível observar na Figura \ref{fig:lateral}, as coordenadas da garra são expressas nos eixos $d$ e $h$, e os ângulos são medidos a partir do eixo horizontal.   
+No plano do braço, como é possível observar na Figura~\ref{fig:lateral}, a posição da garra exprime-se em dois eixos: $d$, a distância em frente, e $h$, a altura acima da base. Neste plano, J2, J3 e J4 têm eixos de rotação paralelos entre si, perpendiculares ao plano, e por isso o braço comporta-se como o braço planar estudado na aula.
 
 \begin{figure}[h]
   \centering
@@ -10,20 +10,64 @@ No plano do braço, como é possível observar na Figura \ref{fig:lateral}, as c
   \label{fig:lateral}
 \end{figure}
 
-Obtendo as coordenadas da garra $(d, h)$ e os comprimentos dos braços $L_1$, $L_2$, $L_3$, $L_4$ e $D = L_6 + L_7$, é possível determinar os ângulos $\theta_A$, $\theta_B$, $\theta_C$ e $\alpha$.
+\subsection{Ângulos absolutos}
 
-Onde:
+Os ângulos das juntas $q_i$ são \underline{relativos}: cada um mede a rotação de um elo em relação ao elo anterior, com o sentido anti-horário positivo. Para somar as projeções de cada elo é mais simples usar ângulos \underline{absolutos}, medidos a partir da horizontal. Como no exemplo do braço de 3 DOF da aula, o ângulo absoluto de cada elo é a soma dos ângulos das juntas anteriores.
 
-\begin{figure*}[!h]
-\centering
-    \begin{equation}
-        \theta\textsubscript{A} = q\textsubscript{2} + \frac{\pi}{2}; \quad
-        \theta\textsubscript{B} = \theta\textsubscript{A} + q\textsubscript{3}; \quad
-        \theta\textsubscript{C} = \theta\textsubscript{B} + q\textsubscript{4}; \quad
-        \alpha = \theta\textsubscript{C} + \frac{\pi}{2};
-        \label{eq:2.1}
-    \end{equation}
-    \caption*{Equação (2.1)}
-\end{figure*}
+Na pose zero (todas as juntas a $0^\circ$) o braço está na vertical, por isso o primeiro elo faz $90^\circ$ com a horizontal quando $q_2 = 0$. A garra é perpendicular ao elo $L_4$. Daqui resultam:
+\begin{equation}
+    \theta_A = q_2 + \frac{\pi}{2}, \qquad
+    \theta_B = \theta_A + q_3, \qquad
+    \theta_C = \theta_B + q_4, \qquad
+    \alpha = \theta_C - \frac{\pi}{2}
+    \label{eq:angulos}
+\end{equation}
+onde $\theta_A$, $\theta_B$ e $\theta_C$ são os ângulos de $L_2$, $L_3$ e $L_4$ com a horizontal, e $\alpha$ é o ângulo da garra. Com $\alpha = -90^\circ$ a garra aponta na vertical para baixo.
+
+\subsection{Posição de cada junta}
+
+Partindo da base e somando, elo a elo, a projeção horizontal ($L\cos\theta$) e vertical ($L\sin\theta$) de cada elo, obtém-se a posição de cada junta no plano do braço:
+\begin{align}
+    \text{J2 (ombro):}   \quad & (d_2,\, h_2) = (0,\; L_1) \label{eq:j2}\\
+    \text{J3 (cotovelo):} \quad & (d_3,\, h_3) = (d_2 + L_2\cos\theta_A,\; h_2 + L_2\sin\theta_A) \label{eq:j3}\\
+    \text{J4 (pulso):}   \quad & (d_4,\, h_4) = (d_3 + L_3\cos\theta_B,\; h_3 + L_3\sin\theta_B) \label{eq:j4}\\
+    \text{J5:}           \quad & (d_5,\, h_5) = (d_4 + L_4\cos\theta_C,\; h_4 + L_4\sin\theta_C) \label{eq:j5}
+\end{align}
+
+As Equações~\eqref{eq:j3} e~\eqref{eq:j4} são exatamente o braço planar de 2 DOF da aula, com $L_A = L_2$, $L_B = L_3$, $\theta_1 = \theta_A$ e $\theta_2 = q_3$:
+\begin{equation}
+    x_2 = L_A\cos\theta_1 + L_B\cos(\theta_1 + \theta_2), \qquad
+    y_2 = L_A\sin\theta_1 + L_B\sin(\theta_1 + \theta_2)
+    \label{eq:2dof}
+\end{equation}
+com a origem deslocada para o ombro, à altura $L_1$.
+
+\subsection{Posição do centro de preensão}
+
+O centro de preensão está a uma distância $D = L_6 + L_7$ de J5, ao longo da garra, ou seja, na direção $\alpha$. Somando esta última parcela às anteriores, a posição da garra no plano do braço é:
+\begin{align}
+    d &= L_2\cos\theta_A + L_3\cos\theta_B + L_4\cos\theta_C + D\cos\alpha \label{eq:d}\\
+    h &= L_1 + L_2\sin\theta_A + L_3\sin\theta_B + L_4\sin\theta_C + D\sin\alpha \label{eq:h}
+\end{align}
+
+Estas equações têm a mesma forma que o braço de 3 DOF da aula ($x_e = L_A\cos\theta_1 + L_B\cos(\theta_1+\theta_2) + L_C\cos(\theta_1+\theta_2+\theta_3)$), com duas diferenças próprias do myCobot: a altura $L_1$ do ombro e o último elo em L, formado por $L_4$ e pela garra $D$, que fazem $90^\circ$ entre si.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.75\textwidth}{!}{\input{./graph/soma_projecoes.tex}}
+  \caption{Somas das projeções dos elos do braço.}
+  \label{fig:soma_projecoes}
+\end{figure}
+
+\subsection{Juntas 5 e 6}
+
+A junta 5 roda a garra em torno do eixo de $L_4$, tirando-a do plano do braço. Para $q_5 \neq 0$, só a componente $D\cos q_5$ fica no plano e a componente $D\sin q_5$ passa a ser um desvio lateral; as Equações~\eqref{eq:d} e~\eqref{eq:h} ficam
+\begin{equation}
+    d = \dots + D\cos q_5\cos\alpha, \qquad
+    h = \dots + D\cos q_5\sin\alpha, \qquad
+    l = L_5 - D\sin q_5
+    \label{eq:q5}
+\end{equation}
+onde $l$ é o desvio lateral total do plano do braço. Como no projeto $q_5 = 0$, tem-se $l = L_5$. A junta 6 roda a garra em torno do seu próprio eixo e não entra nas equações da posição.
 
 \clearpage
