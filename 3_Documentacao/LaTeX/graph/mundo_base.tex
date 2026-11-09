@@ -1,0 +1,21 @@
+% Referencial do mundo e referencial da base (vista de cima); unidades em cm
+\begin{tikzpicture}[scale=0.38, >=stealth,
+    elo/.style={line width=2pt, line cap=round},
+    junta/.style={circle, draw, fill=white, line width=0.9pt, inner sep=1.8pt},
+    cota/.style={gray!70!black, thin},
+    ang/.style={->, thin},
+    every node/.style={font=\footnotesize}]
+
+  \draw[->, thick] (0,0) -- (21,0) node[below] {$X$ (mundo)};
+  \draw[->, thick] (0,0) -- (0,9) node[left] {$Y$ (mundo)};
+  \node[below left] at (0,0) {$O$};
+  \coordinate (B) at (-5.0,1.6); \coordinate (P) at (15.0,-5.0);
+  \fill[gray!25] (B) circle (2.2); \draw (B) circle (2.2);
+  \draw[->, thick, blue!70!black] (B) -- ++(0,-10) node[left, align=right] {$x$ (base)};
+  \draw[->, thick, blue!70!black] (B) -- ++(9,0) node[below=2pt, pos=0.75] {$y$ (base)};
+  \node[above=22pt, align=center, font=\scriptsize] at (B) {base em $(X_b, Y_b)$};
+  \draw[dashed, blue!70!black] (B) -- (15.0,1.6) node[pos=0.72, above, font=\scriptsize] {$y = X - X_b = 20{,}0$ cm};
+  \draw[dashed, blue!70!black] (15.0,1.6) -- (P) node[pos=0.5, right, font=\scriptsize] {$x = -(Y - Y_b) = 6{,}7$ cm};
+  \fill[red!75!black] (P) circle (6pt) node[below=3pt, black] {$P$: $(X, Y) = (15;\ -5)$ cm};
+  \draw[->, thin] ($(B)+(3.5,0)$) arc[start angle=0, end angle=-90, radius=3.5] node[pos=0.45, below right=-2pt, font=\scriptsize] {$\theta_b = -90^\circ$};
+\end{tikzpicture}

@@ -34,6 +34,13 @@ A segunda é uma \underline{configuração de trabalho}, com a garra a apontar p
 \end{equation}
 Neste caso, $\theta_A = 77{,}26^\circ$, $\theta_B = -16{,}95^\circ$, $\theta_C = 0^\circ$ e $\alpha = -90^\circ$, ou seja, a garra aponta na vertical para baixo. O plano lateral dá $d = 0{,}1893$~m e $h = 0{,}0600$~m, e o plano horizontal $(x, y, z) = (0{,}0000;\ 0{,}2000;\ 0{,}0600)$~m: a garra fica 20~cm à frente da base, a 6~cm de altura.
 
+\begin{figure}[H]
+  \centering
+  \resizebox{0.75\textwidth}{!}{\input{./graph/poses_fk.tex}}
+  \caption{Pose zero e configuração de trabalho usadas para verificar a cinemática direta.}
+  \label{fig:poses_fk}
+\end{figure}
+
 Por fim, a posição dada pela Equação~\eqref{eq:dk_final}, com os ângulos lidos das juntas no simulador, foi comparada com a posição real do centro de preensão no CoppeliaSim: a diferença ficou entre 1,2 e 4,0~mm. Verificou-se também que, aplicando a cinemática inversa a um ponto e a cinemática direta ao resultado, se volta ao mesmo ponto.
 
 \clearpage

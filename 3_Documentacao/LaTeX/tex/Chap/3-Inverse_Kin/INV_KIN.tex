@@ -1,21 +1,38 @@
 \chapter{Formulação da cinemática inversa}
 \label{ch:inv_kin}
 
-A cinemática inversa permite obter os ângulos das juntas $(J1, \dots, J6)$ a partir da posição da garra $(x, y, z)$. 
-Ao contrário da cinemática direta, a solução não é sempre única, pois o mesmo ponto pode ser obtido com o cotovelo para cima ou para baixo, e pode não existir, se o destino estiver fora do alcance do braço.
+A cinemática inversa faz o caminho oposto ao da cinemática direta: dada a posição pretendida para o centro de preensão da garra $(x, y, z)$, no referencial da base, determina os ângulos das juntas $(q_1, \dots, q_6)$ que a produzem. É este o problema que o robô tem de resolver sempre que queremos que a garra vá a um ponto do espaço. Ao contrário da cinemática direta, pode não ter solução, quando o ponto está fora do alcance do braço, e pode ter várias, porque o mesmo ponto pode ser alcançado com o cotovelo para cima ou para baixo. No nosso caso, é resolvida de forma analítica, o que dá a solução diretamente, sem iterações.
 
-Seguindo a mesma abordagem da cinemática direta, o braço é decomposto em duas partes mais simples: um braço planar, que se move num plano vertical, e uma rotação desse plano em torno do eixo vertical.
+A posição impõe três equações, mas as juntas J1 a J4 são quatro incógnitas, pelo que sobra um grau de liberdade. Como na aula, resolve-se impondo o ângulo da garra, através da sua inclinação $\psi$, cujo valor preferido é $\psi = 90^\circ$: a garra na vertical a apontar para baixo, a melhor orientação para apanhar objetos.
+
+Seguindo a mesma abordagem da cinemática direta, o braço é decomposto em duas partes mais simples, resolvidas pela ordem inversa:
 
 \begin{itemize}
-    \item No \textbf{plano horizontal}, a junta 1 roda o braço em torno do eixo vertical, logo define a orientação do plano vertical no qual o braço se movimenta;
-    \item No \textbf{plano lateral}, as juntas 2, 3 e 4 comportam-se como um braço planar de 3 DOF, simplificando para 2 DOFs ao impor o ângulo da junta 4 para definir a orientação da garra. 
-    \item A \textbf{junta 5} é fixada a $0^\circ$, e a \textbf{junta 6} roda a garra para alinhar com o objeto a ser agarrado.
+    \item No \textbf{plano horizontal}, a junta 1 roda o braço em torno do eixo vertical até o plano do braço passar pelo alvo, o que dá $q_1$ e a distância $d$ em frente (Secção~\ref{sec:ik_horizontal});
+    \item No \textbf{plano lateral}, as juntas 2, 3 e 4 comportam-se como um braço planar de 3 DOF, que se reduz a 2 DOF ao impor o ângulo da garra (Secção~\ref{sec:ik_lateral});
+    \item A \textbf{junta 5} é fixada a $0^\circ$, para a garra se manter no plano do braço, e a \textbf{junta 6} roda a garra para a alinhar com o objeto a apanhar, sem alterar a posição do centro de preensão.
 \end{itemize}
 
+\section{Do referencial do mundo para o da base}
+\label{sec:mundo_base}
+
+O CoppeliaSim dá as posições dos objetos no referencial do mundo, mas a cinemática trabalha no referencial da base do robô, que está deslocado e rodado em torno de $z$. No nosso cenário a base está em $(X_b, Y_b, Z_b) = (-0{,}0497;\ 0{,}0165;\ 0{,}03)$~m, rodada $\theta_b = -90^\circ$.
+
+Não basta subtrair a posição da base, porque os eixos da base também estão rodados: é preciso desfazer essa rotação, rodando o resultado de $-\theta_b = +90^\circ$. Rodar um ponto $(a, b)$ de $90^\circ$ dá $(-b, a)$, pelo que:
+\begin{equation}
+    x = -(Y - Y_b), \qquad y = X - X_b, \qquad z = Z - Z_b
+    \label{eq:mundo_base}
+\end{equation}
+onde $(X, Y, Z)$ é a posição no mundo e $(x, y, z)$ a posição no referencial da base. Esta conversão está implementada em \texttt{aux.world\_to\_base}.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.6\textwidth}{!}{\input{./graph/mundo_base.tex}}
+  \caption{Referencial do mundo e referencial da base, vistos de cima.}
+  \label{fig:mundo_base}
+\end{figure}
+
 % Secções do capítulo
-\input{tex/Chap/3-Inverse_Kin/Cinemática inversa}
 \input{tex/Chap/3-Inverse_Kin/plano_horizontal}
 \input{tex/Chap/3-Inverse_Kin/plano_lateral}
-
-
-
+\input{tex/Chap/3-Inverse_Kin/resultados}

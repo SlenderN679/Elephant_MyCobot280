@@ -7,6 +7,24 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\definecolor{titulo}{RGB}{0,70,120}   % cor dos títulos (muda à vontade)
+
+% Secção (3.4): maior, a cor, com uma linha por baixo
+\titleformat{\section}
+  {\Large\bfseries\color{titulo}}{\thesection}{0.8em}{\itshape}[{\color{titulo}\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{3ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% Subsecção (3.4.1): mais pequena, a negrito, sem cor nem linha
+\titleformat{\subsection}
+  {\large\bfseries}{\thesubsection}{0.8em}{}
+\titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+
+% Subsubsecção (3.4.1.1): tamanho do texto, itálico, sem número
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\itshape}{}{0em}{}
+  
 \usetikzlibrary{calc,positioning}
 \hypersetup{
     colorlinks,
@@ -35,6 +53,8 @@
 \tableofcontents
 \newpage
 \listoffigures
+\newpage
+\listoftables
 \newpage
 %
 \phantomsection%

@@ -1,5 +1,5 @@
 \contentsline {chapter}{\numberline {1}Introdução}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Deducao}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.1}Dedução}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Enquadramentos e objetivos}{1}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Formulação da cinemática direta}{2}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Plano lateral}{3}{section.2.1}%
@@ -7,38 +7,32 @@
 \contentsline {subsection}{\numberline {2.1.2}Posição de cada junta}{4}{subsection.2.1.2}%
 \contentsline {subsection}{\numberline {2.1.3}Posição do centro de preensão}{5}{subsection.2.1.3}%
 \contentsline {subsection}{\numberline {2.1.4}Juntas 5 e 6}{5}{subsection.2.1.4}%
-\contentsline {section}{\numberline {2.2}\textit {Plano horizontal}}{7}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Desvio lateral}{7}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Rotação da base}{7}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Distância ao eixo da base}{8}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Resumo e verificação}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Resultados para o nosso caso}{9}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.2}\textit {Plano horizontal}}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Desvio lateral}{6}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Rotação da base}{6}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Distância ao eixo da base}{7}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Resumo e verificação}{8}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Resultados para o nosso caso}{8}{subsection.2.3.1}%
 \contentsline {chapter}{\numberline {3}Formulação da cinemática inversa}{10}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Cinemática Inversa}{10}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Formulação do problema}{10}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Resolução analítica}{11}{subsection.3.1.2}%
-\contentsline {paragraph}{Junta J1.}{11}{subsection.3.1.2}%
-\contentsline {paragraph}{Ponto do pulso.}{11}{subsection.3.1.2}%
-\contentsline {paragraph}{Juntas J2 e J3.}{11}{subsection.3.1.2}%
-\contentsline {paragraph}{Junta J4 e juntas J5 e J6.}{12}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Soluções, limites e escolha da inclinação}{12}{subsection.3.1.3}%
-\contentsline {paragraph}{Duas soluções para J3.}{12}{subsection.3.1.3}%
-\contentsline {paragraph}{Soluções rejeitadas.}{12}{subsection.3.1.3}%
-\contentsline {paragraph}{Escolha da inclinação.}{13}{subsection.3.1.3}%
-\contentsline {subsection}{\numberline {3.1.4}Do referencial do mundo para o da base}{13}{subsection.3.1.4}%
-\contentsline {subsection}{\numberline {3.1.5}Resultados para o nosso caso}{13}{subsection.3.1.5}%
-\contentsline {paragraph}{Exemplo 1: alvo com a garra na vertical.}{13}{subsection.3.1.5}%
-\contentsline {paragraph}{Exemplo 2: alvo longe, que obriga a inclinar a garra.}{14}{subsection.3.1.5}%
-\contentsline {section}{\numberline {3.2}\textit {Plano horizontal}}{15}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Desvio lateral}{15}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Rotação da base}{15}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Distância ao eixo da base}{16}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}\textit {Plano lateral}}{17}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Implementação em MATLAB}{18}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Resultados}{18}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Discussão}{19}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Resultados}{20}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Resultados e discussão}{22}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Discussão}{22}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Discussão}{23}{section.5.2}%
-\contentsline {chapter}{\numberline {6}Conclusão}{26}{chapter.6}%
+\contentsline {section}{\numberline {3.1}Do referencial do mundo para o da base}{10}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Plano horizontal: junta 1}{11}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Distância em frente}{11}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Ângulo da junta 1}{11}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Plano lateral: juntas 2, 3 e 4}{12}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Ângulo da garra imposto e ponto do pulso}{12}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Braço planar de 2 DOF: juntas 2 e 3}{12}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Junta 4 e passagem para os ângulos das juntas}{14}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Junta 6}{14}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Soluções rejeitadas}{15}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}Escolha da inclinação}{15}{subsection.3.3.6}%
+\contentsline {section}{\numberline {3.4}Resultados para o nosso caso}{17}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Exemplo 1: alvo com a garra na vertical}{17}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Exemplo 2: alvo longe, que obriga a inclinar a garra}{17}{subsection.3.4.2}%
+\contentsline {chapter}{\numberline {4}Implementação em MATLAB}{19}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Resultados}{19}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Discussão}{20}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Resultados}{21}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Resultados e discussão}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Discussão}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Discussão}{24}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Conclusão}{27}{chapter.6}%

@@ -1,29 +1,122 @@
-\section{\textit{Plano lateral}}
-\label{sec:plano_lateral}
+\section{Plano lateral: juntas 2, 3 e 4}
+\label{sec:ik_lateral}
 
-No plano do braço, como é possível observar na Figura \ref{fig:lateral}, as coordenadas da garra são expressas nos eixos $d$ e $h$, e os ângulos são medidos a partir do eixo horizontal.   
+Conhecida a distância $d$ (Equação~\ref{eq:ik_d}) e a altura $z$, falta encontrar $q_2$, $q_3$ e $q_4$ para que a garra chegue a $(d, z)$ no plano do braço (Figura~\ref{fig:2dof}).
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \resizebox{0.6\textwidth}{!}{\input{./graph/ik_2dof.tex}}
-  \caption{Vista lateral do braço no seu plano vertical.}
+  \caption{Cinemática inversa no plano do braço, com a origem no ombro (J2). Com o ângulo da garra $\alpha_3$ imposto, o último elo (a tracejado) fica conhecido e resta um braço planar de 2 DOF até ao pulso (J4).}
   \label{fig:2dof}
 \end{figure}
 
-Obtendo as coordenadas da garra $(d, h)$ e os comprimentos dos braços $L_1$, $L_2$, $L_3$, $L_4$ e $D = L_6 + L_7$, é possível determinar os ângulos $\theta_A$, $\theta_B$, $\theta_C$ e $\alpha$.
+\subsection{Ângulo da garra imposto e ponto do pulso}
 
-Onde:
+Como na aula para o braço de 3 DOF, impõe-se o ângulo da garra $\alpha_3$, medido a partir da horizontal, a partir da inclinação $\psi$:
+\begin{equation}
+    \alpha_3 = -\psi
+    \label{eq:ik_alpha3}
+\end{equation}
 
-\begin{figure*}[!h]
-\centering
-    \begin{equation}
-        \theta\textsubscript{A} = q\textsubscript{2} + \frac{\pi}{2}; \quad
-        \theta\textsubscript{B} = \theta\textsubscript{A} + q\textsubscript{3}; \quad
-        \theta\textsubscript{C} = \theta\textsubscript{B} + q\textsubscript{4}; \quad
-        \alpha = \theta\textsubscript{C} + \frac{\pi}{2};
-        \label{eq:2.1}
-    \end{equation}
-    \caption*{Equação (2.1)}
-\end{figure*}
+Com $\alpha_3$ fixo, o último elo fica conhecido e pode recuar-se do alvo até ao pulso (J4). Na aula, $x_{3d} = x_d - L_C\cos\alpha_3$. No myCobot o último elo tem a forma de um L: a garra $D = L_6 + L_7$, na direção $\alpha_3$, e o elo $L_4$, perpendicular à garra, na direção $\alpha_3 + 90^\circ$. Retirando-os ao alvo, e medindo a partir do ombro (J2), que está à altura $L_1$:
+\begin{align}
+    x_{3d} &= d - D\cos\alpha_3 - L_4\cos(\alpha_3 + 90^\circ) \label{eq:ik_x3d}\\
+    y_{3d} &= (z - L_1) - D\sin\alpha_3 - L_4\sin(\alpha_3 + 90^\circ) \label{eq:ik_y3d}
+\end{align}
+
+\subsection{Braço planar de 2 DOF: juntas 2 e 3}
+
+Entre o ombro e o pulso resta um braço planar de dois elos, com $L_A = L_2$ e $L_B = L_3$, resolvido com a abordagem geométrica da aula. A distância do ombro ao pulso e a sua direção são:
+\begin{equation}
+    r_3 = \sqrt{x_{3d}^2 + y_{3d}^2}, \qquad
+    \alpha_1 = \operatorname{atan2}(y_{3d}, x_{3d})
+    \label{eq:ik_r3}
+\end{equation}
+
+No triângulo ombro--cotovelo--pulso conhecem-se os três lados ($L_A$, $L_B$ e $r_3$). A lei dos cossenos, $e^2 = a^2 + b^2 - 2ab\cos\beta$, dá o ângulo no ombro ($\beta_1$) e no cotovelo ($\beta_2$):
+\begin{equation}
+    \beta_1 = \arccos\left(\frac{L_A^2 + r_3^2 - L_B^2}{2 L_A r_3}\right), \qquad
+    \beta_2 = \arccos\left(\frac{L_A^2 + L_B^2 - r_3^2}{2 L_A L_B}\right)
+    \label{eq:ik_beta}
+\end{equation}
+
+Só existe solução se os dois argumentos de $\arccos$ estiverem em $[-1, 1]$, o que equivale a pedir que a distância do pulso ao ombro esteja entre $|L_2 - L_3|$ e $L_2 + L_3$. No nosso robô, isso dá $0{,}0144~\mathrm{m} \leq r_3 \leq 0{,}2064~\mathrm{m}$. Existem então duas soluções, simétricas em relação à reta ombro--pulso:
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.55\textwidth}{!}{\input{./graph/alcance_pulso.tex}}
+  \caption{Zona onde o pulso pode estar: $|L_2 - L_3| \leq r_3 \leq L_2 + L_3$.}
+  \label{fig:alcance_pulso}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \caption{Soluções do braço planar de 2 DOF.}
+  \label{tab:ik_solucoes}
+  \begin{tabular}{lcc}
+    \hline
+    Solução & $\theta_1$ (ombro) & $\theta_2$ (cotovelo) \\
+    \hline
+    cotovelo para baixo & $\alpha_1 - \beta_1$ & $\pi - \beta_2$ \\
+    cotovelo para cima & $\alpha_1 + \beta_1$ & $-(\pi - \beta_2)$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.6\textwidth}{!}{\input{./graph/cotovelo_cima_baixo.tex}}
+  \caption{As duas soluções do braço planar de 2 DOF para o mesmo pulso (exemplo 1).}
+  \label{fig:cima_baixo}
+\end{figure}
+
+Usa-se a solução com o \underline{cotovelo para cima} ($q_3 \leq 0$), em que o cotovelo fica mais alto e o braço mais afastado da mesa e dos objetos.
+
+\subsection{Junta 4 e passagem para os ângulos das juntas}
+
+Como na aula, $\theta_3 = \alpha_3 - \theta_1 - \theta_2$. No myCobot o elo $L_4$ faz $\alpha_3 + 90^\circ$ com a horizontal, por isso:
+\begin{equation}
+    \theta_3 = (\alpha_3 + 90^\circ) - \theta_1 - \theta_2
+    \label{eq:ik_theta3}
+\end{equation}
+
+Na pose zero o braço está vertical, pelo que o primeiro elo faz $90^\circ$ com a horizontal quando $q_2 = 0$ (Equação~\ref{eq:angulos}):
+\begin{equation}
+    q_2 = \theta_1 - 90^\circ, \qquad q_3 = \theta_2, \qquad q_4 = \theta_3, \qquad q_5 = 0
+    \label{eq:ik_q234}
+\end{equation}
+
+\subsection{Junta 6}
+
+Quando se conhece a rotação $\gamma$ de um cubo em torno de $z$, medida pela câmara, roda-se a garra de modo a que os dedos fechem sobre duas faces opostas. Os dedos fecham segundo a direção definida por J1 e J6 e um cubo repete-se de $90^\circ$ em $90^\circ$, por isso escolhe-se a menor rotação de J6:
+\begin{equation}
+    q_6 = \operatorname{mod}\left(q_1 - \gamma + 45^\circ,\; 90^\circ\right) - 45^\circ
+    \label{eq:ik_q6}
+\end{equation}
+que fica entre $-45^\circ$ e $45^\circ$. Isto só se faz com a garra quase vertical ($\psi > 45^\circ$); caso contrário, $q_6 = 0$.
+
+\subsection{Soluções rejeitadas}
+
+Os ângulos são reduzidos ao intervalo $]-180^\circ, 180^\circ]$ e uma solução é rejeitada se:
+\begin{itemize}
+    \item alguma junta sair dos limites ($\pm 165^\circ$ em J1 a J5 e $\pm 175^\circ$ em J6, por omissão; em execução, os limites são lidos do robô);
+    \item o cotovelo estiver demasiado dobrado, $|q_3| > 140^\circ$: o antebraço fica quase encostado ao braço e a gravidade impede o robô de chegar ao ponto;
+    \item o cotovelo, J4 ou J5 ficarem abaixo da base: $z_c = L_1 + L_2\sin\theta_1 \leq 0$, $z_{J4} = z_c + L_3\sin(\theta_1 + \theta_2) \leq 0$ ou $z_{J5} = z_{J4} + L_4\sin\theta_3' \leq 0$, com $\theta_3' = \theta_1 + \theta_2 + \theta_3$.
+\end{itemize}
+
+O ponto é inalcançável se $r \leq L_5$ ou se não houver solução válida para nenhuma das inclinações testadas.
+
+\subsection{Escolha da inclinação}
+
+Para cada ponto começa-se pela inclinação preferida, $\psi = 90^\circ$. Se não houver solução, afasta-se de $5^\circ$ em $5^\circ$, primeiro para a base ($\psi > 90^\circ$, útil para objetos perto da base) e depois para fora ($\psi < 90^\circ$, para objetos longe), dentro do intervalo $[30^\circ, 135^\circ]$. O limite inferior evita a garra quase na horizontal, que não serve para apanhar objetos, e o superior limita a inclinação para a base a $45^\circ$.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.65\textwidth}{!}{\input{./graph/escolha_inclinacao.tex}}
+  \caption{Inclinações da garra testadas para o mesmo alvo e ordem da procura.}
+  \label{fig:inclinacao}
+\end{figure}
+
+Quando um candidato funciona, refina-se por bisseção, para ficar com a inclinação mais próxima de $90^\circ$ que ainda tem solução. Assim, a garra inclina de forma contínua quando o alvo se move, e não aos saltos de $5^\circ$. Nos movimentos verticais usa-se uma só inclinação, a pedida, para que uma descida inteira use a mesma solução, sem mudanças bruscas das juntas.
 
 \clearpage

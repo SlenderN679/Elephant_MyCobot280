@@ -1,0 +1,24 @@
+% Escolha da inclinação: direção da garra para vários psi à volta do mesmo alvo; unidades em cm
+\begin{tikzpicture}[scale=0.38, >=stealth,
+    elo/.style={line width=2pt, line cap=round},
+    junta/.style={circle, draw, fill=white, line width=0.9pt, inner sep=1.8pt},
+    cota/.style={gray!70!black, thin},
+    ang/.style={->, thin},
+    every node/.style={font=\footnotesize}]
+
+  \draw[->, thin] (-2,0) -- (30,0) node[below left] {$d$};
+  \draw[->, thin] (0,-1) -- (0,22) node[left] {$h$};
+  \fill[gray!25] (-2.5,-0.8) rectangle (2.5,0); \node[below=8pt] at (0,0) {base};
+  \coordinate (T) at (18.9,6.0);
+  \fill[blue!8] (T) -- ++(45:15.1) arc[start angle=45, end angle=150, radius=15.1] -- cycle;
+  \node[blue!50!black, font=\scriptsize, align=center] at ($(T)+(97:18.3)$) {inclinações permitidas\\$30^\circ \leq \psi \leq 135^\circ$};
+  \draw[gray!70, line width=1.2pt, <-] (T) -- ++(150:15.1) node[pos=1.08, font=\scriptsize] {$30^\circ$};
+  \draw[gray!70, line width=1.2pt, <-] (T) -- ++(120:15.1) node[pos=1.08, font=\scriptsize] {$60^\circ$};
+  \draw[blue!70!black, line width=2pt, <-] (T) -- ++(90:15.1) node[pos=1.08, font=\scriptsize] {$90^\circ$};
+  \draw[gray!70, line width=1.2pt, <-] (T) -- ++(60:15.1) node[pos=1.08, font=\scriptsize] {$120^\circ$};
+  \draw[gray!70, line width=1.2pt, <-] (T) -- ++(45:15.1) node[pos=1.08, font=\scriptsize] {$135^\circ$};
+  \fill (T) circle (6pt); \node[below=3pt] at (T) {alvo};
+  \draw[->, thick, orange!85!black] ($(T)+(85:7)$) arc[start angle=85, end angle=50, radius=7];
+  \draw[->, thick, violet!80!black] ($(T)+(95:7)$) arc[start angle=95, end angle=145, radius=7];
+  \node[align=left, anchor=north west, font=\scriptsize] at (21,9) {1.\ $\psi = 90^\circ$ (garra vertical)\\\textcolor{orange!85!black}{2.\ $\psi > 90^\circ$: para a base}\\\textcolor{violet!80!black}{3.\ $\psi < 90^\circ$: para fora}\\de $5^\circ$ em $5^\circ$, depois bisseção\\[3pt]cada linha: garra (J5 $\to$ alvo)};
+\end{tikzpicture}
