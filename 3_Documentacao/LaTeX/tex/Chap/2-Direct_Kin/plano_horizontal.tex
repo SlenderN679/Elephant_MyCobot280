@@ -1,49 +1,85 @@
-\section{\textit{Plano horizontal}}
+
+\section{Plano horizontal}
 \label{sec:plano_horizontal}
 
-Numa vista superior do braço, como é possível observar na Figura~\ref{fig:topo}, a \underline{junta 1} é a única junta que roda o plano do braço em torno do eixo vertical. 
-As juntas 2, 3 e 4 não mudam a direção desse plano: mudam apenas a distância $d$ em frente e a altura $h$, calculadas na Secção~\ref{sec:plano_lateral}.
+Após a determinação da posição do centro de preensão no plano lateral, é necessário considerar a rotação da base para obter as coordenadas tridimensionais relativamente ao referencial do manipulador.
+
+Como ilustrado na Figura~\ref{fig:topo}, a junta J1 permite rodar o plano de movimento do braço em torno do eixo vertical $z$. As juntas J2, J3 e J4 determinam a configuração do manipulador nesse plano, influenciando a distância horizontal $d$ e a altura $h$, previamente calculadas na Secção~\ref{sec:plano_lateral}.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.6\textwidth}{!}{\input{./graph/vista_cima.tex}}
-  \caption{Vista superior do braço no seu plano horizontal.}
-  \label{fig:topo}
+    \centering
+    \resizebox{0.6\textwidth}{!}{\input{./graph/vista_cima.tex}}
+    \caption{Vista superior do manipulador no plano horizontal.}
+    \label{fig:topo}
 \end{figure}
 
 \subsection{Desvio lateral}
 
-No myCobot~280, o braço tem um desvio lateral $L_5$ de aproximadamente 6,5~cm, pelo que o plano do braço não interseta o eixo de rotação da junta 1.
-O desvio lateral é representado na Figura~\ref{fig:topo} como a distância entre a projeção da junta 3 no plano horizontal e o eixo de rotação da junta 1. 
-O desvio lateral tem de ser considerado no cálculo da cinemática direta, porque afeta a posição final da garra no espaço tridimensional.
+Devido à sua geometria, o myCobot~280 apresenta um desvio lateral $L_5$ de aproximadamente $6,5$ cm, pelo que o plano de movimento do braço não coincide com o eixo de rotação da junta J1.
+
+Este desvio, representado na Figura~\ref{fig:topo}, corresponde à distância perpendicular entre o plano de movimento do braço e o eixo vertical da base.
+
+A consideração deste parâmetro é fundamental para determinar corretamente a posição do centro de preensão no espaço tridimensional, uma vez que introduz uma componente adicional nas coordenadas horizontais.
+
+No caso geral, o desvio lateral total é representado por $l$, conforme definido na Secção~\ref{sec:plano_lateral}. Para $q_5=0^\circ$, obtém-se $l=L_5$.
 
 \subsection{Rotação da base}
 
-Com $q_1 = 0$ a frente do braço aponta para $+y$ e o desvio $L_5$ fica em $+x$. Ao rodar a base de $q_1$ roda-se estas duas direções em torno de $z$, e basta projetar cada parcela nos eixos $x$ e $y$:
- 
+Na configuração de referência, correspondente a $q_1=0^\circ$, a direção frontal do braço encontra-se alinhada com o sentido positivo do eixo $y$, enquanto o desvio lateral está orientado segundo o sentido positivo do eixo $x$.
+
+Quando a junta J1 roda de um ângulo $q_1$, estas duas direções sofrem uma rotação em torno do eixo vertical $z$. Assim, a posição do centro de preensão pode ser determinada através da projeção das componentes $d$ e $l$ nos eixos $x$ e $y$.
+
+As contribuições de cada componente são:
+
 \begin{itemize}
-    \item o desvio lateral $l \ (=L_5)$ faz um ângulo $q_1$ com o eixo $x$, logo contribui com \underline{$l\cos q_1$} em $x$ e \underline{$l\sin q_1$} em $y$;
-    \item a distância $d$ em frente é perpendicular ao desvio, ou seja, faz um ângulo $q_1 + 90^\circ$ com o eixo $x$, logo contribui com \underline{$d\cos(q_1 + 90^\circ) = -d\sin q_1$} em $x$ e \underline{$d\sin(q_1 + 90^\circ) = d\cos q_1$} em $y$.
+    \item O desvio lateral $l$ forma um ângulo $q_1$ com o eixo $x$, contribuindo com $l\cos q_1$ para a coordenada $x$ e $l\sin q_1$ para a coordenada $y$;
+
+    \item A distância frontal $d$ é perpendicular ao desvio lateral, formando um ângulo $q_1+\frac{\pi}{2}$ com o eixo $x$. Deste modo, as suas projeções são dadas por $-d\sin q_1$ e $d\cos q_1$, respetivamente.
 \end{itemize}
- 
-Somando as duas parcelas, e juntando a altura $h$ do plano lateral:
+
+Somando as contribuições anteriores e considerando a altura $h$ obtida no plano lateral, determinam-se as coordenadas tridimensionais do centro de preensão:
+
 \begin{equation}
-    x = l\cos q_1 - d\sin q_1, \qquad
-    y = l\sin q_1 + d\cos q_1, \qquad
-    z = h
+    \boxed{
+    \begin{aligned}
+        x &= l\cos q_1-d\sin q_1\\
+        y &= l\sin q_1+d\cos q_1\\
+        z &= h
+    \end{aligned}
+    }
     \label{eq:xyz}
 \end{equation}
- 
-Sem desvio lateral ($l = 0$), a Equação~\eqref{eq:xyz} reduz-se à forma, $x = d\cos(q_1 + 90^\circ)$ e $y = d\sin(q_1 + 90^\circ)$: a distância ao eixo multiplicada pelo cosseno e pelo seno do ângulo da base.
+
+Estas expressões permitem relacionar a posição calculada no plano do braço com o referencial tridimensional da base.
+
+Na ausência de desvio lateral, ou seja, para $l=0$, as expressões simplificam-se para:
+
+\begin{equation}
+    x=-d\sin q_1, \qquad
+    y=d\cos q_1, \qquad
+    z=h
+\end{equation}
+
+Esta situação corresponde à rotação de um ponto situado no plano vertical que passa pelo eixo de rotação da base.
 
 \subsection{Distância ao eixo da base}
 
-Por o desvio $L_5$ ser perpendicular a $d$, a distância $r$ da garra ao eixo de J1, vista de cima, é
+Uma vez que as componentes $d$ e $l$ são perpendiculares entre si, a distância horizontal $r$ entre o centro de preensão e o eixo de rotação da junta J1 pode ser determinada através do teorema de Pitágoras:
+
 \begin{equation}
-    r = \sqrt{x^2 + y^2} = \sqrt{l^2 + d^2}
+    r=\sqrt{x^2+y^2}=\sqrt{l^2+d^2}
     \label{eq:r}
 \end{equation}
-e a direção da garra é $\operatorname{atan2}(y, x) = q_1 + \operatorname{atan2}(d, l)$, como se vê na Figura~\ref{fig:topo}. Esta relação é a usada, ao contrário, na cinemática inversa para obter $q_1$.
- 
+
+A orientação da posição do centro de preensão no plano horizontal, relativamente ao eixo $x$, é dada por:
+
+\begin{equation}
+    \operatorname{atan2}(y,x)
+    =
+    q_1+\operatorname{atan2}(d,l)
+    \label{eq:angulo_horizontal}
+\end{equation}
+
+Esta relação estabelece a correspondência entre a orientação da base e a posição do centro de preensão no plano horizontal, sendo posteriormente utilizada na formulação da cinemática inversa para determinar o ângulo da junta J1.
 
 \clearpage

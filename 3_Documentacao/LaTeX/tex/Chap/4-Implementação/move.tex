@@ -1,28 +1,2 @@
 \section{Resultados}
 \label{sec:resultados}
-
-Para isso, realizaram-se vários testes de forma a obter-se o desempenho pretendido, ou seja, um robô capaz de navegar autonomamente até a um ou mais alvos num cenário que contém obstáculos. Nas figuras seguintes pode-se comprovar que se alcançou o comportamento desejado.
-
-        %
-    \begin{figure}[!h] 
-\centering
-    %\includegraphics[width=0.9\textwidth]{./img/trajetoria}
-  \caption{Trajetória para o alvo vermelho (esquerda) e para o verde (direita)}
-  %
-\label{fig:traj}
-\end{figure}
-
-O robô tinha como destino inicial o alvo representado pela esfera vermelha. Para lá chegar deparou-se com dois obstáculos. Quando um obstáculo é detetado, a velocidade do robô diminui de modo que este tenha uma resposta eficaz no desvio do obstáculo, evitando a colisão com o mesmo. Sendo assim, na figura da esquerda, confirma-se que o robô se desviou com sucesso, conseguindo, por fim, alcançar o alvo. Após esse momento, o robô encontrou-se pronto para seguir para o próximo alvo, representado pela esfera de cor verde, onde mais uma vez teve de contornar os obstáculos detetados pelos sensores, e alterar a velocidade, conforme a situação em que se encontrava, durante o seu percurso até chegar ao alvo pretendido, como se vê na figura da direita. Também na figura da direita, pode-se observar toda esta trajetória que o robô desempenhou sendo que, neste caso, o seu destino mudava de um alvo para o outro sempre que um deles era alcançado.
-
-Obtido o desempenho pretendido para o projeto, prosseguiu-se com a adição extra de um robô. O objetivo é que este siga o robô principal pois, para o novo robô, esse é o seu alvo. Sendo assim, o segundo robô tem que acompanhar a trajetória que o primeiro robô executa em direção a um dos alvos. Os resultados obtidos podem ser vistos nas figuras seguintes.
-
-        %
-    \begin{figure}[!h] 
-\centering
-    %\includegraphics[width=0.9\textwidth]{./img/trajetoria-2}
-  \caption{Trajetória dos dois robôs para o alvo vermelho (esquerda) e para o verde (direita)}
-  %
-\label{fig:traj-2}
-\end{figure}
-
-Tal como no caso anterior, o destino inicial era o target vermelho e tanto o robô principal como o secundário tiveram que se desviar dos dois obstáculos para chegarem ao destino. O procedimento para o fazerem foi o mesmo que o do teste com apenas um robô mencionado em cima. Ainda é de referir que o segundo robô também deteta os obstáculos e a velocidade dos dois robôs também se ajusta perante a situação em que se encontram. O segundo robô mantém sempre uma distância de 60 cm do primeiro robô para evitar colisões entre eles. Com estas condições, o primeiro robô quando encontra um obstáculo e uma parede lateral tem mais dificuldade em sair desse local visto que o segundo robô também é considerado um obstáculo para o primeiro. No entanto, consegue desviar-se e seguir a sua rota para qualquer um dos targets, vermelho ou verde, tal como no caso anterior.

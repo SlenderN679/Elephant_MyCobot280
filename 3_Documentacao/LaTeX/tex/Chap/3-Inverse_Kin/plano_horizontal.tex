@@ -1,30 +1,80 @@
+
 \section{Plano horizontal: junta 1}
 \label{sec:ik_horizontal}
 
-Pela cinemática direta (Equação~\ref{eq:xyz}, com $l = L_5$), o ponto $(x, y)$ é a soma do desvio lateral $L_5$ com a distância $d$ em frente, rodadas de $q_1$ em torno do eixo $z$ (Figura~\ref{fig:topo}):
-\begin{equation*}
-    x = L_5\cos q_1 - d\sin q_1, \qquad
-    y = L_5\sin q_1 + d\cos q_1
-\end{equation*}
+A determinação do ângulo da junta J1 constitui a primeira etapa da resolução da cinemática inversa. Nesta fase, pretende-se calcular a orientação da base e a distância frontal necessária para que o manipulador alcance a posição pretendida no plano horizontal.
+
+Partindo das expressões obtidas na cinemática direta, apresentadas na Equação~\eqref{eq:xyz}, e considerando $q_5=0^\circ$, pelo que $l=L_5$, a posição do centro de preensão no plano horizontal é dada por:
+
+\begin{equation}
+    x=L_5\cos q_1-d\sin q_1,
+    \qquad
+    y=L_5\sin q_1+d\cos q_1
+\end{equation}
+
+Estas expressões resultam da combinação do desvio lateral $L_5$ com a distância frontal $d$, considerando a rotação da junta J1 em torno do eixo vertical $z$, conforme ilustrado na Figura~\ref{fig:topo}.
 
 \subsection{Distância em frente}
 
-Uma rotação conserva as distâncias: como $L_5$ e $d$ são perpendiculares, a distância $r$ do alvo ao eixo de J1 satisfaz o teorema de Pitágoras, $x^2 + y^2 = L_5^2 + d^2$. Logo:
+Uma vez que a rotação da base não altera as distâncias e que as componentes $L_5$ e $d$ são perpendiculares entre si, é possível aplicar o teorema de Pitágoras para determinar a distância horizontal $r$ entre o alvo e o eixo de rotação da junta J1.
+
+Assim, obtém-se:
+
 \begin{equation}
-    r = \sqrt{x^2 + y^2}, \qquad d = \sqrt{r^2 - L_5^2}
+    r^2=L_5^2+d^2
+\end{equation}
+
+A distância frontal necessária para alcançar o alvo pode então ser determinada através das seguintes expressões:
+
+\begin{equation}
+    \boxed{
+    r=\sqrt{x^2+y^2},
+    \qquad
+    d=\sqrt{r^2-L_5^2}
+    }
     \label{eq:ik_d}
 \end{equation}
 
-Só existe solução se $r > L_5$: um alvo mais perto do eixo de J1 do que o desvio lateral está dentro do próprio braço. Toma-se a raiz positiva de $d$, que corresponde ao braço virado para o ponto, em frente da base.
+Para que exista uma solução real, é necessário verificar a condição $r\geq L_5$. Quando $r<L_5$, o alvo encontra-se demasiado próximo do eixo da base para ser alcançado segundo o modelo geométrico adotado.
+
+Considera-se a raiz positiva de $d$, correspondente à configuração em que o braço se encontra orientado para a frente da base. Esta escolha permite selecionar uma das configurações geométricas possíveis e simplificar a resolução da cinemática inversa.
 
 \subsection{Ângulo da junta 1}
 
-O alvo faz o ângulo $\operatorname{atan2}(y, x)$ com o eixo $x$. A rotação $q_1$ soma-se ao ângulo que o alvo faz com a direção do desvio, $\operatorname{atan2}(d, L_5)$, pelo que $\operatorname{atan2}(y, x) = q_1 + \operatorname{atan2}(d, L_5)$ e
+Após determinar a distância frontal $d$, procede-se ao cálculo do ângulo da junta J1, responsável pela orientação do plano de movimento do braço no espaço tridimensional.
+
+A direção do alvo relativamente ao eixo $x$ é dada por $\operatorname{atan2}(y,x)$. Por outro lado, a direção do vetor formado pelas componentes $L_5$ e $d$, na configuração de referência, é definida por $\operatorname{atan2}(d,L_5)$.
+
+A relação entre estas direções e o ângulo de rotação da base é:
+
 \begin{equation}
-    q_1 = \operatorname{atan2}(y, x) - \operatorname{atan2}(d, L_5)
+    \operatorname{atan2}(y,x)
+    =
+    q_1+\operatorname{atan2}(d,L_5)
+\end{equation}
+
+Isolando $q_1$, obtém-se:
+
+\begin{equation}
+    \boxed{
+    q_1=
+    \operatorname{atan2}(y,x)
+    -
+    \operatorname{atan2}(d,L_5)
+    }
     \label{eq:ik_q1}
 \end{equation}
 
-É por causa do desvio lateral $L_5$ que o segundo termo aparece. Sem ele, o plano do braço passaria pelo eixo de J1 e bastaria a fórmula da aula, $q_1 = \operatorname{atan2}(y, x)$, descontando apenas os $90^\circ$ que vêm de, com $q_1 = 0$, o braço apontar para $+y$ e não para $+x$.
+Esta expressão permite determinar o ângulo necessário para orientar o manipulador na direção do alvo, considerando o desvio lateral existente na sua estrutura.
+
+Na ausência deste desvio, ou seja, para $L_5=0$, e considerando $d>0$, a expressão simplifica-se para:
+
+\begin{equation}
+    q_1=\operatorname{atan2}(y,x)-\frac{\pi}{2}
+\end{equation}
+
+O termo $\frac{\pi}{2}$ resulta da configuração de referência adotada, na qual o braço se encontra orientado segundo o sentido positivo do eixo $y$, quando $q_1=0^\circ$.
+
+Deste modo, a inclusão do desvio lateral $L_5$ permite determinar corretamente a orientação da base, constituindo uma etapa fundamental para a resolução da cinemática inversa do myCobot~280.
 
 \clearpage

@@ -1,23 +1,2 @@
-\section{Discussão}
-\label{sec:disc}
-
-Obtidos os resultados, far-se-á, neste capítulo, uma análise dos mesmos de forma a entender o comportamento do robô em cada situação.
-
-Começando pelo cenário em forma de S e com apenas um robô, quando o robô deteta um obstáculo, a força repulsiva do obstáculo torna-se cada vez mais forte à medida que mais sensores detetam obstáculos virtuais e sobrepõe-se à força atrativa do alvo. Dá-se, nesse momento, uma bifurcação onde o ponto fixo atrator que atraía o robô na direção do alvo, altera-se para um repulsor, logo o robô responde, afastando-se do obstáculo. Como de cada lado do repulsor existe um atrator, há duas possibilidades, virar à esquerda ou virar à direita. A escolha entre essas duas possibilidades depende da bacia de atração em que a direção de navegação fica no momento da bifurcação.
-
-À medida que o robô se move, a informação sensorial varia e, por conseguinte, os atratores e os repulsores deslocam-se. Sendo assim, o controlo da velocidade é fulcral para manter o sistema estável, ou seja, num, ou perto de um, atrator. Para isso, a velocidade de translação do robot deve ser controlada de forma que a velocidade com que os atractores se deslocam seja inferior à velocidade de relaxamento da dinâmica da direção de navegação. 
-
-Quando nenhuma obstrução é detetada, a velocidade do robô é estabilizada por um atrator cujo valor é proporcional à distância ao alvo, de acordo com a contribuição do alvo imposta pela função potencial. Quando são detetadas obstruções, o valor de intensidade da força de atração do obstáculo é positivo para o valor corrente da direção de navegação, e neste caso, a dinâmica de velocidade é governada por um atrator que é especificado pelas contribuições dos obstáculos. Todavia, quando são detetadas obstruções, mas a direção de navegação do robô fica fora da zona repulsiva criada pelas obstruções, a dinâmica da velocidade é dominada pela contribuição do alvo e o robô acelera novamente.
-
-Para analisar se as contribuições dos obstáculos estão presentes, integram-se as forças de repulsão dos obstáculos o que resulta numa função potencial do sistema dinâmico que gera o comportamento “evitar colisões com obstáculos”. Valores positivos desta função indicam que a direção de navegação está dentro duma zona repulsiva, criada pelos obstáculos, pelo que é necessário ter a intensidade de atração do obstáculo maior que 0 e a intensidade de atração do alvo igual a 0. Reciprocamente, valores negativos do potencial indicam que a direção de navegação está fora da zona repulsiva ou então que as forças repulsivas dos obstáculos são fracas, daí que a intensidade de atração do obstáculo igual a 0 e a intensidade de atração do alvo maior que 0 seja necessário neste caso. A seguinte hierarquia de taxas de relaxação assegura que o todo o sistema converge para os atractores e que o comportamento “evitar obstáculos” tem prioridade sobre o comportamento “movimento na direção do alvo”:
-        %
-    \begin{figure*}[!h] 
-\centering
-    %\includegraphics[width=0.7\textwidth]{./img/conc}
-  %
-\label{fig:traj-2}
-\end{figure*}
-
-Os testes feitos, para o caso de apenas um robô, foram acompanhados de gráficos dinâmicos que se iam alterando conforme a situação em que o robô se encontrava. Observa-se nesses gráficos a força atrativa do alvo, a dinâmica resultante das contribuições do alvo e obstáculos e, por último, a força dos obstáculos e a função potencial. Através das suas análises, confirma-se que o gráfico da força atrativa do alvo mostra, com o declive negativo, o ponto fixo atrator que atrai o sistema para o valor que ele especifica e um ponto fixo repulsor com o declive positivo na direção oposta à direção onde se localiza o alvo. Verifica-se, também, que a força repulsiva dos obstáculos aumenta quando mais sensores detetam o obstáculo e a distância diminui. Quanto ao gráfico da dinâmica total, quando já não é necessário que o robô se desvie de um obstáculo, a dinâmica da direção de navegação forma um atractor na direção que aponta para o alvo. Inversamente, a dinâmica da direção de navegação edifica um repulsor nessa direção quando se tem que desviar do obstáculo. Finalmente, a função potencial resulta do integral da força repulsiva que é máxima perto da direção onde se localiza o obstáculo que tem que ser evitada. Quanto maior a força repulsiva, menor é a velocidade de translação do robô.
-
-Quanto ao cenário em forma de S mas com os dois robôs, o comportamento do primeiro robô é justificado da mesma forma que o caso anterior. Já o segundo robô tem o robô que está à sua frente como o seu alvo, ou seja, um atrator, pelo que o seu comportamento altera-se conforme a situação que o primeiro robô enfrenta. No caso do robô secundário estar a detetar obstáculos,  as forças repulsivas predominam em relação à força atrativa do robô primário. Logo, deixa de seguir o primeiro robô e desvia-se do obstáculo seguindo a justificação dada anteriormente. Após ultrapassar o obstáculo, volta a seguir o robô.
+\section{Resultados}
+\label{sec:result}

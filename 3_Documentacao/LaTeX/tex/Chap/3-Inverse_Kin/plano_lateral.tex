@@ -1,122 +1,285 @@
+
 \section{Plano lateral: juntas 2, 3 e 4}
 \label{sec:ik_lateral}
 
-Conhecida a distância $d$ (Equação~\ref{eq:ik_d}) e a altura $z$, falta encontrar $q_2$, $q_3$ e $q_4$ para que a garra chegue a $(d, z)$ no plano do braço (Figura~\ref{fig:2dof}).
+Após determinar a distância frontal $d$, através da Equação~\eqref{eq:ik_d}, e conhecendo a altura $z$ do alvo, é necessário calcular os ângulos das juntas J2, J3 e J4 para posicionar o centro de preensão no ponto pretendido $(d,z)$.
+
+Como ilustrado na Figura~\ref{fig:2dof}, este problema pode ser resolvido através de uma abordagem geométrica, considerando o movimento do manipulador no plano lateral.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.6\textwidth}{!}{\input{./graph/ik_2dof.tex}}
-  \caption{Cinemática inversa no plano do braço, com a origem no ombro (J2). Com o ângulo da garra $\alpha_3$ imposto, o último elo (a tracejado) fica conhecido e resta um braço planar de 2 DOF até ao pulso (J4).}
-  \label{fig:2dof}
+    \centering
+    \resizebox{0.6\textwidth}{!}{
+        \input{./graph/ik_2dof.tex}
+    }
+    \caption{Representação da cinemática inversa no plano lateral, considerando a origem na junta J2. Ao fixar a orientação da garra, a posição do pulso J4 pode ser determinada, reduzindo o problema a um manipulador planar de dois graus de liberdade.}
+    \label{fig:2dof}
 \end{figure}
 
 \subsection{Ângulo da garra imposto e ponto do pulso}
 
-Como na aula para o braço de 3 DOF, impõe-se o ângulo da garra $\alpha_3$, medido a partir da horizontal, a partir da inclinação $\psi$:
+Seguindo a abordagem geométrica utilizada no estudo de manipuladores planares de três graus de liberdade, começa-se por definir a orientação pretendida da garra.
+
+Esta orientação é representada pelo ângulo $\alpha_3$, medido relativamente à horizontal, e relaciona-se com a inclinação $\psi$ através da expressão:
+
 \begin{equation}
-    \alpha_3 = -\psi
+    \alpha_3=-\psi
     \label{eq:ik_alpha3}
 \end{equation}
 
-Com $\alpha_3$ fixo, o último elo fica conhecido e pode recuar-se do alvo até ao pulso (J4). Na aula, $x_{3d} = x_d - L_C\cos\alpha_3$. No myCobot o último elo tem a forma de um L: a garra $D = L_6 + L_7$, na direção $\alpha_3$, e o elo $L_4$, perpendicular à garra, na direção $\alpha_3 + 90^\circ$. Retirando-os ao alvo, e medindo a partir do ombro (J2), que está à altura $L_1$:
+Ao fixar este ângulo, torna-se possível determinar a posição do pulso J4 a partir da posição pretendida para o centro de preensão.
+
+Num manipulador planar convencional de três graus de liberdade, a posição do pulso é obtida subtraindo à posição final a contribuição do último elo.
+
+No caso do myCobot~280, a geometria apresenta uma particularidade: os segmentos $L_4$ e $D=L_6+L_7$ encontram-se dispostos perpendicularmente, formando uma configuração em L.
+
+Assim, enquanto a garra se encontra orientada segundo o ângulo $\alpha_3$, o elo $L_4$ apresenta uma orientação de $\alpha_3+90^\circ$.
+
+Subtraindo as projeções destes segmentos à posição pretendida e considerando a origem do referencial na junta J2, situada à altura $L_1$, obtêm-se as coordenadas do pulso:
+
 \begin{align}
-    x_{3d} &= d - D\cos\alpha_3 - L_4\cos(\alpha_3 + 90^\circ) \label{eq:ik_x3d}\\
-    y_{3d} &= (z - L_1) - D\sin\alpha_3 - L_4\sin(\alpha_3 + 90^\circ) \label{eq:ik_y3d}
+    x_{3d} &= d-D\cos\alpha_3
+    -L_4\cos(\alpha_3+90^\circ)
+    \label{eq:ik_x3d}\\
+    y_{3d} &= (z-L_1)-D\sin\alpha_3
+    -L_4\sin(\alpha_3+90^\circ)
+    \label{eq:ik_y3d}
 \end{align}
+
+Deste modo, a posição de J4 fica conhecida, permitindo reduzir o problema ao cálculo dos ângulos de um manipulador planar de dois graus de liberdade.
 
 \subsection{Braço planar de 2 DOF: juntas 2 e 3}
 
-Entre o ombro e o pulso resta um braço planar de dois elos, com $L_A = L_2$ e $L_B = L_3$, resolvido com a abordagem geométrica da aula. A distância do ombro ao pulso e a sua direção são:
+Conhecida a posição do pulso, o problema consiste em determinar os ângulos das juntas J2 e J3.
+
+O segmento compreendido entre o ombro J2 e o pulso J4 pode ser representado por um manipulador planar constituído por dois elos, de comprimentos $L_A=L_2$ e $L_B=L_3$.
+
+A distância entre o ombro e o pulso, bem como a direção do vetor que os une, são determinadas por:
+
 \begin{equation}
-    r_3 = \sqrt{x_{3d}^2 + y_{3d}^2}, \qquad
-    \alpha_1 = \operatorname{atan2}(y_{3d}, x_{3d})
+    r_3=\sqrt{x_{3d}^2+y_{3d}^2},
+    \qquad
+    \alpha_1=\operatorname{atan2}(y_{3d},x_{3d})
     \label{eq:ik_r3}
 \end{equation}
 
-No triângulo ombro--cotovelo--pulso conhecem-se os três lados ($L_A$, $L_B$ e $r_3$). A lei dos cossenos, $e^2 = a^2 + b^2 - 2ab\cos\beta$, dá o ângulo no ombro ($\beta_1$) e no cotovelo ($\beta_2$):
+Considerando o triângulo formado pelo ombro, cotovelo e pulso, cujos lados possuem comprimentos $L_A$, $L_B$ e $r_3$, é possível aplicar a lei dos cossenos para determinar os ângulos auxiliares $\beta_1$ e $\beta_2$.
+
+Estes ângulos são dados por:
+
 \begin{equation}
-    \beta_1 = \arccos\left(\frac{L_A^2 + r_3^2 - L_B^2}{2 L_A r_3}\right), \qquad
-    \beta_2 = \arccos\left(\frac{L_A^2 + L_B^2 - r_3^2}{2 L_A L_B}\right)
+    \begin{aligned}
+        \beta_1 &=
+        \arccos\left(
+        \frac{L_A^2+r_3^2-L_B^2}
+        {2L_A r_3}
+        \right)\\[6pt]
+        \beta_2 &=
+        \arccos\left(
+        \frac{L_A^2+L_B^2-r_3^2}
+        {2L_A L_B}
+        \right)
+    \end{aligned}
     \label{eq:ik_beta}
 \end{equation}
 
-Só existe solução se os dois argumentos de $\arccos$ estiverem em $[-1, 1]$, o que equivale a pedir que a distância do pulso ao ombro esteja entre $|L_2 - L_3|$ e $L_2 + L_3$. No nosso robô, isso dá $0{,}0144~\mathrm{m} \leq r_3 \leq 0{,}2064~\mathrm{m}$. Existem então duas soluções, simétricas em relação à reta ombro--pulso:
+Para que exista uma solução geométrica real, os argumentos das funções $\arccos$ devem pertencer ao intervalo $[-1,1]$.
+
+Esta condição corresponde à desigualdade triangular:
+
+\begin{equation}
+    |L_2-L_3|\leq r_3\leq L_2+L_3
+\end{equation}
+
+Considerando os comprimentos dos elos do myCobot~280, obtém-se:
+
+\begin{equation}
+    0{,}0144\ \text{m}
+    \leq r_3\leq
+    0{,}2064\ \text{m}
+\end{equation}
+
+Este intervalo define a região geometricamente alcançável pelo pulso, relativamente à junta J2, como ilustrado na Figura~\ref{fig:alcance_pulso}.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.55\textwidth}{!}{\input{./graph/alcance_pulso.tex}}
-  \caption{Zona onde o pulso pode estar: $|L_2 - L_3| \leq r_3 \leq L_2 + L_3$.}
-  \label{fig:alcance_pulso}
+    \centering
+    \resizebox{0.55\textwidth}{!}{
+        \input{./graph/alcance_pulso.tex}
+    }
+    \caption{Região geometricamente alcançável pelo pulso J4, definida pela condição $|L_2-L_3|\leq r_3\leq L_2+L_3$.}
+    \label{fig:alcance_pulso}
 \end{figure}
+
+Para pontos no interior desta região, podem existir duas configurações geométricas distintas, correspondentes às soluções com o cotovelo orientado para cima ou para baixo.
+
+Os ângulos associados a cada configuração encontram-se apresentados na Tabela~\ref{tab:ik_solucoes}.
 
 \begin{table}[H]
-  \centering
-  \caption{Soluções do braço planar de 2 DOF.}
-  \label{tab:ik_solucoes}
-  \begin{tabular}{lcc}
-    \hline
-    Solução & $\theta_1$ (ombro) & $\theta_2$ (cotovelo) \\
-    \hline
-    cotovelo para baixo & $\alpha_1 - \beta_1$ & $\pi - \beta_2$ \\
-    cotovelo para cima & $\alpha_1 + \beta_1$ & $-(\pi - \beta_2)$ \\
-    \hline
-  \end{tabular}
+    \centering
+    \caption{Soluções geométricas do manipulador planar de dois graus de liberdade.}
+    \label{tab:ik_solucoes}
+    \begin{tabular}{lcc}
+        \hline
+        Solução & $\theta_1$ (ombro) & $\theta_2$ (cotovelo) \\
+        \hline
+        Cotovelo para baixo &
+        $\alpha_1-\beta_1$ &
+        $\pi-\beta_2$ \\
+        Cotovelo para cima &
+        $\alpha_1+\beta_1$ &
+        $-(\pi-\beta_2)$ \\
+        \hline
+    \end{tabular}
 \end{table}
 
+A Figura~\ref{fig:cima_baixo} apresenta as duas configurações possíveis para uma mesma posição do pulso.
+
 \begin{figure}[H]
-  \centering
-  \resizebox{0.6\textwidth}{!}{\input{./graph/cotovelo_cima_baixo.tex}}
-  \caption{As duas soluções do braço planar de 2 DOF para o mesmo pulso (exemplo 1).}
-  \label{fig:cima_baixo}
+    \centering
+    \resizebox{0.6\textwidth}{!}{
+        \input{./graph/cotovelo_cima_baixo.tex}
+    }
+    \caption{Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}
+    \label{fig:cima_baixo}
 \end{figure}
 
-Usa-se a solução com o \underline{cotovelo para cima} ($q_3 \leq 0$), em que o cotovelo fica mais alto e o braço mais afastado da mesa e dos objetos.
+Na implementação desenvolvida, é selecionada a solução com o cotovelo orientado para cima, correspondente a $q_3\leq0$.
+
+Esta configuração permite, geralmente, manter o cotovelo numa posição mais elevada, reduzindo o risco de aproximação excessiva à superfície de trabalho e aos objetos presentes no cenário.
 
 \subsection{Junta 4 e passagem para os ângulos das juntas}
 
-Como na aula, $\theta_3 = \alpha_3 - \theta_1 - \theta_2$. No myCobot o elo $L_4$ faz $\alpha_3 + 90^\circ$ com a horizontal, por isso:
+Após determinar os ângulos do braço planar, é necessário calcular a rotação da junta J4, de modo a garantir que a garra apresenta a orientação pretendida.
+
+Num manipulador planar de três graus de liberdade, a orientação do último elo resulta da soma dos ângulos articulares.
+
+No myCobot~280, o elo $L_4$ encontra-se perpendicular à direção longitudinal da garra, apresentando uma orientação de $\alpha_3+90^\circ$ relativamente à horizontal.
+
+Deste modo, o ângulo associado à terceira rotação do modelo planar é:
+
 \begin{equation}
-    \theta_3 = (\alpha_3 + 90^\circ) - \theta_1 - \theta_2
+    \theta_3=
+    (\alpha_3+90^\circ)-\theta_1-\theta_2
     \label{eq:ik_theta3}
 \end{equation}
 
-Na pose zero o braço está vertical, pelo que o primeiro elo faz $90^\circ$ com a horizontal quando $q_2 = 0$ (Equação~\ref{eq:angulos}):
+Para converter os ângulos obtidos em valores articulares do manipulador, considera-se a configuração de referência, na qual o primeiro elo apresenta uma orientação de $90^\circ$ relativamente à horizontal quando $q_2=0^\circ$.
+
+Assim, os ângulos das juntas são determinados por:
+
 \begin{equation}
-    q_2 = \theta_1 - 90^\circ, \qquad q_3 = \theta_2, \qquad q_4 = \theta_3, \qquad q_5 = 0
+    \boxed{
+    \begin{aligned}
+        q_2 &= \theta_1-90^\circ\\
+        q_3 &= \theta_2\\
+        q_4 &= \theta_3\\
+        q_5 &= 0^\circ
+    \end{aligned}
+    }
     \label{eq:ik_q234}
 \end{equation}
 
+A junta J5 é mantida a $0^\circ$ na cinemática inversa implementada, permitindo conservar a garra no plano de movimento considerado durante a resolução geométrica.
+
 \subsection{Junta 6}
 
-Quando se conhece a rotação $\gamma$ de um cubo em torno de $z$, medida pela câmara, roda-se a garra de modo a que os dedos fechem sobre duas faces opostas. Os dedos fecham segundo a direção definida por J1 e J6 e um cubo repete-se de $90^\circ$ em $90^\circ$, por isso escolhe-se a menor rotação de J6:
+A junta J6 é utilizada para ajustar a orientação dos dedos da garra relativamente ao objeto a manipular.
+
+Quando o sistema de visão fornece a orientação $\gamma$ de um objeto cúbico em torno do eixo vertical $z$, é possível calcular a rotação necessária para alinhar a garra com as suas faces.
+
+Devido à simetria de um cubo no plano horizontal, existem orientações equivalentes separadas por $90^\circ$. Assim, procura-se selecionar a rotação de menor amplitude que permita realizar a preensão.
+
+A expressão utilizada é:
+
 \begin{equation}
-    q_6 = \operatorname{mod}\left(q_1 - \gamma + 45^\circ,\; 90^\circ\right) - 45^\circ
+    q_6=
+    \operatorname{mod}
+    (q_1-\gamma+45^\circ,\;90^\circ)
+    -45^\circ
     \label{eq:ik_q6}
 \end{equation}
-que fica entre $-45^\circ$ e $45^\circ$. Isto só se faz com a garra quase vertical ($\psi > 45^\circ$); caso contrário, $q_6 = 0$.
+
+Esta operação permite obter um valor de $q_6$ no intervalo $[-45^\circ,45^\circ[$, evitando rotações desnecessárias da garra.
+
+O ajuste da junta J6 é aplicado quando a garra se encontra numa configuração próxima da vertical, considerando a condição $\psi>45^\circ$.
+
+Caso contrário, é definido $q_6=0^\circ$, mantendo a orientação de referência da junta.
 
 \subsection{Soluções rejeitadas}
 
-Os ângulos são reduzidos ao intervalo $]-180^\circ, 180^\circ]$ e uma solução é rejeitada se:
+Embora a abordagem geométrica permita determinar possíveis soluções para a cinemática inversa, nem todas correspondem a configurações válidas do manipulador.
+
+Deste modo, são aplicadas condições adicionais para verificar a viabilidade das soluções obtidas.
+
+Os ângulos articulares são inicialmente normalizados para o intervalo $]-180^\circ,180^\circ]$.
+
+Uma solução é rejeitada quando se verifica alguma das seguintes condições:
+
 \begin{itemize}
-    \item alguma junta sair dos limites ($\pm 165^\circ$ em J1 a J5 e $\pm 175^\circ$ em J6, por omissão; em execução, os limites são lidos do robô);
-    \item o cotovelo estiver demasiado dobrado, $|q_3| > 140^\circ$: o antebraço fica quase encostado ao braço e a gravidade impede o robô de chegar ao ponto;
-    \item o cotovelo, J4 ou J5 ficarem abaixo da base: $z_c = L_1 + L_2\sin\theta_1 \leq 0$, $z_{J4} = z_c + L_3\sin(\theta_1 + \theta_2) \leq 0$ ou $z_{J5} = z_{J4} + L_4\sin\theta_3' \leq 0$, com $\theta_3' = \theta_1 + \theta_2 + \theta_3$.
+    \item \textbf{Limites articulares:}
+    algum dos ângulos calculados ultrapassa os limites permitidos para a respetiva junta. Por omissão, são considerados limites de $\pm165^\circ$ para J1 a J5 e de $\pm175^\circ$ para J6. Durante a execução, os limites são obtidos diretamente do modelo do robô;
+
+    \item \textbf{Flexão excessiva do cotovelo:}
+    verifica-se $|q_3|>140^\circ$, correspondendo a uma configuração em que o antebraço se aproxima excessivamente do braço. Esta condição é utilizada como restrição adicional para evitar configurações demasiado fechadas;
+
+    \item \textbf{Posicionamento abaixo da base:}
+    o cotovelo, a junta J4 ou a junta J5 apresentam uma altura inferior ou igual a zero relativamente ao referencial considerado.
 \end{itemize}
 
-O ponto é inalcançável se $r \leq L_5$ ou se não houver solução válida para nenhuma das inclinações testadas.
+As alturas das juntas utilizadas nesta última verificação são determinadas por:
+
+\begin{align}
+    z_c &= L_1+L_2\sin\theta_1\\
+    z_{J4} &= z_c+
+    L_3\sin(\theta_1+\theta_2)\\
+    z_{J5} &= z_{J4}+
+    L_4\sin\theta_3'
+\end{align}
+
+onde:
+
+\begin{equation}
+    \theta_3'=\theta_1+\theta_2+\theta_3
+\end{equation}
+
+A solução é rejeitada se alguma destas alturas for inferior ou igual a zero.
+
+Adicionalmente, um ponto é considerado geometricamente inalcançável no plano horizontal quando $r<L_5$, não sendo possível determinar um valor real para a distância frontal $d$.
+
+Caso nenhuma das configurações articulares satisfaça as condições estabelecidas, o ponto é considerado inalcançável segundo as restrições e as inclinações testadas pelo algoritmo.
 
 \subsection{Escolha da inclinação}
 
-Para cada ponto começa-se pela inclinação preferida, $\psi = 90^\circ$. Se não houver solução, afasta-se de $5^\circ$ em $5^\circ$, primeiro para a base ($\psi > 90^\circ$, útil para objetos perto da base) e depois para fora ($\psi < 90^\circ$, para objetos longe), dentro do intervalo $[30^\circ, 135^\circ]$. O limite inferior evita a garra quase na horizontal, que não serve para apanhar objetos, e o superior limita a inclinação para a base a $45^\circ$.
+A orientação da garra constitui um parâmetro importante na resolução da cinemática inversa, uma vez que influencia a posição do pulso e, consequentemente, a possibilidade de alcançar o alvo.
+
+Na implementação desenvolvida, a inclinação preferencial é $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo.
+
+Quando não é possível encontrar uma solução válida para esta inclinação, o algoritmo procura configurações alternativas, variando progressivamente o ângulo $\psi$ em incrementos de $5^\circ$.
+
+A procura é realizada inicialmente para inclinações superiores a $90^\circ$, aproximando a garra da direção da base, e posteriormente para inclinações inferiores a $90^\circ$, orientando-a para o exterior.
+
+O intervalo de inclinações considerado é:
+
+\begin{equation}
+    30^\circ\leq\psi\leq135^\circ
+\end{equation}
+
+O limite inferior evita configurações em que a garra se encontra demasiado próxima da horizontal, enquanto o limite superior restringe a inclinação da garra na direção da base.
+
+A Figura~\ref{fig:inclinacao} ilustra as inclinações consideradas e a ordem de procura utilizada pelo algoritmo.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.65\textwidth}{!}{\input{./graph/escolha_inclinacao.tex}}
-  \caption{Inclinações da garra testadas para o mesmo alvo e ordem da procura.}
-  \label{fig:inclinacao}
+    \centering
+    \resizebox{0.65\textwidth}{!}{
+        \input{./graph/escolha_inclinacao.tex}
+    }
+    \caption{Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}
+    \label{fig:inclinacao}
 \end{figure}
 
-Quando um candidato funciona, refina-se por bisseção, para ficar com a inclinação mais próxima de $90^\circ$ que ainda tem solução. Assim, a garra inclina de forma contínua quando o alvo se move, e não aos saltos de $5^\circ$. Nos movimentos verticais usa-se uma só inclinação, a pedida, para que uma descida inteira use a mesma solução, sem mudanças bruscas das juntas.
+Quando é encontrada uma inclinação válida, o algoritmo realiza um refinamento através do método da bisseção, procurando uma orientação mais próxima de $90^\circ$ que continue a satisfazer as condições de alcance.
+
+Este procedimento permite obter uma transição mais suave da orientação da garra à medida que o alvo se desloca, evitando alterações bruscas associadas aos incrementos iniciais de $5^\circ$.
+
+Nos movimentos verticais, é mantida uma única inclinação durante toda a trajetória, de forma a preservar a configuração selecionada e reduzir o risco de variações abruptas dos ângulos articulares.
 
 \clearpage

@@ -1,8 +1,10 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Comprimentos dos elos, medidos no cenário do CoppeliaSim.}}{3}{table.caption.7}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Comprimentos dos elos, medidos no cenário do CoppeliaSim.}}{4}{table.caption.7}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Soluções do braço planar de 2 DOF.}}{13}{table.caption.15}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Soluções geométricas do manipulador planar de dois graus de liberdade.}}{22}{table.caption.15}%
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Funções usadas para mover o braço e chamadas à API remota correspondentes.}}{34}{table.caption.19}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Funções do pacote \texttt {+movement} usadas nesta componente.}}{35}{table.caption.20}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

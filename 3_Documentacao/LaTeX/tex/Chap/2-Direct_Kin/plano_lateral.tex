@@ -1,20 +1,24 @@
+
 \section{Plano lateral}
 \label{sec:plano_lateral}
 
-No plano do braço, como é possível observar na Figura~\ref{fig:lateral}, a posição da garra exprime-se em dois eixos: $d$, a distância em frente, e $h$, a altura acima da base. Neste plano, J2, J3 e J4 têm eixos de rotação paralelos entre si, perpendiculares ao plano, e por isso o braço comporta-se como o braço planar estudado na aula.
+A análise do movimento do manipulador no plano lateral permite determinar a posição do centro de preensão através de duas coordenadas: $d$, correspondente à distância horizontal no plano do braço, e $h$, correspondente à altura relativamente à base. Como ilustrado na Figura~\ref{fig:lateral}, as juntas J2, J3 e J4 possuem eixos de rotação paralelos entre si e perpendiculares ao plano de movimento, permitindo aplicar uma abordagem geométrica semelhante à utilizada no estudo de manipuladores planares.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.6\textwidth}{!}{\input{./graph/vista_lateral.tex}}
-  \caption{Vista lateral do braço no seu plano vertical.}
-  \label{fig:lateral}
+    \centering
+    \resizebox{0.6\textwidth}{!}{\input{./graph/vista_lateral.tex}}
+    \caption{Vista lateral do manipulador no seu plano vertical.}
+    \label{fig:lateral}
 \end{figure}
 
 \subsection{Ângulos absolutos}
 
-Os ângulos das juntas $q_i$ são \underline{relativos}: cada um mede a rotação de um elo em relação ao elo anterior, com o sentido anti-horário positivo. Para somar as projeções de cada elo é mais simples usar ângulos \underline{absolutos}, medidos a partir da horizontal. Como no exemplo do braço de 3 DOF da aula, o ângulo absoluto de cada elo é a soma dos ângulos das juntas anteriores.
+Os ângulos articulares $q_i$ representam as rotações de cada junta relativamente à sua configuração de referência. Para determinar a posição das diferentes juntas através das projeções dos elos, torna-se conveniente definir ângulos absolutos, medidos relativamente à horizontal do plano de movimento.
 
-Na pose zero (todas as juntas a $0^\circ$) o braço está na vertical, por isso o primeiro elo faz $90^\circ$ com a horizontal quando $q_2 = 0$. A garra é perpendicular ao elo $L_4$. Daqui resultam:
+Na configuração de referência, correspondente a todas as juntas a $0^\circ$, o braço encontra-se na vertical. Assim, quando $q_2=0$, o elo $L_2$ apresenta uma inclinação de $90^\circ$ relativamente à horizontal. Os ângulos absolutos dos elos seguintes são obtidos através da soma das rotações articulares, considerando o sentido positivo definido para cada junta.
+
+Deste modo, obtêm-se as seguintes relações:
+
 \begin{equation}
     \theta_A = q_2 + \frac{\pi}{2}, \qquad
     \theta_B = \theta_A + q_3, \qquad
@@ -22,52 +26,121 @@ Na pose zero (todas as juntas a $0^\circ$) o braço está na vertical, por isso 
     \alpha = \theta_C - \frac{\pi}{2}
     \label{eq:angulos}
 \end{equation}
-onde $\theta_A$, $\theta_B$ e $\theta_C$ são os ângulos de $L_2$, $L_3$ e $L_4$ com a horizontal, e $\alpha$ é o ângulo da garra. Com $\alpha = -90^\circ$ a garra aponta na vertical para baixo.
+
+onde $\theta_A$, $\theta_B$ e $\theta_C$ representam, respetivamente, os ângulos absolutos dos elos $L_2$, $L_3$ e $L_4$, enquanto $\alpha$ corresponde à orientação da garra no plano lateral. Para $\alpha=-90^\circ$, a garra encontra-se orientada verticalmente para baixo.
 
 \subsection{Posição de cada junta}
 
-Partindo da base e somando, elo a elo, a projeção horizontal ($L\cos\theta$) e vertical ($L\sin\theta$) de cada elo, obtém-se a posição de cada junta no plano do braço:
+A posição de cada junta pode ser determinada através da soma sucessiva das projeções horizontais e verticais dos elos. Para um elo de comprimento $L$ e orientação $\theta$, estas projeções são dadas por $L\cos\theta$ e $L\sin\theta$, respetivamente.
+
+Considerando a base como origem do referencial, obtêm-se as seguintes expressões:
+
 \begin{align}
-    \text{J2 (ombro):}   \quad & (d_2,\, h_2) = (0,\; L_1) \label{eq:j2}\\
-    \text{J3 (cotovelo):} \quad & (d_3,\, h_3) = (d_2 + L_2\cos\theta_A,\; h_2 + L_2\sin\theta_A) \label{eq:j3}\\
-    \text{J4 (pulso):}   \quad & (d_4,\, h_4) = (d_3 + L_3\cos\theta_B,\; h_3 + L_3\sin\theta_B) \label{eq:j4}\\
-    \text{J5:}           \quad & (d_5,\, h_5) = (d_4 + L_4\cos\theta_C,\; h_4 + L_4\sin\theta_C) \label{eq:j5}
+    \text{J2 (ombro):} \quad
+    &(d_2,h_2)=(0,L_1)
+    \label{eq:j2}\\
+    \text{J3 (cotovelo):} \quad
+    &(d_3,h_3)=
+    (d_2+L_2\cos\theta_A,\;
+    h_2+L_2\sin\theta_A)
+    \label{eq:j3}\\
+    \text{J4 (pulso):} \quad
+    &(d_4,h_4)=
+    (d_3+L_3\cos\theta_B,\;
+    h_3+L_3\sin\theta_B)
+    \label{eq:j4}\\
+    \text{J5:} \quad
+    &(d_5,h_5)=
+    (d_4+L_4\cos\theta_C,\;
+    h_4+L_4\sin\theta_C)
+    \label{eq:j5}
 \end{align}
 
-As Equações~\eqref{eq:j3} e~\eqref{eq:j4} são exatamente o braço planar de 2 DOF da aula, com $L_A = L_2$, $L_B = L_3$, $\theta_1 = \theta_A$ e $\theta_2 = q_3$:
+As Equações~\eqref{eq:j3} e~\eqref{eq:j4} permitem estabelecer uma correspondência com o modelo geométrico de um manipulador planar de dois graus de liberdade, estudado nas aulas.
+
+Considerando $L_A=L_2$, $L_B=L_3$, $\theta_1=\theta_A$ e $\theta_2=q_3$, a posição da junta J4 relativamente à junta J2 pode ser expressa por:
+
 \begin{equation}
-    x_2 = L_A\cos\theta_1 + L_B\cos(\theta_1 + \theta_2), \qquad
-    y_2 = L_A\sin\theta_1 + L_B\sin(\theta_1 + \theta_2)
+    x_2=L_A\cos\theta_1+
+    L_B\cos(\theta_1+\theta_2),
+    \qquad
+    y_2=L_A\sin\theta_1+
+    L_B\sin(\theta_1+\theta_2)
     \label{eq:2dof}
 \end{equation}
-com a origem deslocada para o ombro, à altura $L_1$.
+
+Esta equivalência é utilizada apenas para o cálculo da posição de J4 relativamente ao ombro, cuja altura em relação à base é dada por $L_1$.
 
 \subsection{Posição do centro de preensão}
 
-O centro de preensão está a uma distância $D = L_6 + L_7$ de J5, ao longo da garra, ou seja, na direção $\alpha$. Somando esta última parcela às anteriores, a posição da garra no plano do braço é:
+Para determinar a posição do centro de preensão, é necessário considerar a extensão da garra a partir da junta J5.
+
+Admitindo que os segmentos $L_6$ e $L_7$ se encontram alinhados ao longo do eixo longitudinal da garra, a distância entre J5 e o centro de preensão pode ser representada por:
+
+\begin{equation}
+    D=L_6+L_7
+    \label{eq:distancia_garra}
+\end{equation}
+
+Considerando inicialmente $q_5=0^\circ$, esta distância encontra-se no plano do braço, segundo a direção definida pelo ângulo $\alpha$.
+
+Assim, somando as projeções de todos os elos, obtêm-se as coordenadas do centro de preensão:
+
 \begin{align}
-    d &= L_2\cos\theta_A + L_3\cos\theta_B + L_4\cos\theta_C + D\cos\alpha \label{eq:d}\\
-    h &= L_1 + L_2\sin\theta_A + L_3\sin\theta_B + L_4\sin\theta_C + D\sin\alpha \label{eq:h}
+    d &= L_2\cos\theta_A+
+    L_3\cos\theta_B+
+    L_4\cos\theta_C+
+    D\cos\alpha
+    \label{eq:d}\\
+    h &= L_1+
+    L_2\sin\theta_A+
+    L_3\sin\theta_B+
+    L_4\sin\theta_C+
+    D\sin\alpha
+    \label{eq:h}
 \end{align}
 
-Estas equações têm a mesma forma que o braço de 3 DOF da aula ($x_e = L_A\cos\theta_1 + L_B\cos(\theta_1+\theta_2) + L_C\cos(\theta_1+\theta_2+\theta_3)$), com duas diferenças próprias do myCobot: a altura $L_1$ do ombro e o último elo em L, formado por $L_4$ e pela garra $D$, que fazem $90^\circ$ entre si.
+Estas expressões apresentam uma estrutura semelhante à cinemática direta de um manipulador planar de três graus de liberdade. No entanto, a geometria do myCobot~280 apresenta particularidades, nomeadamente a altura inicial $L_1$ e a disposição perpendicular entre o elo $L_4$ e o eixo longitudinal da garra.
+
+A Figura~\ref{fig:soma_projecoes} ilustra a decomposição geométrica utilizada na obtenção das coordenadas $d$ e $h$.
 
 \begin{figure}[H]
-  \centering
-  \resizebox{0.75\textwidth}{!}{\input{./graph/soma_projecoes.tex}}
-  \caption{Somas das projeções dos elos do braço.}
-  \label{fig:soma_projecoes}
+    \centering
+    \resizebox{0.75\textwidth}{!}{\input{./graph/soma_projecoes.tex}}
+    \caption{Decomposição dos elos e soma das projeções no plano lateral.}
+    \label{fig:soma_projecoes}
 \end{figure}
 
 \subsection{Juntas 5 e 6}
 
-A junta 5 roda a garra em torno do eixo de $L_4$, tirando-a do plano do braço. Para $q_5 \neq 0$, só a componente $D\cos q_5$ fica no plano e a componente $D\sin q_5$ passa a ser um desvio lateral; as Equações~\eqref{eq:d} e~\eqref{eq:h} ficam
-\begin{equation}
-    d = \dots + D\cos q_5\cos\alpha, \qquad
-    h = \dots + D\cos q_5\sin\alpha, \qquad
-    l = L_5 - D\sin q_5
+A junta J5 permite alterar a orientação da garra relativamente ao plano lateral do manipulador. Quando $q_5\neq0$, a distância $D$ deixa de estar totalmente contida nesse plano, sendo necessário considerar a sua projeção.
+
+A componente contida no plano é dada por $D\cos q_5$, enquanto a componente perpendicular corresponde a $D\sin q_5$.
+
+Deste modo, as expressões da posição passam a ser:
+
+\begin{align}
+    d &= L_2\cos\theta_A+
+    L_3\cos\theta_B+
+    L_4\cos\theta_C+
+    D\cos q_5\cos\alpha
+    \label{eq:d_q5}\\
+    h &= L_1+
+    L_2\sin\theta_A+
+    L_3\sin\theta_B+
+    L_4\sin\theta_C+
+    D\cos q_5\sin\alpha
+    \label{eq:h_q5}\\
+    l &= L_5-D\sin q_5
     \label{eq:q5}
-\end{equation}
-onde $l$ é o desvio lateral total do plano do braço. Como no projeto $q_5 = 0$, tem-se $l = L_5$. A junta 6 roda a garra em torno do seu próprio eixo e não entra nas equações da posição.
+\end{align}
+
+onde $l$ representa o desvio lateral total relativamente ao plano de referência do braço.
+
+Na implementação da cinemática inversa desenvolvida neste projeto, considera-se $q_5=0^\circ$, simplificando o cálculo e obtendo-se $l=L_5$.
+
+Por sua vez, a junta J6 permite a rotação da garra em torno do seu eixo longitudinal. Uma vez que o centro de preensão se encontra alinhado com esse eixo, a variação de $q_6$ não altera a sua posição, influenciando apenas a orientação dos dedos da garra.
+
+Consequentemente, a junta J6 não intervém nas expressões utilizadas para determinar as coordenadas do centro de preensão.
 
 \clearpage

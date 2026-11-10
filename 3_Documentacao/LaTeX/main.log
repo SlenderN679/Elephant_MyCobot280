@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  9 NOV 2026 09:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  9 NOV 2026 11:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -795,28 +795,25 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count396
 ) (main.aux
 
-LaTeX Warning: Label `fig:traj-2' multiply defined.
+LaTeX Warning: Label `sec:dk_resumo' multiply defined.
+
+
+LaTeX Warning: Label `eq:dk_final' multiply defined.
+
+
+LaTeX Warning: Label `eq:pose_zero' multiply defined.
+
+
+LaTeX Warning: Label `eq:q_trabalho' multiply defined.
+
+
+LaTeX Warning: Label `eq:erro_modelo' multiply defined.
 
 
 LaTeX Warning: Label `sec:resultados' multiply defined.
 
 
-LaTeX Warning: Label `fig:traj' multiply defined.
-
-
-LaTeX Warning: Label `fig:traj-2' multiply defined.
-
-
 LaTeX Warning: Label `sec:disc' multiply defined.
-
-
-LaTeX Warning: Label `fig:traj-2' multiply defined.
-
-
-LaTeX Warning: Label `sec:disc' multiply defined.
-
-
-LaTeX Warning: Label `fig:traj-2' multiply defined.
 
 )
 \openout1 = `main.aux'.
@@ -904,7 +901,7 @@ Package caption Info: float package is loaded.
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
 (main.glsdefs) (title.tex
-<img/logo.png, id=158, 321.2pt x 132.495pt>
+<img/logo.png, id=182, 321.2pt x 132.495pt>
 File: img/logo.png Graphic file (type png)
 <use img/logo.png>
 Package pdftex.def Info: img/logo.png  used on input line 13.
@@ -928,14 +925,19 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.35 ...{5}Resultados e discuss√£o}{23}{chapter.5}
+l.42 ...Organiza√ß√£o do c√≥digo}{35}{section.4.2}
                                                   % [1
 
 ])
 \tf@toc=\write10
 \openout10 = `main.toc'.
 
- [2] (main.lof)
+ [2] (main.lof
+Overfull \hbox (4.47858pt too wide) in paragraph at lines 11--11
+ [][] [][][]\T1/cmr/m/n/12 Regi„o ge-o-met-ri-ca-mente al-canÁ·vel pelo pulso J4, definida pela condiÁ„o 
+ []
+
+)
 \tf@lof=\write11
 \openout11 = `main.lof'.
 
@@ -949,52 +951,100 @@ l.35 ...{5}Resultados e discuss√£o}{23}{chapter.5}
 
 ] (tex/Chap/1-Intro/INTRO.tex
 Cap√≠tulo 1.
-(tex/Chap/1-Intro/deducao.tex) (tex/Chap/1-Intro/enq-e-obj.tex)) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [1
+(tex/Chap/1-Intro/deducao.tex) (tex/Chap/1-Intro/enq-e-obj.tex
+Underfull \hbox (badness 10000) in paragraph at lines 9--11
+
+ []
+
+[1
+
+
+])) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [2]
+Cap√≠tulo 2.
+[3
+
+] (graph/vista_3d.tex) [4] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [5] [6] (graph/soma_projecoes.tex) [7] [8]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [9
+
+] [10] [11]) (tex/Chap/2-Direct_Kin/resumo.tex [12
+
+] (graph/poses_fk.tex) [13] [14] [15])) (tex/Chap/3-Inverse_kin/INV_KIN.tex
+Cap√≠tulo 3.
+
+Overfull \hbox (10.2299pt too wide) in paragraph at lines 11--12
+[]\T1/cmr/m/n/12 Considerando a posiÁ„o tridi-men-sional do cen-tro de preen-s„o, obtÍm-se trÍs equaÁıes
+ []
+
+[16
 
 
 ]
-Cap√≠tulo 2.
-(graph/vista_3d.tex) [2
-
-] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [3] [4] (graph/soma_projecoes.tex) [5]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [6
-
-] [7]) (tex/Chap/2-Direct_Kin/resumo.tex (graph/poses_fk.tex) [8
-
-] [9])) (tex/Chap/3-Inverse_kin/INV_KIN.tex
-Cap√≠tulo 3.
-(graph/mundo_base.tex) [10
-
-
-] (tex/Chap/3-Inverse_Kin/plano_horizontal.tex [11]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [12
-
-] (graph/alcance_pulso.tex) (graph/cotovelo_cima_baixo.tex) [13] [14] (graph/escolha_inclinacao.tex) [15] [16]) (tex/Chap/3-Inverse_Kin/resultados.tex
-Overfull \hbox (17.40321pt too wide) in paragraph at lines 20--21
-[]\T1/cmr/m/n/12 … a con-fig-u-raÁ„o de tra-balho us-ada na ver-i-fi-caÁ„o da cin-em·tica di-reta (EquaÁ„o [][]2.14[][]),
+Overfull \hbox (10.61731pt too wide) in paragraph at lines 59--60
+\T1/cmr/m/n/12 am-bi-ente de sim-u-laÁ„o como en-tradas para o c·l-culo da cin-em·tica in-versa, encontrando-
  []
 
-(graph/exemplos_ik.tex) [17
+(graph/mundo_base.tex) [17] (tex/Chap/3-Inverse_Kin/plano_horizontal.tex
+Overfull \hbox (18.05708pt too wide) in paragraph at lines 7--8
+[]\T1/cmr/m/n/12 Partindo das ex-pressıes obti-das na cin-em·tica di-reta, ap-re-sen-tadas na EquaÁ„o [],
+ []
 
-] [18])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
+[18] [19]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [20
+
+] (graph/alcance_pulso.tex) [21]
+Overfull \hbox (7.09723pt too wide) in paragraph at lines 114--115
+[]\T1/cmr/m/n/12 Os ‚n-gu-los as-so-ci-a-dos a cada con-fig-u-raÁ„o encontram-se ap-re-sen-ta-dos na Tabela [][]3.1[][]. 
+ []
+
+(graph/cotovelo_cima_baixo.tex) [22]
+Overfull \hbox (3.47313pt too wide) in paragraph at lines 165--166
+[]\T1/cmr/m/n/12 Para con-verter os ‚n-gu-los obti-dos em val-ores ar-tic-u-lares do ma-nip-u-lador, considera-
+ []
+
+[23]
+Overfull \hbox (0.988pt too wide) in paragraph at lines 213--214
+[]\T1/cmr/m/n/12 Os ‚n-gu-los ar-tic-u-lares s„o ini-cial-mente nor-mal-iza-dos para o in-ter-valo $\OT1/cmr/m/n/12 ] \OMS/cmsy/m/n/12 ^^@ \OT1/cmr/m/n/12 180[]\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 180[]]$\T1/cmr/m/n/12 . 
+ []
+
+[24] [25] (graph/escolha_inclinacao.tex) [26]) (tex/Chap/3-Inverse_Kin/resultados.tex [27
+
+] [28] [29] (graph/exemplos_ik.tex) [30]) (tex/Chap/3-Inverse_Kin/resumo.tex [31
+
+] [32] [33])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
 Cap√≠tulo 4.
-(tex/Chap/4-Implementa√ß√£o/direct.tex) (tex/Chap/4-Implementa√ß√£o/inverse.tex [19
 
-
-] [20]) (tex/Chap/4-Implementa√ß√£o/move.tex
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[21])) (tex/Chap/5-Testes/TEST.tex [22]
-Cap√≠tulo 5.
-(tex/Chap/5-Testes/resultados.tex [23
-
-]) (tex/Chap/5-Testes/discussao.tex [24] [25])) (tex/Chap/6-Conclusao/CONC.tex [26]
-Cap√≠tulo 6.
-
-Overfull \hbox (18.63208pt too wide) in paragraph at lines 4--5
-\T1/cmr/m/n/12 AtravÈs da re-al-iza-Á„o deste pro-jeto no ‚m-bito da Unidade Cur-ric-u-lar Sis-temas AutÛnomos
+Overfull \hbox (4.95059pt too wide) in paragraph at lines 20--20
+[]|\T1/cmtt/m/n/10.95 robot_arm.set_joints(q)| 
  []
 
-) (tex/Chap/7-Bibliografia/BIB.tex [27
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+[]|\T1/cmtt/m/n/10.95 sim.setJoint
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 22--22
+[]|\T1/cmtt/m/n/10.95 sim_interface.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--23
+[]|\T1/cmtt/m/n/10.95 sim_interface.
+ []
+
+
+Overfull \hbox (5.01477pt too wide) in paragraph at lines 23--23
+[]|\T1/cmtt/m/n/10.95 sim.getSimulationTime| 
+ []
+
+[34
+
+
+] (tex/Chap/4-Implementa√ß√£o/direct.tex) (tex/Chap/4-Implementa√ß√£o/inverse.tex) (tex/Chap/4-Implementa√ß√£o/move.tex)) (tex/Chap/5-Testes/TEST.tex [35]
+Cap√≠tulo 5.
+(tex/Chap/5-Testes/resultados.tex) (tex/Chap/5-Testes/discussao.tex)) (tex/Chap/6-Conclusao/CONC.tex [36
+
+]
+Cap√≠tulo 6.
+) (tex/Chap/7-Bibliografia/BIB.tex [37
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
@@ -1012,7 +1062,7 @@ Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-[28
+[38
 
 ] (main.aux)
  ***********
@@ -1024,20 +1074,20 @@ L3 programming layer <2025-12-24>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 32DF00FCF5B93C08C30D78A6CBDE767C;6730.
+(rerunfilecheck)             Checksum: 0DD600A49FE3CE15B6621979B3544C69;8004.
  ) 
 Here is how much of TeX's memory you used:
- 33587 strings out of 467871
- 657340 string characters out of 5418376
- 1080932 words of memory out of 5000000
- 61703 multiletter control sequences out of 15000+600000
- 651779 words of font info for 103 fonts, out of 8000000 for 9000
+ 33674 strings out of 467871
+ 658645 string characters out of 5418376
+ 1078904 words of memory out of 5000000
+ 61724 multiletter control sequences out of 15000+600000
+ 653100 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,10n,97p,2574b,895s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1728.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (33 pages, 519567 bytes).
+ 90i,11n,97p,2574b,895s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbi1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecxc2074.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1728.pk> <C:\Users\Geral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on main.pdf (43 pages, 583338 bytes).
 PDF statistics:
- 1113 PDF objects out of 1200 (max. 8388607)
- 126 named destinations out of 1000 (max. 500000)
- 322 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1346 PDF objects out of 1440 (max. 8388607)
+ 188 named destinations out of 1000 (max. 500000)
+ 370 words of extra memory for PDF output out of 10000 (max. 10000000)
 

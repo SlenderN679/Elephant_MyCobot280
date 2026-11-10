@@ -1,7 +1,53 @@
 \chapter{Implementação em MATLAB}
 \label{ch:matlab}
 
-Neste subcapítulo, são apresentados os resultados obtidos após a junção do modelo físico do robô, elaborado no CoppeliaSim, com as alterações efetuadas no código Matlab.
+Neste subcapítulo, são apresentados os resultados obtidos após a junção do cenário de simulação do CoppeliaSim e a implementação da lógica da cinemática direta e inversa do manipulador robótico MyCobot280 em MATLAB. 
+
+\section{Comunicação entre o MATLAB e o CoppeliaSim}
+\label{sec:comunicacao}
+
+A simulação corre em modo síncrono (\texttt{sim.setStepping(true)}): só avança um passo, de cerca de 50~ms, quando o MATLAB o pede. Assim, enquanto o MATLAB calcula, o simulador fica parado, e os resultados não dependem da velocidade do computador. A Tabela~\ref{tab:api} mostra as funções usadas no movimento do braço, das classes \texttt{mycobot\_interface} e \texttt{simulator\_interface} fornecidas.
+
+\begin{table}[H]
+  \centering
+  \caption{Funções usadas para mover o braço e chamadas à API remota correspondentes.}
+  \label{tab:api}
+  \small
+  \begin{tabular}{p{4.4cm}p{4.0cm}p{3.6cm}}
+    \hline
+    Função MATLAB & Chamada à API & Para quê \\[2pt]
+    \hline
+    \texttt{robot\_arm.set\_joints(q)} & \texttt{sim.setJoint}\allowbreak\texttt{TargetPosition} & enviar os ângulos pretendidos \\
+    \texttt{robot\_arm.get\_joints()} & \texttt{sim.getJointPosition} & ler os ângulos das juntas \\
+    \texttt{sim\_interface.}\allowbreak\texttt{step\_simulation()} & \texttt{sim.step} & avançar um passo \\
+    \texttt{sim\_interface.}\allowbreak\texttt{get\_simulation\_time()} & \texttt{sim.getSimulationTime} & tempo de simulação \\
+    \hline
+  \end{tabular}
+\end{table}
+
+As leituras das juntas são o que os \textit{encoders} do braço real dariam. As posições reais dos objetos, que só o simulador conhece, são usadas apenas nos testes de diagnóstico, para medir os erros.
+
+\section{Organização do código}
+\label{sec:organizacao}
+ 
+\begin{table}[H]
+  \centering
+  \caption{Funções do pacote \texttt{+movement} usadas nesta componente.}
+  \label{tab:funcoes}
+  \begin{tabular}{ll}
+    \hline
+    Função & O que faz \\
+    \hline
+    \texttt{direct\_kin} & cinemática direta (Capítulo~\ref{ch:dir_kin}) \\
+    \texttt{ik\_2dof} & braço planar de 2 DOF, como na aula \\
+    \texttt{inverse\_kin} & cinemática inversa (Capítulo~\ref{ch:inv_kin}) \\
+    \texttt{move\_joints} & movimento suave no espaço das juntas \\
+    \texttt{move\_linear} & movimento da garra em linha reta \\
+    \texttt{go\_home} & regresso à pose inicial a partir de qualquer pose \\
+    \texttt{plan\_vertical} & escolha de uma inclinação para toda uma descida \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \input{tex/Chap/4-Implementação/direct}
 \input{tex/Chap/4-Implementação/inverse}

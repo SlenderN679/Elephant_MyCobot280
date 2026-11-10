@@ -1,43 +1,142 @@
+
 \section{Resumo e verificação}
 \label{sec:dk_resumo}
 
-Juntando os dois planos, a cinemática direta do myCobot 280, com $D = L_6 + L_7$ e os ângulos absolutos da Equação~\eqref{eq:angulos}, é:
+Combinando os resultados obtidos nos planos lateral e horizontal, é possível determinar a posição tridimensional do centro de preensão do myCobot~280 em função dos ângulos articulares e dos parâmetros geométricos do manipulador.
+
+Considerando $D=L_6+L_7$ e os ângulos absolutos definidos na Equação~\eqref{eq:angulos}, a formulação da cinemática direta é dada por:
 
 \begin{equation}
     \boxed{
     \begin{aligned}
-        d &= L_2\cos\theta_A + L_3\cos\theta_B + L_4\cos\theta_C + D\cos q_5\cos\alpha\\
-        h &= L_1 + L_2\sin\theta_A + L_3\sin\theta_B + L_4\sin\theta_C + D\cos q_5\sin\alpha\\
-        l &= L_5 - D\sin q_5\\[4pt]
-        x &= l\cos q_1 - d\sin q_1, \qquad y = l\sin q_1 + d\cos q_1, \qquad z = h
-    \end{aligned}}
+        d &= L_2\cos\theta_A
+        + L_3\cos\theta_B
+        + L_4\cos\theta_C
+        + D\cos q_5\cos\alpha\\
+        h &= L_1
+        + L_2\sin\theta_A
+        + L_3\sin\theta_B
+        + L_4\sin\theta_C
+        + D\cos q_5\sin\alpha\\
+        l &= L_5-D\sin q_5\\[4pt]
+        x &= l\cos q_1-d\sin q_1\\
+        y &= l\sin q_1+d\cos q_1\\
+        z &= h
+    \end{aligned}
+    }
     \label{eq:dk_final}
 \end{equation}
 
-A direção para onde a garra aponta obtém-se da mesma forma, sem os comprimentos: $-\sin q_5$ para o lado, $\cos q_5\cos\alpha$ em frente e $\cos q_5\sin\alpha$ para cima.
+Estas expressões permitem calcular a posição do centro de preensão relativamente ao referencial da base, considerando a configuração articular do manipulador.
 
-\subsection{Resultados para o nosso caso}
+A direção longitudinal da garra pode ser descrita, no referencial associado ao plano do braço, pelas componentes $-\sin q_5$, $\cos q_5\cos\alpha$ e $\cos q_5\sin\alpha$. Para expressar esta direção no referencial da base, é necessário considerar também a rotação da junta J1.
 
-Para verificar o modelo, avaliou-se a cinemática direta em duas configurações.
+\subsection{Resultados para o caso em estudo}
 
-A primeira é a \underline{pose zero}, com todas as juntas a $0^\circ$. Pela Equação~\eqref{eq:angulos}, $\theta_A = \theta_B = \theta_C = 90^\circ$ e $\alpha = 0^\circ$: o braço fica vertical e a garra horizontal, a apontar para $+y$. As equações reduzem-se a
+Para verificar a formulação desenvolvida, a cinemática direta foi avaliada em duas configurações distintas do manipulador.
+
+\subsubsection{Configuração de referência}
+
+A primeira configuração corresponde à posição inicial do manipulador, designada por \textit{pose zero}, na qual todas as juntas apresentam um ângulo de $0^\circ$.
+
+De acordo com a Equação~\eqref{eq:angulos}, obtêm-se:
+
 \begin{equation}
-    d = L_6 + L_7, \qquad h = L_1 + L_2 + L_3 + L_4 \qquad \Rightarrow \qquad (x,\, y,\, z) = (L_5,\; d,\; h)
+    \theta_A=\theta_B=\theta_C=90^\circ,
+    \qquad
+    \alpha=0^\circ
+\end{equation}
+
+Nesta configuração, o braço encontra-se na vertical e a garra permanece orientada horizontalmente, no sentido positivo do eixo $y$.
+
+As expressões da cinemática direta simplificam-se para:
+
+\begin{equation}
+    d=L_6+L_7,
+    \qquad
+    h=L_1+L_2+L_3+L_4
+    \qquad\Rightarrow\qquad
+    (x,y,z)=(L_5,d,h)
     \label{eq:pose_zero}
 \end{equation}
-Com os comprimentos da Tabela~\ref{tab:elos}, obteve-se
-\begin{equation*}
-    (x,\, y,\, z) = (0{,}0646;\ 0{,}1513;\ 0{,}4111)~\mathrm{m}
-\end{equation*}
-com a garra a apontar para $(0, 1, 0)$, o que está de acordo com a geometria do braço.
 
-A segunda é uma \underline{configuração de trabalho}, com a garra a apontar para baixo:
+Substituindo os comprimentos apresentados na Tabela~\ref{tab:elos}, obtém-se:
+
 \begin{equation}
-    \mathbf{q} = (18{,}84^\circ;\ -12{,}74^\circ;\ -94{,}21^\circ;\ 16{,}95^\circ;\ 0^\circ;\ 0^\circ)
+    (x,y,z)=
+    (0{,}0646;\ 0{,}1513;\ 0{,}4111)
+    \ \mathrm{m}
+\end{equation}
+
+A direção longitudinal da garra corresponde ao vetor $(0,1,0)$, sendo o resultado coerente com a geometria definida para a configuração de referência.
+
+\subsubsection{Configuração de trabalho}
+
+A segunda configuração corresponde a uma posição de trabalho em que a garra se encontra orientada verticalmente para baixo.
+
+Os ângulos articulares considerados são:
+
+\begin{equation}
+    \mathbf{q}=
+    (18{,}84^\circ;\
+    -12{,}74^\circ;\
+    -94{,}21^\circ;\
+    16{,}95^\circ;\
+    0^\circ;\
+    0^\circ)
     \label{eq:q_trabalho}
 \end{equation}
-Neste caso, $\theta_A = 77{,}26^\circ$, $\theta_B = -16{,}95^\circ$, $\theta_C = 0^\circ$ e $\alpha = -90^\circ$, ou seja, a garra aponta na vertical para baixo. O plano lateral dá $d = 0{,}1893$~m e $h = 0{,}0600$~m, e o plano horizontal $(x, y, z) = (0{,}0000;\ 0{,}2000;\ 0{,}0600)$~m: a garra fica 20~cm à frente da base, a 6~cm de altura.
 
-Por fim, a posição dada pela Equação~\eqref{eq:dk_final}, com os ângulos lidos das juntas no simulador, foi comparada com a posição real do centro de preensão no CoppeliaSim: a diferença ficou entre 1,2 e 4,0~mm. Verificou-se também que, aplicando a cinemática inversa a um ponto e a cinemática direta ao resultado, se volta ao mesmo ponto.
+Aplicando as relações entre os ângulos articulares e os ângulos absolutos, obtêm-se:
+
+\begin{equation}
+    \theta_A=77{,}26^\circ,\qquad
+    \theta_B=-16{,}95^\circ,\qquad
+    \theta_C=0^\circ,\qquad
+    \alpha=-90^\circ
+\end{equation}
+
+Substituindo estes valores nas equações do plano lateral, obtêm-se:
+
+\begin{equation}
+    d\approx0{,}1893\ \mathrm{m},
+    \qquad
+    h\approx0{,}0600\ \mathrm{m}
+\end{equation}
+
+Considerando a rotação da base e o desvio lateral do manipulador, a posição tridimensional do centro de preensão é:
+
+\begin{equation}
+    (x,y,z)\approx
+    (0{,}0000;\ 0{,}2000;\ 0{,}0600)
+    \ \mathrm{m}
+\end{equation}
+
+Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
+
+\subsection{Validação no CoppeliaSim}
+
+A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, no qual a posição calculada pela cinemática direta é comparada com a posição do centro de preensão obtida diretamente no CoppeliaSim.
+
+Para esta comparação, são utilizados os ângulos articulares lidos do manipulador no simulador, permitindo avaliar a correspondência entre o modelo matemático desenvolvido e a geometria do robô simulado.
+
+O erro de posicionamento é calculado através da distância euclidiana entre as duas posições:
+
+\begin{equation}
+    e_{\mathrm{modelo}}=
+    1000\left\|
+    \mathbf{p}_{\mathrm{DK}}-
+    \mathbf{p}_{\mathrm{sim}}
+    \right\|_2
+    \label{eq:erro_modelo}
+\end{equation}
+
+onde $\mathbf{p}_{\mathrm{DK}}$ representa a posição calculada pela cinemática direta e $\mathbf{p}_{\mathrm{sim}}$ corresponde à posição obtida no CoppeliaSim, ambas expressas em metros. O fator $1000$ permite apresentar o erro em milímetros.
+
+Nos resultados reportados para as configurações testadas, as diferenças situaram-se entre $1{,}2$ mm e $4{,}0$ mm, indicando uma boa aproximação entre o modelo geométrico e o manipulador simulado.
+
+Adicionalmente, verificou-se a consistência entre as formulações de cinemática direta e inversa, aplicando a cinemática inversa a uma posição pretendida e utilizando posteriormente os ângulos obtidos na cinemática direta.
+
+Os resultados permitiram recuperar as posições inicialmente consideradas, dentro da precisão numérica utilizada, demonstrando a coerência matemática entre os dois modelos.
 
 \clearpage
