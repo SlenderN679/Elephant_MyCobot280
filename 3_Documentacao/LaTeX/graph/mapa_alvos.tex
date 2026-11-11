@@ -1,0 +1,42 @@
+% Peças da demonstração vistas de cima, no referencial da base (cm); limites de alcance a 2 cm da mesa
+% Feita para meia largura de página (cerca de 7,5 cm), sem \resizebox
+\begin{tikzpicture}[scale=0.084, >=stealth, every node/.style={font=\scriptsize}]
+  \begin{scope}
+    \clip (-43,-12) rectangle (43,43);
+    \fill[red!10, even odd rule] (0,0) circle (41) (0,0) circle (39);
+    \fill[green!8, even odd rule] (0,0) circle (34) (0,0) circle (28.7);
+    \fill[green!28, even odd rule] (0,0) circle (28.7) (0,0) circle (6.46);
+    \draw[green!50!black] (0,0) circle (28.7);
+    \draw[green!50!black, dashed] (0,0) circle (34);
+    \draw[red!60!black, dashed] (0,0) circle (39) (0,0) circle (41);
+    \draw[gray] (0,0) circle (6.46);
+  \end{scope}
+  % eixos
+  \draw[->, thin] (-43,0) -- (45,0) node[below left=0pt and -2pt] {$x$};
+  \draw[->, thin] (0,-12) -- (0,45) node[left] {$y$};
+  \fill[gray!50] (0,0) circle (2); \draw (0,0) circle (2);
+  % raios
+  \foreach \r/\c in {28.7/green!35!black, 34/green!35!black, 40/red!60!black}
+    \node[\c, fill=white, inner sep=0.5pt, font=\tiny] at (14:\r) {\pgfmathprintnumber[precision=0]{\r}};
+  % peças alcançadas
+  \foreach \x/\y/\c/\n/\p in {
+      6.61/19.99/red!75!black/vermelho 1/right,
+      -11.10/-3.72/red!75!black/vermelho 2/below,
+      -10.79/22.41/orange!90!black/laranja/left,
+      -3.35/14.97/yellow!70!black/amarelo/right,
+      -12.94/5.43/green!50!black/verde/above,
+      -14.73/3.32/blue!70!black/azul/left,
+      1.63/27.44/magenta!80!black/rosa/right} {
+    \filldraw[fill=\c, draw=black, thin] (\x,\y) circle (1.3);
+    \node[\p=1pt, inner sep=1pt] at (\x,\y) {\n};
+  }
+  % legenda
+  \begin{scope}[shift={(-42,-17)}]
+    \filldraw[fill=green!28, draw=green!50!black] (0,-2.5) rectangle (3,0.5);
+    \node[right] at (3.5,-1) {$\psi = 90^\circ$};
+    \filldraw[fill=green!8, draw=green!50!black, dashed] (28,-2.5) rectangle (31,0.5);
+    \node[right] at (31.5,-1) {garra inclinada};
+    \filldraw[fill=red!10, draw=red!60!black, dashed] (0,-8.5) rectangle (3,-5.5);
+    \node[right] at (3.5,-7) {4 peças rejeitadas};
+  \end{scope}
+\end{tikzpicture}

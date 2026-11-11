@@ -1,2 +1,65 @@
-\section{Resultados}
-\label{sec:resultados}
+\section{Cinemática direta}
+\label{sec:cin_dir}
+
+A função \texttt{direct\_kin} serve para implementar a Equação~\eqref{eq:dk_final}, seguindo a mesma ordem de dedução utilizada anteriormente.
+
+\begin{lstlisting}[language=Matlab, caption={Função \texttt{direct\_kin}}, label={lst:dir_kin}]
+function [tip, approach] = direct_kin(q, Links)
+    q = q(:)';
+    if numel(q) == 4
+        q = [q 0 0];                % bloquear J5 e J6 
+    end
+    L = Links;
+    D = L(6) + L(7);    
+
+    thetaA = q(2) + pi/2;           % elo L2 (J2 -> J3)
+    thetaB = thetaA + q(3);         % elo L3 (J3 -> J4)
+    thetaC = thetaB + q(4);         % elo L4 (J4 -> J5)
+    alpha  = thetaC - pi/2;         % garra: perpendicular a L4 (-90 graus = para baixo)
+
+    % J2 (ombro)
+    d = 0;                          h = L(1);
+    % J3 (cotovelo)
+    d = d + L(2)*cos(thetaA);       h = h + L(2)*sin(thetaA);
+    % J4 (pulso)
+    d = d + L(3)*cos(thetaB);       h = h + L(3)*sin(thetaB);
+    % J5
+    d = d + L(4)*cos(thetaC);       h = h + L(4)*sin(thetaC);
+    % centro de preensao
+    d = d + D*cos(q(5))*cos(alpha); h = h + D*cos(q(5))*sin(alpha);
+    l = L(5) - D*sin(q(5));        
+
+    x = l*cos(q(1)) + d*cos(q(1) + pi/2);  % = l*cos(q1) - d*sin(q1)
+    y = l*sin(q(1)) + d*sin(q(1) + pi/2);  % = l*sin(q1) + d*cos(q1)
+    z = h;
+    tip = [x; y; z];
+
+    aL = -sin(q(5));                % componente lateral
+    aD =  cos(q(5))*cos(alpha);     % componente em frente
+    aH =  cos(q(5))*sin(alpha);     % componente para cima
+    approach = [aL*cos(q(1)) + aD*cos(q(1) + pi/2);
+                aL*sin(q(1)) + aD*sin(q(1) + pi/2);
+                aH];
+end
+\end{lstlisting}
+
+\begin{table}[H]
+  \centering
+  \caption{Entradas e saídas de \texttt{direct\_kin}.}
+  \label{tab:direct_io}
+  \begin{tabular}{ll}
+    \toprule
+    Argumento & Significado \\
+    \midrule
+    \multicolumn{2}{l}{\textit{Entradas}} \\
+    \texttt{q}     & ângulos das juntas [rad], $1\times4$ ou $1\times6$ \\
+    \texttt{Links} & os sete comprimentos da Tabela~\ref{tab:elos} [m] \\
+    \midrule
+    \multicolumn{2}{l}{\textit{Saídas}} \\
+    \texttt{tip}      & posição $3\times1$ do centro de preensão, referencial da base [m] \\
+    \texttt{approach} & vetor unitário da direção da garra \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Esta função é utilizada em vários pontos da execução para identificar a posição da garra a partir das leituras das juntas

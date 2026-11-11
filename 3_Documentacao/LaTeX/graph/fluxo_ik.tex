@@ -1,0 +1,41 @@
+% Fluxograma da inverse_kin
+\begin{tikzpicture}[node distance=5mm and 8mm, >=Stealth,
+    passo/.style={rectangle, rounded corners=2pt, draw, fill=blue!6, align=center, font=\footnotesize, minimum width=46mm, inner sep=3pt},
+    teste/.style={diamond, aspect=2.6, draw, fill=orange!10, align=center, font=\footnotesize, inner sep=0.5pt},
+    fim/.style={rectangle, rounded corners=6pt, draw, align=center, font=\footnotesize, inner sep=3pt},
+    seta/.style={->, thin},
+    every node/.style={font=\footnotesize}]
+
+  \node[fim, fill=gray!12] (in) {alvo $(x, y, z)$ no referencial da base};
+  \node[teste, below=of in] (tr) {$r = \sqrt{x^2 + y^2} > L_5$?};
+  \node[passo, below=of tr] (q1) {plano horizontal:\\$d = \sqrt{r^2 - L_5^2}$, \quad $q_1 = \mathrm{atan2}(y, x) - \mathrm{atan2}(d, L_5)$};
+  \node[passo, below=of q1] (psi) {inclinação inicial $\psi = 90^\circ$ (garra vertical)};
+  \node[passo, below=of psi] (pulso) {ponto do pulso $(x_{3d},\, y_{3d})$ e distância $r_3$};
+  \node[teste, below=of pulso] (tr3) {$|L_2 - L_3| \le r_3 \le L_2 + L_3$?};
+  \node[passo, below=of tr3] (cos) {lei dos cossenos, cotovelo para cima:\\$\theta_1,\ \theta_2,\ \theta_3 \;\Rightarrow\; q_2,\ q_3,\ q_4$};
+  \node[teste, below=of cos] (lim) {condições de\\existência?};
+  \node[passo, below=of lim] (bis) {se $\psi \neq 90^\circ$: bisseção (15 iterações)\\até à inclinação válida mais perto de $90^\circ$};
+  \node[passo, below=of bis] (q6) {$q_5 = 0$, \quad $q_6$ a partir da rotação $\gamma$ do objeto};
+  \node[fim, fill=green!15, below=of q6] (ok) {solução $q_1 \dots q_6$};
+
+  \node[passo, fill=orange!6, minimum width=30mm, right=14mm of tr3] (prox) {próxima inclinação:\\$\psi = 95^\circ, 85^\circ, 100^\circ,$\\$80^\circ, \dots$ em $[30^\circ, 135^\circ]$};
+  \node[teste] (acab) at (prox |- pulso) {restam\\inclinações?};
+  \node[fim, fill=red!12, right=14mm of tr] (no) {alvo inalcançável:\\o braço não se move};
+
+  \draw[seta] (in) -- (tr);
+  \draw[seta] (tr) -- node[right] {sim} (q1);
+  \draw[seta] (tr) -- node[above] {não} (no);
+  \draw[seta] (q1) -- (psi);
+  \draw[seta] (psi) -- (pulso);
+  \draw[seta] (pulso) -- (tr3);
+  \draw[seta] (tr3) -- node[right] {sim} (cos);
+  \draw[seta] (tr3) -- node[above] {não} (prox.west);
+  \draw[seta] (cos) -- (lim);
+  \draw[seta] (lim) -- node[right] {sim} (bis);
+  \draw[seta] (lim.east) -| node[pos=0.25, above] {não} (prox.south);
+  \draw[seta] (bis) -- (q6);
+  \draw[seta] (q6) -- (ok);
+  \draw[seta] (prox) -- (acab);
+  \draw[seta] (acab) -- node[right] {não} (no);
+  \draw[seta] (acab.west) -- node[above] {sim} (pulso.east);
+\end{tikzpicture}

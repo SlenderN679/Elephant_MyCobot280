@@ -6,9 +6,16 @@
 \usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{titlesec}
+\usepackage[portuguese]{babel}
+\usepackage{booktabs}
+\usepackage{lmodern}
+
 \definecolor{titulo}{RGB}{0,70,120}   % cor dos títulos (muda à vontade)
 
 % Secção (3.4): maior, a cor, com uma linha por baixo
@@ -25,6 +32,33 @@
 \titleformat{\subsubsection}
   {\normalsize\bfseries\itshape}{}{0em}{}
   
+\lstdefinestyle{codigo}{
+    basicstyle=\ttfamily\scriptsize,      
+    columns=fullflexible,                 
+    keepspaces=true,                      
+    keywordstyle=\color{blue!70!black}\bfseries,
+    commentstyle=\color{green!45!black}\itshape,
+    stringstyle=\color{red!65!black},
+    numbers=left, numberstyle=\tiny\color{gray}, numbersep=4pt,                        
+    frame=single,
+    framesep=2pt,                         
+    aboveskip=4pt, belowskip=2pt,         
+    xleftmargin=2pt, xrightmargin=2pt,    
+    rulecolor=\color{gray!40},
+    backgroundcolor=\color{gray!6},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=2,                            
+    captionpos=b,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+             {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {â}{{\^a}}1 {ê}{{\^e}}1
+}
+\lstset{style=codigo}
+\captionsetup[lstlisting]{skip=2pt}
+
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Lista de Códigos}
+
 \usetikzlibrary{calc,positioning}
 \hypersetup{
     colorlinks,

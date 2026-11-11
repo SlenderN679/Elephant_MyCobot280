@@ -1,142 +1,50 @@
+\section{Resumo}
+\label{sec:ik_resumo}
 
-\section{Resumo e verificação}
-\label{sec:dk_resumo}
-
-Combinando os resultados obtidos nos planos lateral e horizontal, é possível determinar a posição tridimensional do centro de preensão do myCobot~280 em função dos ângulos articulares e dos parâmetros geométricos do manipulador.
-
-Considerando $D=L_6+L_7$ e os ângulos absolutos definidos na Equação~\eqref{eq:angulos}, a formulação da cinemática direta é dada por:
-
+Juntando os dois planos, a cinemática inversa do myCobot~280, para um alvo $(x, y, z)$ no referencial da base e uma inclinação da garra $\psi$, com $D = L_6 + L_7$, $L_A = L_2$ e $L_B = L_3$, é:
 \begin{equation}
     \boxed{
     \begin{aligned}
-        d &= L_2\cos\theta_A
-        + L_3\cos\theta_B
-        + L_4\cos\theta_C
-        + D\cos q_5\cos\alpha\\
-        h &= L_1
-        + L_2\sin\theta_A
-        + L_3\sin\theta_B
-        + L_4\sin\theta_C
-        + D\cos q_5\sin\alpha\\
-        l &= L_5-D\sin q_5\\[4pt]
-        x &= l\cos q_1-d\sin q_1\\
-        y &= l\sin q_1+d\cos q_1\\
-        z &= h
-    \end{aligned}
-    }
-    \label{eq:dk_final}
+        &\text{plano horizontal:} && r = \sqrt{x^2 + y^2}, \quad d = \sqrt{r^2 - L_5^2}\\
+        & && q_1 = \operatorname{atan2}(y, x) - \operatorname{atan2}(d, L_5)\\[4pt]
+        &\text{ponto do pulso:} && \alpha_3 = -\psi\\
+        & && x_{3d} = d - D\cos\alpha_3 - L_4\cos(\alpha_3 + 90^\circ)\\
+        & && y_{3d} = (z - L_1) - D\sin\alpha_3 - L_4\sin(\alpha_3 + 90^\circ)\\[4pt]
+        &\text{braço de 2 DOF:} && r_3 = \sqrt{x_{3d}^2 + y_{3d}^2}, \quad \alpha_1 = \operatorname{atan2}(y_{3d}, x_{3d})\\
+        & && \beta_1 = \arccos\frac{L_A^2 + r_3^2 - L_B^2}{2L_A r_3}\\
+        & && \beta_2 = \arccos\frac{L_A^2 + L_B^2 - r_3^2}{2L_A L_B}\\
+        & && \theta_1 = \alpha_1 + \beta_1, \quad \theta_2 = -(180^\circ - \beta_2)\\
+        & && \theta_3 = (\alpha_3 + 90^\circ) - \theta_1 - \theta_2\\[4pt]
+        &\text{juntas:} && q_2 = \theta_1 - 90^\circ, \quad q_3 = \theta_2, \quad q_4 = \theta_3, \quad q_5 = 0\\
+        & && q_6 = \operatorname{mod}(q_1 - \gamma + 45^\circ,\ 90^\circ) - 45^\circ
+    \end{aligned}}
+    \label{eq:ik_final}
 \end{equation}
 
-Estas expressões permitem calcular a posição do centro de preensão relativamente ao referencial da base, considerando a configuração articular do manipulador.
+A solução existe se as três condições seguintes se verificarem:
+\begin{itemize}
+    \item o alvo está fora do desvio lateral: $r > L_5$;
+    \item o pulso está ao alcance dos dois elos: $|L_2 - L_3| \leq r_3 \leq L_2 + L_3$;
+    \item as juntas ficam dentro dos limites, o cotovelo não dobra mais de $140^\circ$ e o cotovelo, J4 e J5 ficam acima da base.
+\end{itemize}
 
-A direção longitudinal da garra pode ser descrita, no referencial associado ao plano do braço, pelas componentes $-\sin q_5$, $\cos q_5\cos\alpha$ e $\cos q_5\sin\alpha$. Para expressar esta direção no referencial da base, é necessário considerar também a rotação da junta J1.
+Como a inclinação $\psi$ é o grau de liberdade escolhido, o algoritmo completo é:
+\begin{enumerate}
+    \item passar o alvo do referencial do mundo para o da base (Equação~\ref{eq:mundo_base});
+    \item calcular $r$, $d$ e $q_1$; se $r \leq L_5$, o alvo é inalcançável;
+    \item para $\psi = 90^\circ$, calcular o ponto do pulso, o braço de 2 DOF e as juntas pela Equação~\eqref{eq:ik_final}, e verificar as condições de existência;
+    \item se não houver solução, repetir o passo 3 para $\psi = 95^\circ, 100^\circ, \dots, 135^\circ$ (para a base) e depois $\psi = 85^\circ, 80^\circ, \dots, 30^\circ$ (para fora), até encontrar uma inclinação válida;
+    \item refinar por bisseção, entre a inclinação válida e a anterior, para ficar com a inclinação válida mais próxima de $90^\circ$;
+    \item se nenhuma inclinação tiver solução, o alvo é declarado inalcançável.
+\end{enumerate}
 
-\subsection{Resultados para o caso em estudo}
+Ao contrário da cinemática direta, que dá sempre uma única posição, a cinemática inversa pode não ter solução, e para cada inclinação tem duas, das quais se usa a de cotovelo para cima. Aplicando a cinemática direta (Equação~\ref{eq:dk_final}) às juntas obtidas, volta-se ao alvo pedido, como se mostra na Secção~\ref{sec:ik_resultados}.
 
-Para verificar a formulação desenvolvida, a cinemática direta foi avaliada em duas configurações distintas do manipulador.
-
-\subsubsection{Configuração de referência}
-
-A primeira configuração corresponde à posição inicial do manipulador, designada por \textit{pose zero}, na qual todas as juntas apresentam um ângulo de $0^\circ$.
-
-De acordo com a Equação~\eqref{eq:angulos}, obtêm-se:
-
-\begin{equation}
-    \theta_A=\theta_B=\theta_C=90^\circ,
-    \qquad
-    \alpha=0^\circ
-\end{equation}
-
-Nesta configuração, o braço encontra-se na vertical e a garra permanece orientada horizontalmente, no sentido positivo do eixo $y$.
-
-As expressões da cinemática direta simplificam-se para:
-
-\begin{equation}
-    d=L_6+L_7,
-    \qquad
-    h=L_1+L_2+L_3+L_4
-    \qquad\Rightarrow\qquad
-    (x,y,z)=(L_5,d,h)
-    \label{eq:pose_zero}
-\end{equation}
-
-Substituindo os comprimentos apresentados na Tabela~\ref{tab:elos}, obtém-se:
-
-\begin{equation}
-    (x,y,z)=
-    (0{,}0646;\ 0{,}1513;\ 0{,}4111)
-    \ \mathrm{m}
-\end{equation}
-
-A direção longitudinal da garra corresponde ao vetor $(0,1,0)$, sendo o resultado coerente com a geometria definida para a configuração de referência.
-
-\subsubsection{Configuração de trabalho}
-
-A segunda configuração corresponde a uma posição de trabalho em que a garra se encontra orientada verticalmente para baixo.
-
-Os ângulos articulares considerados são:
-
-\begin{equation}
-    \mathbf{q}=
-    (18{,}84^\circ;\
-    -12{,}74^\circ;\
-    -94{,}21^\circ;\
-    16{,}95^\circ;\
-    0^\circ;\
-    0^\circ)
-    \label{eq:q_trabalho}
-\end{equation}
-
-Aplicando as relações entre os ângulos articulares e os ângulos absolutos, obtêm-se:
-
-\begin{equation}
-    \theta_A=77{,}26^\circ,\qquad
-    \theta_B=-16{,}95^\circ,\qquad
-    \theta_C=0^\circ,\qquad
-    \alpha=-90^\circ
-\end{equation}
-
-Substituindo estes valores nas equações do plano lateral, obtêm-se:
-
-\begin{equation}
-    d\approx0{,}1893\ \mathrm{m},
-    \qquad
-    h\approx0{,}0600\ \mathrm{m}
-\end{equation}
-
-Considerando a rotação da base e o desvio lateral do manipulador, a posição tridimensional do centro de preensão é:
-
-\begin{equation}
-    (x,y,z)\approx
-    (0{,}0000;\ 0{,}2000;\ 0{,}0600)
-    \ \mathrm{m}
-\end{equation}
-
-Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
-
-\subsection{Validação no CoppeliaSim}
-
-A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, no qual a posição calculada pela cinemática direta é comparada com a posição do centro de preensão obtida diretamente no CoppeliaSim.
-
-Para esta comparação, são utilizados os ângulos articulares lidos do manipulador no simulador, permitindo avaliar a correspondência entre o modelo matemático desenvolvido e a geometria do robô simulado.
-
-O erro de posicionamento é calculado através da distância euclidiana entre as duas posições:
-
-\begin{equation}
-    e_{\mathrm{modelo}}=
-    1000\left\|
-    \mathbf{p}_{\mathrm{DK}}-
-    \mathbf{p}_{\mathrm{sim}}
-    \right\|_2
-    \label{eq:erro_modelo}
-\end{equation}
-
-onde $\mathbf{p}_{\mathrm{DK}}$ representa a posição calculada pela cinemática direta e $\mathbf{p}_{\mathrm{sim}}$ corresponde à posição obtida no CoppeliaSim, ambas expressas em metros. O fator $1000$ permite apresentar o erro em milímetros.
-
-Nos resultados reportados para as configurações testadas, as diferenças situaram-se entre $1{,}2$ mm e $4{,}0$ mm, indicando uma boa aproximação entre o modelo geométrico e o manipulador simulado.
-
-Adicionalmente, verificou-se a consistência entre as formulações de cinemática direta e inversa, aplicando a cinemática inversa a uma posição pretendida e utilizando posteriormente os ângulos obtidos na cinemática direta.
-
-Os resultados permitiram recuperar as posições inicialmente consideradas, dentro da precisão numérica utilizada, demonstrando a coerência matemática entre os dois modelos.
+%\begin{figure}[H]
+%  \centering
+%  \input{graph/fluxo_ik}
+%  \caption{Fluxograma da cinemática inversa: plano horizontal, procura da inclinação da garra e verificação das condições de existência.}
+%  \label{fig:fluxo_ik}
+%\end{figure}
 
 \clearpage

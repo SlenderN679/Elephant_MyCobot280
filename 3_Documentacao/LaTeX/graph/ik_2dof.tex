@@ -5,38 +5,37 @@
     junta/.style={circle, draw, fill=white, line width=1pt, inner sep=2.2pt},
     cota/.style={gray!70!black, thin},
     ang/.style={->, thin}]
-  
-    % Coordenadas
-    \coordinate (J2) at (0,0);
-    \coordinate (J3) at (3.8,10.3);
-    \coordinate (J4) at (13.2,8.7);
-    \coordinate (J5) at (20.5,8.7);
-    \coordinate (G)  at (20.5,-6.4);
+  % pontos: ombro (J2), cotovelo (J3), pulso (J4), J5 e alvo (centro de preensão)
+  \coordinate (J2) at (0,0);
+  \coordinate (J3) at (3.8,10.3);
+  \coordinate (J4) at (13.2,8.7);
+  \coordinate (J5) at (20.5,8.7);
+  \coordinate (G)  at (20.5,-6.4);
 
-  % Eixos
-    \draw[->, thin] (-3,0) -- (25,0) node[below left] {$d$};
-    \draw[->, thin] (0,-8) -- (0,15) node[left] {$h - L_1$};
+  % eixos com origem no ombro
+  \draw[->, thin] (-3,0) -- (25,0) node[below left] {$d$};
+  \draw[->, thin] (0,-8) -- (0,15) node[left] {$h - L_1$};
 
-  % Último elo
-    \draw[line width=1.6pt, dashed, gray] (J4) -- node[below] {$L_4$} (J5) -- node[right] {$D$} (G);
-    \fill (G) circle (6pt); \node[below right=1pt and 3pt] at (G) {alvo $(d,\, z - L_1)$};
-    \draw[cota, dashed] (J5) -- ++(4.5,0);
-    \draw[ang] ($(J5)+(3,0)$) arc[start angle=0, end angle=-90, radius=3] node[pos=0.5, right=2pt] {$\alpha_3$};
+  % último elo (imposto pelo ângulo do pulso), a tracejado
+  \draw[line width=1.6pt, dashed, gray] (J4) -- node[above] {$L_4$} (J5) -- node[right] {$D$} (G);
+  \fill (G) circle (6pt); \node[below right=1pt and 3pt] at (G) {alvo $(d,\, z - L_1)$};
+  \draw[cota, dashed] (J5) -- ++(4.5,0);
+  \draw[ang] ($(J5)+(3,0)$) arc[start angle=0, end angle=-90, radius=3] node[pos=0.5, right=2pt] {$\alpha_3$};
 
-  % Braços
-    \draw[elo] (J2) -- node[left] {$L_A = L_2$} (J3);
-    \draw[elo] (J3) -- node[above] {$L_B = L_3$} (J4);
-    \draw[cota, dashed] (J2) -- node[pos=0.6, below right=-1pt, black] {$r_3$} (J4);
+  % braço de 2 DOF
+  \draw[elo] (J2) -- node[left] {$L_A = L_2$} (J3);
+  \draw[elo] (J3) -- node[above] {$L_B = L_3$} (J4);
+  \draw[cota, dashed] (J2) -- node[pos=0.6, below right=-1pt, black] {$r_3$} (J4);
 
-  % Ângulos
-    \draw[ang] (6,0) arc[start angle=0, end angle=33.4, radius=6] node[pos=0.5, right=1pt] {$\alpha_1$};
-    \draw[ang] (33.4:4) arc[start angle=33.4, end angle=70, radius=4] node[pos=0.5, above right=0pt] {$\beta_1$};
-    \draw[ang] ($(J3)+(249.8:2.5)$) arc[start angle=249.8, end angle=350.3, radius=2.5] node[pos=0.55, below=1pt] {$\beta_2$};
+  % ângulos
+  \draw[ang] (6,0) arc[start angle=0, end angle=33.4, radius=6] node[pos=0.5, right=1pt] {$\alpha_1$};
+  \draw[ang] (33.4:4) arc[start angle=33.4, end angle=70, radius=4] node[pos=0.5, above right=0pt] {$\beta_1$};
+  \draw[ang] ($(J3)+(249.8:2.5)$) arc[start angle=249.8, end angle=350.3, radius=2.5] node[pos=0.55, below=1pt] {$\beta_2$};
 
-  % Juntas
-    \node[junta] at (J2) {}; \node[below left=2pt] at (J2) {J2 (ombro)};
-    \node[junta] at (J3) {}; \node[above=4pt] at (J3) {J3 (cotovelo)};
-    \node[junta] at (J4) {}; \node[above right=3pt and -6pt] at (J4) {J4: $(x_{3d},\, y_{3d})$};
-    \node[junta] at (J5) {}; \node[above=4pt] at (J5) {J5};
-    
+  % juntas
+  \node[junta] at (J2) {}; \node[below left=2pt] at (J2) {J2 (ombro)};
+  \node[junta] at (J3) {}; \node[above=4pt] at (J3) {J3 (cotovelo)};
+  \node[junta] at (J4) {}; \node[above=5pt] at (J4) {J4};
+  \node[below right=2pt and -2pt, font=\footnotesize] at (J4) {$(x_{3d},\, y_{3d})$};
+  \node[junta] at (J5) {}; \node[above right=3pt and 0pt] at (J5) {J5};
 \end{tikzpicture}

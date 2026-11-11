@@ -1,2 +1,237 @@
-\section{Discussão}
-\label{sec:disc}
+\section{Cinemática inversa}
+\label{sec:cin_inv}
+
+A função \texttt{inverse\_kin} serve para implementar a Equação~\eqref{eq:ik_final}, recorrendo ainda á função \texttt{ik\_2dof} para calcular a cinemática para J2 e J3 e \texttt{solve\_pitch} para calcular a inclinação da garra.
+
+\begin{lstlisting}[language=Matlab, caption={Função \texttt{inverse\_kin}}, label={lst:inv_kin}]
+function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch, family, fixedPitch)
+    if nargin < 5 || isempty(qMin)
+        qMin = deg2rad([-165 -165 -165 -165 -165 -175]); % valores de defeito para limites min
+    end
+    if nargin < 6 || isempty(qMax)
+        qMax = deg2rad([ 165  165  165  165  165  175]); % valores de defeito para limites max
+    end
+    if nargin < 7
+        objYaw = [];                                     % valor de defeito para a rotação do objeto
+    end
+    if nargin < 8 || isempty(prefPitch) 
+        prefPitch = pi/2;                                % valor de defeito para a inclinação do objeto
+    end
+    if nargin < 9 || isempty(family)
+        family = 'up';                                   % por defeito: cotovelo para cima
+    end
+    if nargin < 10 || isempty(fixedPitch)
+        fixedPitch = false;                              % por defeito procura a inclinação
+    end
+    
+    L  = Links;
+    D  = L(6) + L(7);                  % eixo de J5 -> centro de preensão (ao longo da garra)
+    armJoints   = zeros(1, 6);
+    isReachable = false;
+    pitchUsed   = NaN;
+
+    r = hypot(x, y);
+    if r <= L(5)
+        return;                         % dentro do desvio lateral: inalcançável
+    end
+    dFwd = sqrt(r^2 - L(5)^2);          % d: distância em frente, no plano do braço
+    hJ2  = z - L(1);                    % h: altura relativa a J2 (ombro)
+
+    ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
+    PITCH_MAX = deg2rad(135);           % garra no máximo 45 graus inclinada para a base
+    PITCH_MIN = deg2rad(30);            % garra sempre pelo menos 30 graus abaixo da horizontal
+                                        % (a apontar para cima não serve para apanhar nada)
+    STEP      = deg2rad(5);
+
+    if ~strcmp(family, 'down')
+        family = 'up';                   % qualquer outro valor: cotovelo para cima
+    end
+    if fixedPitch
+        dList = 0;                       % só a inclinação pedida
+    else
+        dList = 0:STEP:(PITCH_MAX - PITCH_MIN);
+    end
+
+    for d = dList
+        % candidatos com desvio d da inclinação preferida: primeiro para a
+        % base (+d), depois para fora (-d)
+        if d == 0
+            cands = prefPitch;
+        else
+            cands = [prefPitch + d, prefPitch - d];
+        end
+        for psi = cands
+            if ~fixedPitch && (psi > PITCH_MAX || psi < PITCH_MIN)
+                continue;
+            end
+            best = solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
+            if isempty(best)
+                continue;
+            end
+
+            if d > 0
+                good = psi;  bad = psi - sign(psi - prefPitch)*STEP;
+                for it = 1:15
+                    mid = (good + bad)/2;
+                    qm  = solve_pitch(mid, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
+                    if isempty(qm), bad = mid; else, good = mid; best = qm; end
+                end
+                psi = good;
+            end
+
+            q6 = 0;
+            if ~isempty(objYaw) && psi > deg2rad(45)
+                % os dedos fecham segundo a direção J1 - J6 (módulo 180 graus); um
+                % cubo é simétrico a cada 90 graus -> escolhe-se a menor rotação de J6
+                q6 = mod(best(1) - objYaw + pi/4, pi/2) - pi/4;
+            end
+            armJoints   = [best 0 q6];
+            isReachable = true;
+            pitchUsed   = psi;
+            return;
+        end
+    end
+end
+
+\end{lstlisting}
+
+\begin{table}[H]
+  \centering
+  \caption{Entradas e saídas de \texttt{inverse\_kin}.}
+  \label{tab:inverse_io}
+  \begin{tabular}{lp{8.5cm}}
+    \hline
+    Argumento & Significado \\
+    \hline
+    \texttt{x, y, z} & posição desejada do centro de preensão, referencial da base [m] \\
+    \texttt{Links, qMin, qMax} & comprimentos e limites das juntas \\
+    \texttt{objYaw} & (opcional) rotação \textit{'yaw'} do cubo, para a junta 6 \\
+    \texttt{prefPitch} & (opcional) inclinação preferida $\psi$; por defeito $90^\circ$ \\
+    \texttt{family} & (opcional) \texttt{'up'} (por defeito) ou \texttt{'down'} \\
+    \texttt{fixedPitch} & (opcional) usar só a inclinação pedida \\
+    \texttt{armJoints} & ângulos $[q_1 \dots q_6]$ [rad] \\
+    \texttt{isReachable} & verdadeiro se existe solução válida \\
+    \texttt{pitchUsed} & inclinação usada [rad] \\
+    \hline
+  \end{tabular}
+\end{table}
+
+% ---------- fila 1: listagens ----------
+\noindent
+\begin{minipage}[t]{0.485\textwidth}
+\begin{lstlisting}[language=Matlab, basicstyle=\ttfamily\scriptsize,
+                   caption={Função \texttt{ik\_2dof}}, label={lst:ik2dof}]
+function [theta1, theta2, isReachable] = ...
+    ik_2dof(xd, yd, LA, LB, solution_type)
+
+    theta1 = NaN;  theta2 = NaN;
+    isReachable = false;
+
+    r      = sqrt(xd^2 + yd^2);
+    alpha1 = atan2(yd, xd);
+
+    arg1 = (LA^2 + r^2 - LB^2) / (2*LA*r);
+    arg2 = (LA^2 + LB^2 - r^2) / (2*LA*LB);
+    if r == 0 || abs(arg1) > 1 ...
+              || abs(arg2) > 1
+        return;   % fora do alcance dos elos
+    end
+    beta1 = acos(arg1);
+    beta2 = acos(arg2);
+
+    if strcmp(solution_type, 'down')
+        % solucao 1: cotovelo para baixo
+        theta1 = alpha1 - beta1;
+        theta2 = pi - beta2;
+    else
+        % solucao 2: cotovelo para cima
+        theta1 = alpha1 + beta1;
+        theta2 = -(pi - beta2);
+    end
+
+    isReachable = true;
+end
+\end{lstlisting}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\begin{lstlisting}[language=Matlab, basicstyle=\ttfamily\scriptsize,
+                   caption={Função \texttt{solve\_pitch}}, label={lst:solvepitch}]
+function q = solve_pitch(psi, x, y, ...
+        dFwd, hJ2, L, D, qMin, qMax, ...
+        elbowMax, family)
+    wrap = @(t) atan2(sin(t), cos(t));
+    q = [];
+    q1 = atan2(y, x) - atan2(dFwd, L(5));
+    alpha3 = -psi;
+    x3d = dFwd - D*cos(alpha3) ...
+               - L(4)*cos(alpha3 + pi/2);
+    y3d = hJ2  - D*sin(alpha3) ...
+               - L(4)*sin(alpha3 + pi/2);
+    [theta1, theta2, ok] = ...
+        movement.ik_2dof(x3d, y3d, ...
+                         L(2), L(3), family);
+    if ~ok
+        return;          % fora de alcance
+    end
+    theta3 = (alpha3 + pi/2) - theta1 - theta2;
+    q = wrap([q1, theta1 - pi/2, ...
+              theta2, theta3]);
+    zElbow = L(1) + L(2)*cos(q(2));
+    zJ4    = zElbow + L(3)*cos(q(2)+q(3));
+    zJ5    = zJ4 + L(4)*cos(q(2)+q(3)+q(4));
+    if any(q < qMin(1:4)) ...
+            || any(q > qMax(1:4)) ...
+            || abs(q(3)) > elbowMax ...
+            || min([zElbow zJ4 zJ5]) <= 0
+        q = [];
+    end
+end
+\end{lstlisting}
+\end{minipage}
+
+\medskip
+% ---------- fila 2: tabelas ----------
+\noindent
+\begin{minipage}[t]{0.485\textwidth}
+\centering\footnotesize
+\captionof{table}{Argumentos de \texttt{ik\_2dof}.}
+\label{tab:ik2dof_io}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}ll@{}}
+  \toprule
+  \multicolumn{2}{@{}l}{\textit{Entradas}} \\
+  \texttt{xd, yd}         & ponto a partir do ombro [m] \\
+  \texttt{LA, LB}         & comprimentos dos elos [m] \\
+  \texttt{solution\_type} & \texttt{'up'} ou \texttt{'down'} \\
+  & \\ & \\ & \\ & \\                % linhas vazias: mesma altura da outra tabela
+  \midrule
+  \multicolumn{2}{@{}l}{\textit{Saídas}} \\
+  \texttt{theta1}         & ângulo do 1.º elo [rad] \\
+  \texttt{theta2}         & ângulo do 2.º elo, relativo [rad] \\
+  \texttt{isReachable}    & se existe solução \\
+  \bottomrule
+\end{tabular*}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\centering\footnotesize
+\captionof{table}{Argumentos de \texttt{solve\_pitch}.}
+\label{tab:solvepitch_io}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}ll@{}}
+  \toprule
+  \multicolumn{2}{@{}l}{\textit{Entradas}} \\
+  \texttt{psi}        & inclinação da garra $\psi$ [rad] \\
+  \texttt{x, y}       & alvo no plano horizontal [m] \\
+  \texttt{dFwd, hJ2}  & $d$ e $z - L_1$ [m] \\
+  \texttt{L, D}       & comprimentos; $D = L_6 + L_7$ \\
+  \texttt{qMin, qMax} & limites das juntas [rad] \\
+  \texttt{elbowMax}   & dobra máxima do cotovelo \\
+  \texttt{family}     & \texttt{'up'} ou \texttt{'down'} \\
+  \midrule
+  \multicolumn{2}{@{}l}{\textit{Saídas}} \\
+  \texttt{q}          & $[q_1\ q_2\ q_3\ q_4]$ [rad], ou vazio \\
+  \bottomrule
+\end{tabular*}
+\end{minipage}
+
+Esta função é utilizada em vários pontos da execução para identificar os ângulos das juntas necessários para alcançar a posição desejada.

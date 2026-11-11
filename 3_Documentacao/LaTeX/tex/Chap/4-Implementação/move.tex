@@ -1,2 +1,30 @@
-\section{Resultados}
-\label{sec:resultados}
+\section{Movimento até uma posição alvo}
+\label{sec:imp_move}
+
+O movimento leva o centro de preensão da garra até uma posição $(X_{target}, Y_{target}, Z_{target})$ dada no referencial do mundo do CoppeliaSim, em quatro passos:
+
+\begin{enumerate}
+    \item \textbf{Mudar de referencial.} A função \texttt{aux.world\_to\_base} subtrai a posição da base do robô, e desfaz a sua rotação de $-90^\circ$ em torno de $z$.
+    \item \textbf{Calcular as juntas.} A \texttt{inverse\_kin} dá os ângulos das juntas para o alvo. Se não houver solução, o alvo é rejeitado antes de o braço se mexer.
+    \item \textbf{Mover nas juntas.} A \texttt{move\_joints} leva todas as juntas do ângulo atual $q_0$ ao ângulo final $q_f$, começando e acabando ao mesmo tempo, com um perfil suave. A velocidade é nula no início e no fim, por isso o braço arranca e para sem solavancos. A duração $T$ é escolhida pela junta que mais se move, para que nenhuma ultrapasse $\omega_{max} = 30^\circ/\mathrm{s}$:
+    \item \textbf{Confirmar.} A \texttt{direct\_kin}, com os ângulos lidos das juntas, dá a posição onde a garra ficou, que se compara com o alvo.
+\end{enumerate}
+
+\subsection{Movimentos em linha reta}
+
+Perto dos objetos, a garra deve mover-se em linha reta, por exemplo para descer na vertical até um bloco. A \texttt{move\_linear} avança um ponto de referência do ponto atual até ao alvo, com aceleração limitada a $0{,}10~\mathrm{m/s^2}$, e em cada passo de simulação calcula a \texttt{inverse\_kin} desse ponto e envia as juntas. No fim compara a posição da garra (\texttt{direct\_kin} das juntas lidas) com o alvo e corrige o erro, até ficar abaixo de 3~mm.
+
+Antes de uma descida, a \texttt{plan\_vertical} escolhe uma única inclinação da garra que tenha solução em toda a descida, verificada de 2 em 2~mm, sem nenhuma junta a saltar mais de $5^\circ$ entre pontos. Sem isto, perto da base, a melhor inclinação mudava a meio da descida e as juntas davam saltos.
+
+\begin{figure}[H]
+  \centering
+  \input{graph/move}
+  \caption{Sequência do movimento até uma peça, vista lateral (esboço, sem escala).}
+  \label{fig:move}
+\end{figure}
+
+\subsection{Regresso à pose inicial}
+
+A \texttt{go\_home} leva o braço à pose inicial a partir de qualquer pose: se a garra estiver baixa, sobe-a primeiro na vertical com a \texttt{move\_linear} e depois usa a \texttt{move\_joints}. Como só usa as leituras das juntas, funciona também no braço real.
+
+\clearpage

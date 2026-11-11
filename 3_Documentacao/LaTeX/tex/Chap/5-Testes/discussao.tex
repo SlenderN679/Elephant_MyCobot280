@@ -1,2 +1,18 @@
 \section{Discussão}
 \label{sec:disc}
+
+\subsection{Validação do modelo}
+ 
+O erro do modelo compara a posição calculada pela cinemática direta, com as juntas lidas no simulador, com a posição real do centro de preensão. Ficou entre 1,2 e 4,0~mm nos alvos testados, abaixo da tolerância de 5~mm, o que valida em conjunto a função \texttt{direct\_kin}, a conversão \texttt{world\_to\_base} e os comprimentos dos elos medidos no cenário. As diferenças que restam são pequenas e podem vir de os comprimentos medidos não coincidirem exatamente com a geometria do modelo do robô no CoppeliaSim e de o centro de preensão ser definido a partir de um ponto do modelo. Este erro não depende do movimento, pois só compara dois cálculos da mesma pose, e por isso mede a qualidade do modelo e não a do controlo.
+ 
+\subsection{Erro de alcance e erro nas juntas}
+ 
+O erro de alcance compara o ponto pedido com a posição real da garra, pelo que mistura dois efeitos: o erro do modelo e o facto de as juntas não chegarem exatamente aos ângulos pedidos. O erro nas juntas isola o segundo. Se o erro de alcance for semelhante ao erro do modelo e o erro nas juntas for pequeno, o movimento atinge o ponto pedido e o erro restante vem do modelo. Se o erro de alcance for maior, a diferença vem de as juntas ficarem ainda a caminho ou abaixo do ângulo pedido, por exemplo por efeito da gravidade ou do tempo de estabilização, de 2~s, ser curto para o movimento em causa.
+\subsection{Alcance e inclinação da garra}
+ 
+A cinemática inversa tenta primeiro a inclinação preferida, com a garra na vertical, e só se esta falhar inclina a garra. Com a implementação que usámos, para alvos a poucos centímetros da mesa, o alcance horizontal é de cerca de 27--28~cm do eixo da base com a garra na vertical e passa a cerca de 36--37~cm quando se permite inclinar a garra até $30^\circ$ da horizontal. Os alvos mais afastados da base são, por isso, os que exigem inclinar a garra, e são também os que deixam o braço quase esticado, onde pequenos erros nas juntas se traduzem em erros maiores de posição. Por outro lado, um alvo demasiado perto do eixo da base pode ser inalcançável, porque o desvio lateral $L_5$ impede a garra de chegar ao eixo de J1.
+ 
+\subsection{Limitações}
+ 
+O movimento \texttt{move\_joints} interpola as juntas, e não a posição da garra, pelo que a trajetória do \textit{end-effector} entre dois pontos não é uma reta; passa pela pose inicial para evitar a mesa, mas não é uma trajetória planeada no espaço cartesiano. Quando é preciso um movimento em linha reta, usa-se \texttt{move\_linear}, que resolve a cinemática inversa a cada passo. Além disso, os resultados são de simulação e usam as posições reais dos objetos, que só o simulador conhece, apenas para definir os alvos e medir os erros; no braço real, os alvos viriam da câmara e não existiria o erro do modelo medido desta forma.
+ 

@@ -1,2 +1,235 @@
-\section{Resultados}
-\label{sec:result}
+
+\section{Resultados para o caso em estudo}
+\label{sec:ik_resultados}
+
+Para verificar a formulação da cinemática inversa, foram considerados dois exemplos com diferentes condições de alcance. O primeiro corresponde a uma posição alcançável com a garra orientada verticalmente para baixo, enquanto o segundo exige a alteração da inclinação da garra para permitir alcançar o alvo.
+
+Em ambos os casos, os ângulos articulares obtidos são utilizados na cinemática direta, de forma a verificar a correspondência entre a posição pretendida e a posição calculada.
+
+\subsection{Exemplo 1: alvo com a garra na vertical}
+
+No primeiro exemplo, considera-se a posição pretendida para o centro de preensão:
+
+\begin{equation}
+    (x,y,z)=(0;\ 0{,}20;\ 0{,}06)\ \text{m}
+\end{equation}
+
+A inclinação da garra é definida como $\psi=90^\circ$, correspondendo a $\alpha_3=-90^\circ$, ou seja, à garra orientada verticalmente para baixo.
+
+Aplicando as expressões desenvolvidas para a cinemática inversa, obtêm-se inicialmente a distância horizontal ao eixo da base e a distância frontal:
+
+\begin{align*}
+    r &= 0{,}2000\ \text{m}\\
+    d &= \sqrt{0{,}2^2-0{,}0646^2}
+    =0{,}1893\ \text{m}
+\end{align*}
+
+O ângulo da junta J1 é determinado por:
+
+\begin{equation}
+    q_1=90^\circ-
+    \operatorname{atan2}(0{,}1893,0{,}0646)
+    \approx18{,}84^\circ
+\end{equation}
+
+Conhecida a orientação da base, determinam-se as coordenadas do pulso J4 relativamente ao ombro J2:
+
+\begin{align*}
+    x_{3d} &= 0{,}1893-0{,}0731
+    =0{,}1162\ \text{m}\\
+    y_{3d} &= (0{,}06-0{,}1316)+0{,}1513
+    =0{,}0797\ \text{m}
+\end{align*}
+
+A distância entre o ombro e o pulso, bem como os ângulos auxiliares obtidos pela abordagem geométrica, são:
+
+\begin{equation}
+    \begin{aligned}
+        r_3 &\approx0{,}1409\ \text{m}\\
+        \alpha_1 &\approx34{,}45^\circ\\
+        \beta_1 &\approx42{,}81^\circ\\
+        \beta_2 &\approx85{,}79^\circ
+    \end{aligned}
+\end{equation}
+
+Selecionando a configuração com o cotovelo orientado para cima, obtêm-se:
+
+\begin{align}
+    \theta_1 &= \alpha_1+\beta_1
+    =77{,}26^\circ\\
+    \theta_2 &= -(180^\circ-\beta_2)
+    =-94{,}21^\circ
+\end{align}
+
+Nesta configuração, o cotovelo encontra-se a aproximadamente $0{,}239$ m de altura, enquanto na solução com o cotovelo para baixo estaria a cerca de $0{,}116$ m.
+
+A solução selecionada permite, assim, manter o cotovelo mais afastado da superfície de trabalho.
+
+Aplicando as Equações~\eqref{eq:ik_theta3} e~\eqref{eq:ik_q234}, obtêm-se os restantes ângulos articulares:
+
+\begin{align*}
+    q_2 &=77{,}26^\circ-90^\circ
+    =-12{,}74^\circ\\
+    q_3 &=-94{,}21^\circ\\
+    q_4 &=0^\circ-77{,}26^\circ+94{,}21^\circ
+    =16{,}95^\circ
+\end{align*}
+
+O conjunto de ângulos articulares resultante é:
+
+\begin{equation}
+    \boxed{
+    \mathbf{q}=
+    (18{,}84^\circ;\
+    -12{,}74^\circ;\
+    -94{,}21^\circ;\
+    16{,}95^\circ;\
+    0^\circ;\
+    0^\circ)
+    }
+    \label{eq:ik_exemplo1}
+\end{equation}
+
+Esta configuração corresponde à posição de trabalho anteriormente utilizada na verificação da cinemática direta, apresentada na Equação~\eqref{eq:q_trabalho}.
+
+Ao aplicar a cinemática direta aos ângulos obtidos, recupera-se, dentro da precisão numérica considerada, a posição pretendida:
+
+\begin{equation}
+    (x,y,z)\approx
+    (0{,}0000;\ 0{,}2000;\ 0{,}0600)
+    \ \text{m}
+\end{equation}
+
+Este resultado demonstra a consistência entre os modelos de cinemática direta e inversa para a configuração analisada.
+
+\subsection{Exemplo 2: alvo que exige alterar a inclinação da garra}
+
+No segundo exemplo, considera-se um alvo situado numa posição mais afastada da base e a uma altura reduzida:
+
+\begin{equation}
+    (x,y,z)=(0{,}05;\ 0{,}30;\ 0{,}02)
+    \ \text{m}
+\end{equation}
+
+Aplicando as equações do plano horizontal, obtêm-se:
+
+\begin{equation}
+    r\approx0{,}3041\ \text{m},
+    \qquad
+    d\approx0{,}2972\ \text{m}
+\end{equation}
+
+A altura do alvo relativamente ao ombro é:
+
+\begin{equation}
+    z-L_1=0{,}02-0{,}1316
+    =-0{,}1116\ \text{m}
+\end{equation}
+
+Inicialmente, considera-se a inclinação preferencial $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo.
+
+Nesta configuração, as coordenadas do pulso são:
+
+\begin{equation}
+    x_{3d}\approx0{,}2241\ \text{m},
+    \qquad
+    y_{3d}\approx0{,}0397\ \text{m}
+\end{equation}
+
+A distância entre o ombro e o pulso é:
+
+\begin{equation}
+    r_3=\sqrt{x_{3d}^2+y_{3d}^2}
+    \approx0{,}2276\ \text{m}
+\end{equation}
+
+Contudo, o alcance máximo do manipulador planar formado pelos elos $L_2$ e $L_3$ é:
+
+\begin{equation}
+    L_2+L_3=0{,}2064\ \text{m}
+\end{equation}
+
+Verifica-se, portanto, que:
+
+\begin{equation}
+    r_3>L_2+L_3
+\end{equation}
+
+Consequentemente, não existe uma solução geométrica para a inclinação inicialmente pretendida.
+
+Esta impossibilidade também é identificada pela lei dos cossenos, uma vez que o argumento utilizado no cálculo de $\beta_2$ apresenta o valor aproximado de $-1{,}434$, não pertencendo ao intervalo $[-1,1]$.
+
+Perante esta situação, o algoritmo procura uma inclinação alternativa da garra, conforme o procedimento descrito na Secção~\ref{sec:ik_lateral}.
+
+Para este alvo, é necessário reduzir a inclinação relativamente à vertical, considerando valores de $\psi<90^\circ$, de forma a aproximar o pulso da região geometricamente alcançável.
+
+A procura e o respetivo refinamento permitem obter uma inclinação próxima de:
+
+\begin{equation}
+    \psi\approx82{,}27^\circ
+\end{equation}
+
+Nesta configuração, a distância entre o ombro e o pulso aproxima-se do alcance máximo:
+
+\begin{equation}
+    r_3\approx L_2+L_3
+\end{equation}
+
+O braço encontra-se, assim, praticamente estendido, indicando que o alvo está próximo do limite de alcance para a orientação considerada.
+
+Os ângulos articulares obtidos são aproximadamente:
+
+\begin{equation}
+    \boxed{
+    \mathbf{q}=
+    (2{,}80^\circ;\
+    -81{,}96^\circ;\
+    -0{,}21^\circ;\
+    -0{,}10^\circ;\
+    0^\circ;\
+    0^\circ)
+    }
+    \label{eq:ik_exemplo2}
+\end{equation}
+
+Aplicando a cinemática direta à configuração obtida, recupera-se, aproximadamente, a posição pretendida:
+
+\begin{equation}
+    (x,y,z)\approx
+    (0{,}05;\ 0{,}30;\ 0{,}02)
+    \ \text{m}
+\end{equation}
+
+A direção longitudinal da garra, expressa no referencial da base, é aproximadamente:
+
+\begin{equation}
+    \mathbf{v}_{\mathrm{garra}}=
+    (-0{,}0066;\ 0{,}1343;\ -0{,}9909)
+\end{equation}
+
+Este vetor indica que a garra permanece orientada predominantemente para baixo, apresentando uma ligeira inclinação relativamente à vertical.
+
+A Figura~\ref{fig:exemplos_ik} apresenta as configurações obtidas nos dois exemplos, permitindo observar as diferenças na disposição dos elos e na orientação da garra.
+
+\begin{figure}[H]
+    \centering
+    \resizebox{0.9\textwidth}{!}{
+        \input{./graph/exemplos_ik.tex}
+    }
+    \caption{Configurações obtidas pela cinemática inversa para os dois exemplos analisados, representadas no plano lateral.}
+    \label{fig:exemplos_ik}
+\end{figure}
+
+\subsection{Análise dos resultados}
+
+Os dois exemplos permitem verificar o comportamento da cinemática inversa perante diferentes condições de posicionamento.
+
+No primeiro caso, o alvo é alcançado com a inclinação preferencial de $90^\circ$, permitindo manter a garra orientada verticalmente para baixo.
+
+No segundo caso, a posição pretendida não é alcançável com essa inclinação, sendo necessário recorrer ao procedimento de procura e refinamento da orientação da garra para encontrar uma configuração válida.
+
+Em ambas as situações, a aplicação da cinemática direta aos ângulos calculados permite recuperar, dentro da precisão numérica considerada, as posições pretendidas.
+
+Estes resultados demonstram a consistência matemática das formulações implementadas e evidenciam a importância da escolha da inclinação da garra na determinação de soluções para a cinemática inversa.
+
+\clearpage

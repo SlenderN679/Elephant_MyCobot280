@@ -1,3 +1,4 @@
+\babel@toc {portuguese}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Representação tridimensional do manipulador myCobot~280.}}{4}{figure.caption.6}%
@@ -10,8 +11,12 @@
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Representação da cinemática inversa no plano lateral, considerando a origem na junta J2. Ao fixar a orientação da garra, a posição do pulso J4 pode ser determinada, reduzindo o problema a um manipulador planar de dois graus de liberdade.}}{20}{figure.caption.13}%
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Região geometricamente alcançável pelo pulso J4, definida pela condição $|L_2-L_3|\leq r_3\leq L_2+L_3$.}}{22}{figure.caption.14}%
 \contentsline {figure}{\numberline {3.4}{\ignorespaces Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}}{23}{figure.caption.16}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{26}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Configurações obtidas pela cinemática inversa para os dois exemplos analisados, representadas no plano lateral.}}{30}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Alinhamento da garra com a peça, vista de cima (esboço). Como a peça tem simetria de $90^\circ $, a junta J6 roda no máximo $45^\circ $.}}{24}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{26}{figure.caption.18}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Sequência do movimento até uma peça, vista lateral (esboço, sem escala).}}{36}{figure.caption.23}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Configurações obtidas pela cinemática inversa para os dois exemplos analisados, representadas no plano lateral.}}{40}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Peças da demonstração vistas de cima, no referencial da base (cm), com os limites de alcance.}}{42}{figure.caption.26}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Erros de modelo e de alcance em cada peça.}}{42}{figure.caption.26}%
 \addvspace {10\p@ }

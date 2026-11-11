@@ -1,0 +1,48 @@
+\subsection{Demonstração no simulador}
+\label{sec:demo_sim}
+
+Para demonstrar o movimento \textit{move end-effector to target position} para diferentes posições alvo, o manipulador foi levado, no CoppeliaSim, até cada uma das peças detetadas pela câmara na mesa. Para cada alvo, a \texttt{inverse\_kin} calcula os ângulos das juntas, a \texttt{move\_joints} leva o braço até por cima da peça e a \texttt{move\_linear} desce na vertical até 2~cm acima da mesa. Mediram-se três erros:
+
+\begin{itemize}
+    \item \textbf{modelo}: distância entre a posição dada pela \texttt{direct\_kin}, com as juntas lidas, e a posição real do centro de preensão no simulador;
+    \item \textbf{alcance}: distância entre o ponto pedido e a posição real do centro de preensão;
+    \item \textbf{juntas}: maior diferença entre os ângulos calculados e os ângulos lidos.
+\end{itemize}
+
+\begin{table}[H]
+  \centering
+  \caption{Resultados do movimento até diferentes posições alvo no simulador.}
+  \label{tab:demo_sim}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{lcccccc}
+    \toprule
+    Peça & Pedido $(x, y, z)$ & Alcançado $(x, y, z)$ & $\psi$ & Modelo [mm] & Alcance [mm] & Juntas \\
+    \midrule
+    vermelho 1 & $(66{,}1;\ 199{,}9;\ -10{,}0)$ & $(65{,}7;\ 196{,}7;\ -11{,}3)$ & $90^\circ$ & 1,5 & 3,5 & $0{,}8^\circ$ \\
+    vermelho 2 & $(-111{,}0;\ -37{,}2;\ -10{,}0)$ & $(-111{,}0;\ -38{,}2;\ -10{,}7)$ & $110^\circ$ & 2,3 & 1,3 & $0{,}4^\circ$ \\
+    laranja & $(-107{,}9;\ 224{,}1;\ -10{,}0)$ & $(-106{,}0;\ 221{,}2;\ -12{,}4)$ & $90^\circ$ & 2,3 & 4,2 & $1{,}2^\circ$ \\
+    amarelo & $(-33{,}5;\ 149{,}7;\ -10{,}0)$ & $(-33{,}0;\ 148{,}0;\ -9{,}7)$ & $95^\circ$ & 1,2 & 1,8 & $0{,}6^\circ$ \\
+    verde & $(-129{,}4;\ 54{,}3;\ -10{,}0)$ & $(-128{,}7;\ 53{,}9;\ -10{,}0)$ & $100^\circ$ & 1,2 & 0,8 & $0{,}5^\circ$ \\
+    azul & $(-147{,}3;\ 33{,}2;\ -10{,}0)$ & $(-145{,}6;\ 33{,}0;\ -9{,}8)$ & $95^\circ$ & 1,2 & 1,7 & $0{,}6^\circ$ \\
+    rosa & $(16{,}3;\ 274{,}4;\ -10{,}0)$ & $(16{,}7;\ 269{,}6;\ -13{,}5)$ & $80^\circ$ & 4,0 & 5,9 & $1{,}6^\circ$ \\
+    \bottomrule
+  \end{tabular}}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \input{graph/mapa_alvos}
+    \caption{Peças da demonstração vistas de cima, no referencial da base (cm), com os limites de alcance.}
+    \label{fig:mapa_alvos}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \input{graph/erros}
+    \caption{Erros de modelo e de alcance em cada peça.}
+    \label{fig:erros}
+  \end{minipage}
+\end{figure}
+
+Nos sete alvos alcançáveis, a garra chegou a menos de 6~mm do ponto pedido e as juntas ficaram a menos de $1{,}6^\circ$ dos ângulos calculados. A altura $z = -10$~mm no referencial da base corresponde a 20~mm acima da mesa. Quatro peças, a 39--41~cm do eixo da base, foram declaradas inalcançáveis pela cinemática inversa antes de o braço se mover. O erro de alcance cresce com a distância ao eixo da base, sendo máximo no alvo mais afastado (rosa, a 27~cm), o que é compatível com o braço a descair com o próprio peso quando está mais esticado.

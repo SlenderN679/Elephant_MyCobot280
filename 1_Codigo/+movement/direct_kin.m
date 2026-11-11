@@ -45,21 +45,16 @@ function [tip, approach] = direct_kin(q, Links)
 
     % Passo 3: plano lateral (d = em frente, h = para cima), junta a junta
     % J2 (ombro)
-    d = 0;
-    h = L(1);
+    d = 0;                          h = L(1);
     % J3 (cotovelo)
-    d = d + L(2)*cos(thetaA);
-    h = h + L(2)*sin(thetaA);
+    d = d + L(2)*cos(thetaA);       h = h + L(2)*sin(thetaA);
     % J4 (pulso)
-    d = d + L(3)*cos(thetaB);
-    h = h + L(3)*sin(thetaB);
+    d = d + L(3)*cos(thetaB);       h = h + L(3)*sin(thetaB);
     % J5
-    d = d + L(4)*cos(thetaC);
-    h = h + L(4)*sin(thetaC);
+    d = d + L(4)*cos(thetaC);       h = h + L(4)*sin(thetaC);
     % centro de preensão: J5 roda a garra para fora do plano (cos(q5) fica no
     % plano, sin(q5) passa a desvio lateral)
-    d = d + D*cos(q(5))*cos(alpha);
-    h = h + D*cos(q(5))*sin(alpha);
+    d = d + D*cos(q(5))*cos(alpha); h = h + D*cos(q(5))*sin(alpha);
     l = L(5) - D*sin(q(5));         % desvio lateral total do plano do braço
 
     % Passo 4: plano horizontal. O desvio l faz o ângulo q1 com o eixo x e a
