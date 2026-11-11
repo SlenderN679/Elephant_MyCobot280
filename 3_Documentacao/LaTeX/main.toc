@@ -40,10 +40,15 @@
 \contentsline {chapter}{\numberline {4}Implementação em MATLAB}{34}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Comunicação entre o MATLAB e o CoppeliaSim}{34}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Organização do código}{35}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Resultados}{35}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Discussão}{35}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Resultados}{35}{section.4.5}%
-\contentsline {chapter}{\numberline {5}Resultados e discussão}{36}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Resultados}{36}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Discussão}{36}{section.5.2}%
-\contentsline {chapter}{\numberline {6}Conclusão}{37}{chapter.6}%
+\contentsline {section}{\numberline {4.3}Discussão}{35}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Validação do modelo}{35}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Erro de alcance e erro nas juntas}{35}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Alcance e inclinação da garra}{35}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Limitações}{36}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Resultados}{36}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Discussão}{36}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Resultados}{36}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Resultados e discussão}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Resultados}{37}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Discussão}{37}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Conclusão}{38}{chapter.6}%
