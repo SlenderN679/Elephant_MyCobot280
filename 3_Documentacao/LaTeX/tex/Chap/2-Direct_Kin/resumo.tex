@@ -35,6 +35,18 @@ Adicionalmente, a direção longitudinal da garra pode ser determinada através 
 
 Para verificar o comportamento do modelo matemático, a cinemática direta foi avaliada em duas configurações distintas do manipulador.
 
+A Figura~\ref{fig:poses_fk} apresenta as duas configurações consideradas na verificação da cinemática direta.
+
+
+\begin{figure}[H]
+    \centering
+    \resizebox{0.75\textwidth}{!}{
+        \input{./graph/poses_fk.tex}
+    }
+    \caption{Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}
+    \label{fig:poses_fk}
+\end{figure}
+
 \subsubsection{Configuração de referência}
 
 A primeira configuração corresponde à posição inicial do manipulador, designada por \textit{pose zero}, na qual todas as juntas apresentam um ângulo de $0^\circ$.
@@ -112,17 +124,8 @@ Considerando a rotação da base e o desvio lateral do manipulador, a posição 
 
 Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal do eixo da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
 
-A Figura~\ref{fig:poses_fk} apresenta as duas configurações consideradas na verificação da cinemática direta.
 
-\begin{figure}[H]
-    \centering
-    \resizebox{0.75\textwidth}{!}{
-        \input{./graph/poses_fk.tex}
-    }
-    \caption{Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}
-    \label{fig:poses_fk}
-\end{figure}
-
+\iffalse
 \subsubsection{Validação no CoppeliaSim}
 
 A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, no ficheiro \texttt{diagnostico\_.m}. Este procedimento permite comparar a posição do centro de preensão calculada pelo modelo matemático com a posição fornecida diretamente pelo CoppeliaSim.
@@ -164,3 +167,4 @@ O programa apresenta ainda um resumo dos resultados obtidos para as diferentes p
 A comparação entre estas grandezas permite avaliar a consistência do modelo cinemático e identificar eventuais diferenças entre o posicionamento calculado e o comportamento observado em simulação.
 
 A análise detalhada dos resultados do diagnóstico e do desempenho do sistema é apresentada no capítulo de resultados e discussão.
+\fi

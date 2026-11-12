@@ -12,17 +12,21 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
 % Desenha (centrado no eixo de J1):
 %   - vermelho cheio : zona junto à base onde o braço não chega sem chocar
 %                      com a placa da base. NÃO é um círculo: o alcance mínimo
-%                      vai de 8,5 cm (em frente aos lados curtos da placa) a
+%                      vai de 8,4 cm (em frente aos lados curtos da placa) a
 %                      13 cm (nas diagonais, por causa dos cantos)
-%   - círculo azul   : 23 cm, distância de referência (fora da cunha
-%                      vermelha o braço chega a tudo entre a zona
-%                      vermelha cheia e 35 cm)
-%   - círculo verde  : alcance máximo (35 cm; a partir de 30 cm a garra
-%                      já vai inclinada para fora)
+%   - círculos azuis : entre 15,8 cm (azul claro) e 25,5 cm (azul) a garra
+%                      desce na vertical (90 graus); mais perto inclina para
+%                      a base, mais longe inclina para fora
+%   - círculo verde  : alcance máximo (35,2 cm); fora da cunha vermelha o
+%                      braço chega a tudo entre a zona vermelha cheia e este
+%                      círculo
 %   - cunha vermelha : zona morta de J1 (+-165 graus): aí o braço (cotovelo
 %                      para cima) não chega
-% Os raios vêm do mapa de alcance calculado com plan_vertical para blocos
-% pousados na mesa (LIFT = 0,10 m, FINGER_EXTRA = 0,015 m).
+% Os raios vêm do mapa de alcance calculado com plan_vertical + arm_collision
+% para blocos pousados na mesa (centro de preensão a 2 cm da mesa, descida
+% de LIFT = 0,10 m, inclinação entre 45 e 135 graus), de 5 em 5 graus e com
+% precisão de 1 mm. O mapa coincide com a inclinação usada nos testes do
+% modo 0 em todas as peças alcançáveis.
 %
 % São "drawing objects" do CoppeliaSim: não têm física e a garra e os
 % sensores não os veem. Como são criados pela API remota, NÃO desaparecem
@@ -30,19 +34,22 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
 % da corrida anterior. Chamar depois de sim_interface.start_simulation().
 
     % Passo 0: raios e mapa de alcance mínimo
-    R_MIN  = 0.085;   R_SAFE = 0.23;   R_MAX = 0.35;     % raios [m]
+    R_MIN  = 0.084;                      % menor valor de R_MIN_DIR [m]
+    R_VERT_IN = 0.158;   R_VERT = 0.255; % zona da garra vertical [m]
+    R_MAX  = 0.352;                      % alcance máximo [m]
 
     % alcance mínimo em cada direção (de 5 em 5 graus, no referencial da
     % BASE, a partir de +x), calculado com plan_vertical + arm_collision
-    % para blocos pousados na mesa (LIFT = 0,10 m, FINGER_EXTRA = 0,015 m).
-    % Se mudar o modelo de colisão ou estes valores, é preciso recalcular.
+    % para blocos pousados na mesa (LIFT = 0,10 m, FINGER_EXTRA = 0,015 m),
+    % arredondado para cima ao milímetro. Se mudar o modelo de colisão ou
+    % estes valores, é preciso recalcular.
     R_MIN_DIR = [
-        0.085 0.085 0.085 0.088 0.093 0.095 0.103 0.108 0.115 0.128 0.130 0.128   %   0.. 55 graus
-        0.120 0.115 0.110 0.108 0.105 0.105 0.105 0.105 0.105 0.108 0.110 0.115   %  60..115 graus
-        0.123 0.130 0.130 0.118 0.110 0.103 0.098 0.093 0.090 0.088 0.085 0.085   % 120..175 graus
-        0.085 0.085 0.085 0.088 0.093 0.095 0.103 0.108 0.115 0.130 0.130 0.130   % 180..235 graus
-        0.130 0.130 0.110 0.108 0.105 0.105 0.105 0.105 0.105 0.108 0.110 0.115   % 240..295 graus
-        0.123 0.130 0.130 0.118 0.110 0.103 0.098 0.093 0.090 0.088 0.085 0.085   % 300..355 graus
+        0.084 0.084 0.085 0.088 0.091 0.095 0.101 0.107 0.115 0.126 0.130 0.126   %   0.. 55 graus
+        0.119 0.114 0.110 0.107 0.105 0.104 0.104 0.104 0.105 0.107 0.110 0.115   %  60..115 graus
+        0.121 0.129 0.130 0.118 0.109 0.102 0.096 0.092 0.089 0.086 0.085 0.084   % 120..175 graus
+        0.084 0.084 0.085 0.088 0.091 0.095 0.101 0.107 0.115 0.126 0.130 0.126   % 180..235 graus
+        0.119 0.114 0.110 0.107 0.105 0.104 0.104 0.104 0.105 0.107 0.110 0.115   % 240..295 graus
+        0.121 0.129 0.130 0.118 0.109 0.102 0.096 0.092 0.089 0.086 0.085 0.084   % 300..355 graus
     ];
     R_MIN_DIR = reshape(R_MIN_DIR.', 1, []);           % linha com os 72 valores, por ordem
     sim = sim_interface.get_connection().require('sim');
@@ -83,9 +90,9 @@ function draw_zones(sim_interface, basePos, baseYaw, tableZ, j1Lim, Links)
         sim.addDrawingObjectItem(h, [px(i) py(i) z2, px(j) py(j) z2]);
     end
 
-    %% 2. círculos de alcance (garantido e máximo)
-    radii  = [R_SAFE R_MAX];
-    colors = {[0 0.4 1], [0 0.8 0]};
+    %% 2. círculos de alcance (zona da garra vertical e alcance máximo)
+    radii  = [R_VERT_IN R_VERT R_MAX];
+    colors = {[0.5 0.75 1], [0 0.4 1], [0 0.8 0]};
     a = linspace(0, 2*pi, 73);
     for k = 1:numel(radii)
         h = sim.addDrawingObject(sim.drawing_lines, 3, 0, -1, 100, colors{k});

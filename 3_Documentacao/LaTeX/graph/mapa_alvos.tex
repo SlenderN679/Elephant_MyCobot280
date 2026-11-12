@@ -1,42 +1,51 @@
-% Peças da demonstração vistas de cima, no referencial da base (cm); limites de alcance a 2 cm da mesa
-% Feita para meia largura de página (cerca de 7,5 cm), sem \resizebox
-\begin{tikzpicture}[scale=0.084, >=stealth, every node/.style={font=\scriptsize}]
+% Peças da demonstração vistas de cima, no referencial da base (cm)
+% Zonas iguais às desenhadas na mesa por drawing.draw_zones (mapa calculado
+% com plan_vertical + arm_collision):
+%   vermelho : junto à base, onde o braço não chega (R_MIN_DIR, 8,4 a 13 cm)
+%   azuis    : entre 15,8 e 25,5 cm a garra desce na vertical
+%   verde    : 35,2 cm, alcance máximo
+%   cunha    : zona morta de J1 (+-165 graus), atrás do robô
+% Feita para meia largura de página, sem \resizebox
+\begin{tikzpicture}[scale=0.088, >=stealth, every node/.style={font=\scriptsize}]
   \begin{scope}
-    \clip (-43,-12) rectangle (43,43);
-    \fill[red!10, even odd rule] (0,0) circle (41) (0,0) circle (39);
-    \fill[green!8, even odd rule] (0,0) circle (34) (0,0) circle (28.7);
-    \fill[green!28, even odd rule] (0,0) circle (28.7) (0,0) circle (6.46);
-    \draw[green!50!black] (0,0) circle (28.7);
-    \draw[green!50!black, dashed] (0,0) circle (34);
-    \draw[red!60!black, dashed] (0,0) circle (39) (0,0) circle (41);
-    \draw[gray] (0,0) circle (6.46);
+    \clip (-40,-40) rectangle (40,40);
+    \fill[green!8] (0,0) circle (35.2);
+    \fill[green!25, even odd rule] (0,0) circle (25.5) (0,0) circle (15.8);
+    \draw[green!60!black, line width=0.9pt] (0,0) circle (35.2);
+    \draw[blue!80!black, line width=0.9pt] (0,0) circle (25.5);
+    \draw[blue!40, line width=0.9pt] (0,0) circle (15.8);
+    \filldraw[fill=red!35, draw=red!60!black, line width=0.5pt] (-7.63,-3.51) -- (-8.01,-4.92) -- (-8.35,-6.20) -- (-8.67,-7.40) -- (-8.98,-8.55) -- (-9.28,-9.67) -- (-9.57,-10.76) -- (-9.86,-11.83) -- (-10.14,-12.89) -- (-10.42,-13.93) -- (-10.70,-14.97) -- (-10.97,-16.00) -- (-11.25,-17.02) -- (-11.52,-18.03) -- (-11.79,-19.05) -- (-12.06,-20.05) -- (-12.33,-21.06) -- (-12.60,-22.06) -- (-12.86,-23.05) -- (-13.13,-24.05) -- (-13.40,-25.04) -- (-13.66,-26.03) -- (-13.93,-27.02) -- (-14.19,-28.01) -- (-14.46,-29.00) -- (-14.72,-29.98) -- (-14.98,-30.96) -- (-15.20,-31.75) -- (2.72,-35.10) -- (2.51,-34.31) -- (2.24,-33.32) -- (1.98,-32.34) -- (1.71,-31.35) -- (1.45,-30.37) -- (1.18,-29.38) -- (0.92,-28.39) -- (0.65,-27.39) -- (0.39,-26.40) -- (0.12,-25.40) -- (-0.15,-24.40) -- (-0.42,-23.40) -- (-0.69,-22.39) -- (-0.96,-21.38) -- (-1.23,-20.36) -- (-1.51,-19.34) -- (-1.78,-18.31) -- (-2.06,-17.28) -- (-2.34,-16.23) -- (-2.62,-15.18) -- (-2.91,-14.10) -- (-3.20,-13.01) -- (-3.50,-11.90) -- (-3.81,-10.74) -- (-4.13,-9.54) -- (-4.47,-8.27) -- (-4.85,-6.86) -- cycle;
+    \filldraw[fill=red!45, draw=red!60!black, line width=0.6pt] (8.40,0.00) -- (8.37,0.73) -- (8.37,1.48) -- (8.50,2.28) -- (8.55,3.11) -- (8.61,4.01) -- (8.75,5.05) -- (8.76,6.14) -- (8.81,7.39) -- (8.91,8.91) -- (8.36,9.96) -- (7.23,10.32) -- (5.95,10.31) -- (4.82,10.33) -- (3.76,10.34) -- (2.77,10.34) -- (1.82,10.34) -- (0.91,10.36) -- (0.00,10.40) -- (-0.91,10.36) -- (-1.82,10.34) -- (-2.77,10.34) -- (-3.76,10.34) -- (-4.86,10.42) -- (-6.05,10.48) -- (-7.40,10.57) -- (-8.36,9.96) -- (-8.34,8.34) -- (-8.35,7.01) -- (-8.36,5.85) -- (-8.31,4.80) -- (-8.34,3.89) -- (-8.36,3.04) -- (-8.31,2.23) -- (-8.37,1.48) -- (-8.37,0.73) -- (-8.40,0.00) -- (-8.37,-0.73) -- (-8.37,-1.48) -- (-8.50,-2.28) -- (-8.55,-3.11) -- (-8.61,-4.01) -- (-8.75,-5.05) -- (-8.76,-6.14) -- (-8.81,-7.39) -- (-8.91,-8.91) -- (-8.36,-9.96) -- (-7.23,-10.32) -- (-5.95,-10.31) -- (-4.82,-10.33) -- (-3.76,-10.34) -- (-2.77,-10.34) -- (-1.82,-10.34) -- (-0.91,-10.36) -- (-0.00,-10.40) -- (0.91,-10.36) -- (1.82,-10.34) -- (2.77,-10.34) -- (3.76,-10.34) -- (4.86,-10.42) -- (6.05,-10.48) -- (7.40,-10.57) -- (8.36,-9.96) -- (8.34,-8.34) -- (8.35,-7.01) -- (8.36,-5.85) -- (8.31,-4.80) -- (8.34,-3.89) -- (8.36,-3.04) -- (8.31,-2.23) -- (8.37,-1.48) -- (8.37,-0.73) -- cycle;
   \end{scope}
   % eixos
-  \draw[->, thin] (-43,0) -- (45,0) node[below left=0pt and -2pt] {$x$};
-  \draw[->, thin] (0,-12) -- (0,45) node[left] {$y$};
-  \fill[gray!50] (0,0) circle (2); \draw (0,0) circle (2);
+  \draw[->, thin] (-39,0) -- (41,0) node[below left=0pt and -2pt] {$x$};
+  \draw[->, thin] (0,-39) -- (0,41) node[left] {$y$};
+  \fill[gray!60] (0,0) circle (1.5);
   % raios
-  \foreach \r/\c in {28.7/green!35!black, 34/green!35!black, 40/red!60!black}
-    \node[\c, fill=white, inner sep=0.5pt, font=\tiny] at (14:\r) {\pgfmathprintnumber[precision=0]{\r}};
+  \node[blue!50!black, fill=white, inner sep=0.5pt, font=\tiny] at (20:15.8) {15,8};
+  \node[blue!70!black, fill=white, inner sep=0.5pt, font=\tiny] at (20:25.5) {25,5};
+  \node[green!35!black, fill=white, inner sep=0.5pt, font=\tiny] at (20:35.2) {35,2};
   % peças alcançadas
   \foreach \x/\y/\c/\n/\p in {
       6.61/19.99/red!75!black/vermelho 1/right,
-      -11.10/-3.72/red!75!black/vermelho 2/below,
-      -10.79/22.41/orange!90!black/laranja/left,
+      -11.10/-3.72/red!75!black/vermelho 2/below left,
+      -10.84/22.46/orange!90!black/laranja/left,
       -3.35/14.97/yellow!70!black/amarelo/right,
       -12.94/5.43/green!50!black/verde/above,
       -14.73/3.32/blue!70!black/azul/left,
-      1.63/27.44/magenta!80!black/rosa/right} {
+      1.63/27.49/magenta!80!black/rosa/right} {
     \filldraw[fill=\c, draw=black, thin] (\x,\y) circle (1.3);
     \node[\p=1pt, inner sep=1pt] at (\x,\y) {\n};
   }
   % legenda
-  \begin{scope}[shift={(-42,-17)}]
-    \filldraw[fill=green!28, draw=green!50!black] (0,-2.5) rectangle (3,0.5);
-    \node[right] at (3.5,-1) {$\psi = 90^\circ$};
-    \filldraw[fill=green!8, draw=green!50!black, dashed] (28,-2.5) rectangle (31,0.5);
-    \node[right] at (31.5,-1) {garra inclinada};
-    \filldraw[fill=red!10, draw=red!60!black, dashed] (0,-8.5) rectangle (3,-5.5);
-    \node[right] at (3.5,-7) {4 peças rejeitadas};
+  \begin{scope}[shift={(-39,-45)}]
+    \filldraw[fill=green!25, draw=green!50!black] (0,-2.5) rectangle (3,0.5);
+    \node[right] at (3.5,-1) {garra vertical};
+    \filldraw[fill=green!8, draw=green!50!black] (35,-2.5) rectangle (38,0.5);
+    \node[right] at (38.5,-1) {garra inclinada};
+    \filldraw[fill=red!45, draw=red!60!black] (0,-8.5) rectangle (3,-5.5);
+    \node[right] at (3.5,-7) {sem alcance};
+    \draw[green!60!black, line width=0.9pt] (35,-7) -- (38,-7);
+    \node[right] at (38.5,-7) {alcance máximo};
   \end{scope}
 \end{tikzpicture}

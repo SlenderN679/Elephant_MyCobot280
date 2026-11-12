@@ -112,7 +112,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
             if ~fixedPitch && (psi > PITCH_MAX || psi < PITCH_MIN)
                 continue;
             end
-            best = solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
+            best = movement.solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
             if isempty(best)
                 continue;
             end
@@ -124,7 +124,7 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
                 good = psi;  bad = psi - sign(psi - prefPitch)*STEP;
                 for it = 1:15
                     mid = (good + bad)/2;
-                    qm  = solve_pitch(mid, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
+                    qm  = movement.solve_pitch(mid, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
                     if isempty(qm), bad = mid; else, good = mid; best = qm; end
                 end
                 psi = good;

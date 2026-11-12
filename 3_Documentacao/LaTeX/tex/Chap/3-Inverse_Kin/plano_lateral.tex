@@ -4,9 +4,9 @@
 
 Após determinar a distância frontal $d$, através da Equação~\eqref{eq:ik_d}, e conhecendo a altura $z$ do alvo, é necessário calcular os ângulos das juntas J2, J3 e J4 para posicionar o centro de preensão no ponto pretendido $(d,z)$.
 
-Como ilustrado na Figura~\ref{fig:2dof}, este problema pode ser resolvido através de uma abordagem geométrica, considerando o movimento do manipulador no plano lateral.
+Como ilustrado na Figura~\ref{fig:2dof}, este problema pode ser resolvido através de uma abordagem geométrica \cite{bicho_2dof, bicho_3dof}, considerando o movimento do manipulador no plano lateral.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \resizebox{0.6\textwidth}{!}{
         \input{./graph/ik_2dof.tex}
@@ -17,7 +17,7 @@ Como ilustrado na Figura~\ref{fig:2dof}, este problema pode ser resolvido atrav�
 
 \subsection{Ângulo da garra imposto e ponto do pulso}
 
-Seguindo a abordagem geométrica utilizada no estudo de manipuladores planares de três graus de liberdade, começa-se por definir a orientação pretendida da garra.
+Seguindo a abordagem geométrica utilizada no estudo de manipuladores planares de 3DOFs \cite{bicho_3dof}, começa-se por definir a orientação pretendida da garra.
 
 Esta orientação é representada pelo ângulo $\alpha_3$, medido relativamente à horizontal, e relaciona-se com a inclinação $\psi$ através da expressão:
 
@@ -51,7 +51,7 @@ Deste modo, a posição de J4 fica conhecida, permitindo reduzir o problema ao c
 
 Conhecida a posição do pulso, o problema consiste em determinar os ângulos das juntas J2 e J3.
 
-O segmento compreendido entre o ombro J2 e o pulso J4 pode ser representado por um manipulador planar constituído por dois elos, de comprimentos $L_A=L_2$ e $L_B=L_3$.
+O segmento compreendido entre o ombro J2 e o pulso J4 pode ser representado por um manipulador planar constituído por dois elos \cite{bicho_2dof}, de comprimentos $L_A=L_2$ e $L_B=L_3$.
 
 A distância entre o ombro e o pulso, bem como a direção do vetor que os une, são determinadas por:
 
@@ -100,7 +100,7 @@ Considerando os comprimentos dos elos do myCobot~280, obtém-se:
 
 Este intervalo define a região geometricamente alcançável pelo pulso, relativamente à junta J2, como ilustrado na Figura~\ref{fig:alcance_pulso}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \resizebox{0.55\textwidth}{!}{
         \input{./graph/alcance_pulso.tex}
@@ -133,7 +133,7 @@ Os ângulos associados a cada configuração encontram-se apresentados na Tabela
 
 A Figura~\ref{fig:cima_baixo} apresenta as duas configurações possíveis para uma mesma posição do pulso.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \resizebox{0.6\textwidth}{!}{
         \input{./graph/cotovelo_cima_baixo.tex}
@@ -142,9 +142,9 @@ A Figura~\ref{fig:cima_baixo} apresenta as duas configurações possíveis para 
     \label{fig:cima_baixo}
 \end{figure}
 
-Na implementação desenvolvida, é selecionada a solução com o cotovelo orientado para cima, correspondente a $q_3\leq0$.
+Na implementação desenvolvida, é selecionada, por defeito, a solução com o cotovelo orientado para cima, correspondente a $q_3\leq0$. No entanto, o algoritmo permite também selecionar a configuração com o cotovelo para baixo através do parâmetro \texttt{family}.
 
-Esta configuração permite, geralmente, manter o cotovelo numa posição mais elevada, reduzindo o risco de aproximação excessiva à superfície de trabalho e aos objetos presentes no cenário.
+A configuração preferencial permite, geralmente, manter o cotovelo numa posição mais elevada, reduzindo o risco de aproximação excessiva à superfície de trabalho.
 
 \subsection{Junta 4 e passagem para os ângulos das juntas}
 
@@ -200,15 +200,15 @@ A expressão utilizada é:
 
 Esta operação permite obter um valor de $q_6$ no intervalo $[-45^\circ,45^\circ[$, evitando rotações desnecessárias da garra.
 
-O ajuste da junta J6 é aplicado quando a garra se encontra numa configuração próxima da vertical, considerando a condição $\psi>45^\circ$.
+O ajuste da junta J6 é aplicado quando a orientação do objeto é conhecida e a garra se encontra numa configuração próxima da vertical, considerando a condição $\psi>45^\circ$.
 
 Caso contrário, é definido $q_6=0^\circ$, mantendo a orientação de referência da junta.
 
-\begin{figure}[H]
-  \centering
-  \input{graph/orientacao_q6}
-  \caption{Alinhamento da garra com a peça, vista de cima (esboço). Como a peça tem simetria de $90^\circ$, a junta J6 roda no máximo $45^\circ$.}
-  \label{fig:orientacao_q6}
+\begin{figure}[htbp]
+    \centering
+    \input{graph/orientacao_q6}
+    \caption{Alinhamento da garra com uma peça cúbica, numa vista superior. Devido à simetria de $90^\circ$ da peça, a junta J6 necessita de rodar, no máximo, $45^\circ$ para efetuar o alinhamento.}
+    \label{fig:orientacao_q6}
 \end{figure}
 
 \subsection{Soluções rejeitadas}
@@ -217,13 +217,13 @@ Embora a abordagem geométrica permita determinar possíveis soluções para a c
 
 Deste modo, são aplicadas condições adicionais para verificar a viabilidade das soluções obtidas.
 
-Os ângulos articulares são inicialmente normalizados para o intervalo $]-180^\circ,180^\circ]$.
+Os ângulos articulares das juntas J1 a J4 são inicialmente normalizados para o intervalo $]-180^\circ,180^\circ]$.
 
 Uma solução é rejeitada quando se verifica alguma das seguintes condições:
 
 \begin{itemize}
     \item \textbf{Limites articulares:}
-    algum dos ângulos calculados ultrapassa os limites permitidos para a respetiva junta. Por omissão, são considerados limites de $\pm165^\circ$ para J1 a J5 e de $\pm175^\circ$ para J6. Durante a execução, os limites são obtidos diretamente do modelo do robô;
+    algum dos ângulos calculados para as juntas J1 a J4 ultrapassa os respetivos limites permitidos. Por omissão, são considerados limites de $\pm165^\circ$ para estas juntas, podendo ser utilizados os limites obtidos diretamente do modelo do robô. A junta J5 é mantida a $0^\circ$, enquanto a rotação da junta J6 é calculada separadamente;
 
     \item \textbf{Flexão excessiva do cotovelo:}
     verifica-se $|q_3|>140^\circ$, correspondendo a uma configuração em que o antebraço se aproxima excessivamente do braço. Esta condição é utilizada como restrição adicional para evitar configurações demasiado fechadas;
@@ -250,7 +250,7 @@ onde:
 
 A solução é rejeitada se alguma destas alturas for inferior ou igual a zero.
 
-Adicionalmente, um ponto é considerado geometricamente inalcançável no plano horizontal quando $r<L_5$, não sendo possível determinar um valor real para a distância frontal $d$.
+Adicionalmente, na implementação desenvolvida, um ponto é rejeitado no plano horizontal quando $r\leq L_5$, não sendo admitida uma distância frontal nula.
 
 Caso nenhuma das configurações articulares satisfaça as condições estabelecidas, o ponto é considerado inalcançável segundo as restrições e as inclinações testadas pelo algoritmo.
 
@@ -262,9 +262,9 @@ Na implementação desenvolvida, a inclinação preferencial é $\psi=90^\circ$,
 
 Quando não é possível encontrar uma solução válida para esta inclinação, o algoritmo procura configurações alternativas, variando progressivamente o ângulo $\psi$ em incrementos de $5^\circ$.
 
-A procura é realizada inicialmente para inclinações superiores a $90^\circ$, aproximando a garra da direção da base, e posteriormente para inclinações inferiores a $90^\circ$, orientando-a para o exterior.
+A procura é realizada a partir da inclinação preferencial, testando alternadamente valores superiores e inferiores em incrementos de $5^\circ$. Para $\psi=90^\circ$, são consideradas sucessivamente as inclinações de $95^\circ$, $85^\circ$, $100^\circ$, $80^\circ$, e assim sucessivamente, até ser encontrada uma solução válida.
 
-O intervalo de inclinações considerado é:
+O intervalo de inclinações considerado na procura automática é:
 
 \begin{equation}
     30^\circ\leq\psi\leq135^\circ
@@ -272,9 +272,9 @@ O intervalo de inclinações considerado é:
 
 O limite inferior evita configurações em que a garra se encontra demasiado próxima da horizontal, enquanto o limite superior restringe a inclinação da garra na direção da base.
 
-A Figura~\ref{fig:inclinacao} ilustra as inclinações consideradas e a ordem de procura utilizada pelo algoritmo.
+A Figura~\ref{fig:inclinacao} ilustra as inclinações consideradas na procura de uma solução válida.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \resizebox{0.65\textwidth}{!}{
         \input{./graph/escolha_inclinacao.tex}
@@ -283,10 +283,16 @@ A Figura~\ref{fig:inclinacao} ilustra as inclinações consideradas e a ordem de
     \label{fig:inclinacao}
 \end{figure}
 
-Quando é encontrada uma inclinação válida, o algoritmo realiza um refinamento através do método da bisseção, procurando uma orientação mais próxima de $90^\circ$ que continue a satisfazer as condições de alcance.
+Quando é encontrada uma inclinação válida diferente da preferencial, o algoritmo realiza um refinamento através do método da bisseção, procurando uma orientação mais próxima da inclinação pretendida que continue a satisfazer as condições de alcance.
 
-Este procedimento permite obter uma transição mais suave da orientação da garra à medida que o alvo se desloca, evitando alterações bruscas associadas aos incrementos iniciais de $5^\circ$.
+Este procedimento permite reduzir as alterações de orientação associadas aos incrementos iniciais de $5^\circ$.
 
-Nos movimentos verticais, é mantida uma única inclinação durante toda a trajetória, de forma a preservar a configuração selecionada e reduzir o risco de variações abruptas dos ângulos articulares.
+Nos movimentos verticais, é selecionada uma inclinação fixa para toda a trajetória, de forma a evitar alterações bruscas da configuração articular durante a aproximação ao objeto. Para cada inclinação candidata, o algoritmo verifica a existência de soluções ao longo da trajetória, em intervalos verticais de $2$ mm, utilizando a configuração com o cotovelo para cima.
+
+Adicionalmente, são rejeitadas inclinações que originem variações superiores a $5^\circ$ em alguma das juntas J1 a J4 entre pontos consecutivos. Quando a verificação de colisões está ativada, são também rejeitadas configurações que provoquem colisões do manipulador consigo próprio.
+
+Neste planeamento vertical, o limite inferior da inclinação é, por defeito, $45^\circ$, podendo ser alterado através do parâmetro \texttt{MIN\_GRASP\_PITCH}, enquanto o limite superior é $135^\circ$.
+
+Estas verificações permitem selecionar uma inclinação válida para toda a trajetória, em vez de determinar uma nova orientação independentemente para cada ponto.
 
 \clearpage

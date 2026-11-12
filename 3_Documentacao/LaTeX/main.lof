@@ -1,23 +1,22 @@
 \babel@toc {portuguese}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Representação tridimensional do manipulador myCobot~280.}}{4}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Representação tridimensional do manipulador myCobot~280.}}{3}{figure.caption.6}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Vista lateral do manipulador no seu plano vertical.}}{5}{figure.caption.8}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Decomposição dos elos e soma das projeções no plano lateral.}}{7}{figure.caption.9}%
 \contentsline {figure}{\numberline {2.4}{\ignorespaces Vista superior do manipulador no plano horizontal.}}{9}{figure.caption.10}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}}{13}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}}{12}{figure.caption.11}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Relação entre o referencial do mundo e o referencial da base do manipulador, numa vista superior.}}{17}{figure.caption.12}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Representação da cinemática inversa no plano lateral.}}{19}{figure.caption.13}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Região geometricamente alcançável pelo pulso J4.}}{21}{figure.caption.14}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}}{22}{figure.caption.16}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Alinhamento da garra com a peça, vista de cima (esboço). Como a peça tem simetria de $90^\circ $, a junta J6 roda no máximo $45^\circ $.}}{23}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{25}{figure.caption.18}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Fluxograma da cinemática inversa: plano horizontal, procura da inclinação da garra e verificação das condições de existência.}}{29}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Relação entre o referencial do mundo e o referencial da base do manipulador, numa vista superior.}}{16}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Representação da cinemática inversa no plano lateral.}}{18}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Região geometricamente alcançável pelo pulso J4.}}{20}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}}{21}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Alinhamento da garra com uma peça cúbica, numa vista superior. Devido à simetria de $90^\circ $ da peça, a junta J6 necessita de rodar, no máximo, $45^\circ $ para efetuar o alinhamento.}}{22}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{24}{figure.caption.18}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Sequência do movimento até uma peça, vista lateral (esboço, sem escala).}}{36}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Representação esquemática da sequência de movimento até uma peça, numa vista lateral e sem escala.}}{39}{figure.caption.25}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Configurações obtidas pela cinemática inversa para os dois exemplos analisados, representadas no plano lateral.}}{40}{figure.caption.25}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Peças da demonstração vistas de cima, no referencial da base (cm), com os limites de alcance.}}{42}{figure.caption.27}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Erros de modelo e de alcance em cada peça.}}{42}{figure.caption.27}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Configurações obtidas pela cinemática inversa para os dois exemplos analisados, representadas no plano lateral.}}{44}{figure.caption.26}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Distribuição das peças no referencial da base, numa vista superior, com indicação dos limites de alcance.}}{46}{figure.caption.28}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Comparação dos erros do modelo e de alcance para cada peça.}}{46}{figure.caption.28}%
 \addvspace {10\p@ }

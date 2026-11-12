@@ -67,7 +67,7 @@ function main()
 % (todos limpam o alvo, se CLEAR_TARGET = 1)
 %======================================================================
    
-    MODE = 4;
+    MODE = 0;
 
 %----------------------------------    
     % Display do modo no terminal

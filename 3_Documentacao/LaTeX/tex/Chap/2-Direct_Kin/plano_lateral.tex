@@ -5,7 +5,7 @@
 A análise do movimento do manipulador no plano lateral permite determinar a posição do centro de preensão através de duas coordenadas: $d$, correspondente à distância horizontal no plano do braço, e $h$, correspondente à altura relativamente à base. Como ilustrado na Figura~\ref{fig:lateral}, as juntas J2, J3 e J4 possuem eixos de rotação paralelos entre si e perpendiculares ao plano de movimento, permitindo aplicar uma abordagem geométrica semelhante à utilizada no estudo de manipuladores planares.
 
 \begin{figure}[H]
-    \centering
+    \centering 
     \resizebox{0.6\textwidth}{!}{\input{./graph/vista_lateral.tex}}
     \caption{Vista lateral do manipulador no seu plano vertical.}
     \label{fig:lateral}
@@ -58,7 +58,7 @@ Considerando a base como origem do referencial, obtêm-se as seguintes expressõ
     \label{eq:j5}
 \end{align}
 
-As Equações~\eqref{eq:j3} e~\eqref{eq:j4} permitem estabelecer uma correspondência com o modelo geométrico de um manipulador planar de dois graus de liberdade, estudado nas aulas.
+As Equações~\eqref{eq:j3} e~\eqref{eq:j4} permitem estabelecer uma correspondência com o modelo geométrico de um manipulador planar de dois graus de liberdade, estudado nas aulas \cite{bicho_2dof}.
 
 Considerando $L_A=L_2$, $L_B=L_3$, $\theta_1=\theta_A$ e $\theta_2=q_3$, a posição da junta J4 relativamente à junta J2 pode ser expressa por:
 
@@ -106,7 +106,7 @@ Estas expressões apresentam uma estrutura semelhante à cinemática direta de u
 
 A Figura~\ref{fig:soma_projecoes} ilustra a decomposição geométrica utilizada na obtenção das coordenadas $d$ e $h$.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \resizebox{0.75\textwidth}{!}{\input{./graph/soma_projecoes.tex}}
     \caption{Decomposição dos elos e soma das projeções no plano lateral.}

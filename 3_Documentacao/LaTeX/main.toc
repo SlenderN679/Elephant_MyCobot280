@@ -3,9 +3,9 @@
 \contentsline {section}{\numberline {1.1}Fundamentos da cinemática}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Enquadramento e objetivos}{1}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Formulação da cinemática direta}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Plano lateral}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.1}Plano lateral}{4}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}Ângulos absolutos}{5}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Posição de cada junta}{6}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.2}Posição de cada junta}{5}{subsection.2.1.2}%
 \contentsline {subsection}{\numberline {2.1.3}Posição do centro de preensão}{6}{subsection.2.1.3}%
 \contentsline {subsection}{\numberline {2.1.4}Juntas 5 e 6}{7}{subsection.2.1.4}%
 \contentsline {section}{\numberline {2.2}Plano horizontal}{9}{section.2.2}%
@@ -14,39 +14,41 @@
 \contentsline {subsection}{\numberline {2.2.3}Distância ao eixo da base}{10}{subsection.2.2.3}%
 \contentsline {section}{\numberline {2.3}Resumo e verificação}{11}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Verificação dos resultados}{11}{subsection.2.3.1}%
-\contentsline {subsubsection}{Configuração de referência}{11}{subsection.2.3.1}%
-\contentsline {subsubsection}{Configuração de trabalho}{12}{equation.2.20}%
-\contentsline {subsubsection}{Validação no CoppeliaSim}{13}{figure.caption.11}%
-\contentsline {chapter}{\numberline {3}Formulação da cinemática inversa}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Do referencial do mundo para o da base}{16}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Plano horizontal: junta 1}{17}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Distância em frente}{17}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Ângulo da junta 1}{18}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Plano lateral: juntas 2, 3 e 4}{19}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Ângulo da garra imposto e ponto do pulso}{19}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Braço planar de 2 DOF: juntas 2 e 3}{20}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Junta 4 e passagem para os ângulos das juntas}{22}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Junta 6}{23}{subsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.3.5}Soluções rejeitadas}{24}{subsection.3.3.5}%
-\contentsline {subsection}{\numberline {3.3.6}Escolha da inclinação}{25}{subsection.3.3.6}%
-\contentsline {section}{\numberline {3.4}Resumo}{27}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Implementação em MATLAB}{30}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Comunicação entre o MATLAB e o CoppeliaSim}{30}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Organização do código}{30}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Cinemática direta}{31}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Cinemática inversa}{32}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Movimento até uma posição alvo}{35}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Movimentos em linha reta}{35}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Regresso à pose inicial}{36}{subsection.4.5.2}%
-\contentsline {chapter}{\numberline {5}Resultados e discussão}{37}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Resultados para o caso em estudo}{37}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Exemplo 1: alvo com a garra na vertical}{37}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Exemplo 2: alvo que exige alterar a inclinação da garra}{38}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Análise dos resultados}{40}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Demonstração no simulador}{42}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Discussão}{43}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Validação do modelo}{43}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Erro de alcance e erro nas juntas}{43}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Alcance e inclinação da garra}{43}{subsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.2.4}Limitações}{44}{subsection.5.2.4}%
-\contentsline {chapter}{\numberline {6}Conclusão}{45}{chapter.6}%
+\contentsline {subsubsection}{Configuração de referência}{12}{figure.caption.11}%
+\contentsline {subsubsection}{Configuração de trabalho}{13}{equation.2.20}%
+\contentsline {chapter}{\numberline {3}Formulação da cinemática inversa}{14}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Do referencial do mundo para o da base}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Plano horizontal: junta 1}{15}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Distância em frente}{16}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Ângulo da junta 1}{17}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Plano lateral: juntas 2, 3 e 4}{18}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Ângulo da garra imposto e ponto do pulso}{18}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Braço planar de 2 DOF: juntas 2 e 3}{19}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Junta 4 e passagem para os ângulos das juntas}{20}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Junta 6}{21}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Soluções rejeitadas}{22}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}Escolha da inclinação}{23}{subsection.3.3.6}%
+\contentsline {section}{\numberline {3.4}Resumo}{26}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Implementação em MATLAB}{28}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Comunicação entre o MATLAB e o CoppeliaSim}{28}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Organização do código}{29}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Cinemática direta}{29}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Cinemática inversa}{31}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Funções auxiliares da cinemática inversa}{34}{subsection.4.4.1}%
+\contentsline {section}{\numberline {4.5}Movimento até uma posição alvo}{36}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Movimento no espaço das juntas}{37}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Movimentos em linha reta}{38}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Planeamento de movimentos verticais}{38}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Regresso à pose inicial}{39}{subsection.4.5.4}%
+\contentsline {chapter}{\numberline {5}Resultados e discussão}{41}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Resultados para o caso em estudo}{41}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Exemplo 1: alvo com a garra na vertical}{41}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Exemplo 2: alvo que exige alterar a inclinação da garra}{43}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Análise dos resultados}{45}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Demonstração no simulador}{45}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Discussão}{47}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Validação do modelo}{47}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Erro de alcance e erro nas juntas}{48}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Alcance e inclinação da garra}{48}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Limitações}{49}{subsection.5.2.4}%
+\contentsline {chapter}{\numberline {6}Conclusão}{51}{chapter.6}%

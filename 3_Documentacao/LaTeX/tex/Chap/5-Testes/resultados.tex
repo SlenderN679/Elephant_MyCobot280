@@ -163,11 +163,13 @@ Perante esta situação, o algoritmo procura uma inclinação alternativa da gar
 
 Para este alvo, é necessário reduzir a inclinação relativamente à vertical, considerando valores de $\psi<90^\circ$, de forma a aproximar o pulso da região geometricamente alcançável.
 
-A procura e o respetivo refinamento permitem obter uma inclinação próxima de:
+A procura e o respetivo refinamento por bisseção permitem obter uma inclinação próxima de:
 
 \begin{equation}
     \psi\approx82{,}27^\circ
 \end{equation}
+
+O valor obtido pelo algoritmo, antes do arredondamento, é aproximadamente $82{,}2743^\circ$. Esta inclinação permite aproximar o pulso do limite geométrico de alcance, mantendo uma configuração articular válida.
 
 Nesta configuração, a distância entre o ombro e o pulso aproxima-se do alcance máximo:
 
@@ -192,7 +194,7 @@ Os ângulos articulares obtidos são aproximadamente:
     \label{eq:ik_exemplo2}
 \end{equation}
 
-Aplicando a cinemática direta à configuração obtida, recupera-se, aproximadamente, a posição pretendida:
+Aplicando a cinemática direta à configuração obtida, recupera-se, dentro da precisão numérica considerada, a posição pretendida:
 
 \begin{equation}
     (x,y,z)\approx
@@ -224,12 +226,8 @@ A Figura~\ref{fig:exemplos_ik} apresenta as configurações obtidas nos dois exe
 
 Os dois exemplos permitem verificar o comportamento da cinemática inversa perante diferentes condições de posicionamento.
 
-No primeiro caso, o alvo é alcançado com a inclinação preferencial de $90^\circ$, permitindo manter a garra orientada verticalmente para baixo.
-
-No segundo caso, a posição pretendida não é alcançável com essa inclinação, sendo necessário recorrer ao procedimento de procura e refinamento da orientação da garra para encontrar uma configuração válida.
-
 Em ambas as situações, a aplicação da cinemática direta aos ângulos calculados permite recuperar, dentro da precisão numérica considerada, as posições pretendidas.
 
-Estes resultados demonstram a consistência matemática das formulações implementadas e evidenciam a importância da escolha da inclinação da garra na determinação de soluções para a cinemática inversa.
+Os resultados obtidos confirmam a consistência matemática entre os modelos de cinemática direta e inversa, uma vez que as posições pretendidas são recuperadas quando os ângulos calculados são introduzidos no modelo direto. Evidenciam também a importância da seleção da inclinação da garra para alcançar posições próximas dos limites geométricos do manipulador.
 
-\clearpage
+A validação do posicionamento em ambiente de simulação é analisada nas secções seguintes.

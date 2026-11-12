@@ -1,17 +1,31 @@
+
 \subsection{Demonstração no simulador}
 \label{sec:demo_sim}
 
-Para demonstrar o movimento \textit{move end-effector to target position} para diferentes posições alvo, o manipulador foi levado, no CoppeliaSim, até cada uma das peças detetadas pela câmara na mesa. Para cada alvo, a \texttt{inverse\_kin} calcula os ângulos das juntas, a \texttt{move\_joints} leva o braço até por cima da peça e a \texttt{move\_linear} desce na vertical até 2~cm acima da mesa. Mediram-se três erros:
+Para avaliar o funcionamento do sistema em ambiente de simulação, foi realizada uma demonstração do movimento \textit{move end-effector to target position}, considerando diferentes posições de peças distribuídas sobre a mesa no CoppeliaSim.
+
+Para cada posição alvo, a função \texttt{inverse\_kin} permite determinar uma configuração articular válida. A função \texttt{move\_joints} é utilizada para deslocar o manipulador até uma posição de aproximação, enquanto a função \texttt{move\_linear} permite executar movimentos de aproximação em linha reta, nomeadamente na direção vertical.
+
+Durante os testes, foram considerados três indicadores para avaliar o desempenho do sistema:
 
 \begin{itemize}
-    \item \textbf{modelo}: distância entre a posição dada pela \texttt{direct\_kin}, com as juntas lidas, e a posição real do centro de preensão no simulador;
-    \item \textbf{alcance}: distância entre o ponto pedido e a posição real do centro de preensão;
-    \item \textbf{juntas}: maior diferença entre os ângulos calculados e os ângulos lidos.
+    \item \textbf{Erro do modelo:}
+    distância entre a posição calculada pela função \texttt{direct\_kin}, a partir dos ângulos articulares lidos, e a posição do centro de preensão obtida diretamente no CoppeliaSim;
+
+    \item \textbf{Erro de alcance:}
+    distância entre a posição pretendida para o centro de preensão e a posição efetivamente alcançada no simulador;
+
+    \item \textbf{Erro articular:}
+    maior diferença absoluta entre os ângulos articulares pretendidos e os ângulos efetivamente lidos.
 \end{itemize}
+
+A Tabela~\ref{tab:demo_sim} apresenta os resultados registados para sete posições alvo, incluindo as coordenadas pretendidas e alcançadas, a inclinação da garra e os erros obtidos.
+
+As coordenadas encontram-se expressas em milímetros, relativamente ao referencial da base do manipulador.
 
 \begin{table}[H]
   \centering
-  \caption{Resultados do movimento até diferentes posições alvo no simulador.}
+  \caption{Resultados do movimento até diferentes posições alvo no simulador. Posições no referencial da base, em mm; $\psi$ é a inclinação escolhida pela cinemática inversa.}
   \label{tab:demo_sim}
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{lcccccc}
@@ -20,29 +34,48 @@ Para demonstrar o movimento \textit{move end-effector to target position} para d
     \midrule
     vermelho 1 & $(66{,}1;\ 199{,}9;\ -10{,}0)$ & $(65{,}7;\ 196{,}7;\ -11{,}3)$ & $90^\circ$ & 1,5 & 3,5 & $0{,}8^\circ$ \\
     vermelho 2 & $(-111{,}0;\ -37{,}2;\ -10{,}0)$ & $(-111{,}0;\ -38{,}2;\ -10{,}7)$ & $110^\circ$ & 2,3 & 1,3 & $0{,}4^\circ$ \\
-    laranja & $(-107{,}9;\ 224{,}1;\ -10{,}0)$ & $(-106{,}0;\ 221{,}2;\ -12{,}4)$ & $90^\circ$ & 2,3 & 4,2 & $1{,}2^\circ$ \\
+    laranja & $(-108{,}4;\ 224{,}6;\ -10{,}0)$ & $(-106{,}5;\ 221{,}8;\ -12{,}5)$ & $90^\circ$ & 2,4 & 4,3 & $1{,}2^\circ$ \\
     amarelo & $(-33{,}5;\ 149{,}7;\ -10{,}0)$ & $(-33{,}0;\ 148{,}0;\ -9{,}7)$ & $95^\circ$ & 1,2 & 1,8 & $0{,}6^\circ$ \\
     verde & $(-129{,}4;\ 54{,}3;\ -10{,}0)$ & $(-128{,}7;\ 53{,}9;\ -10{,}0)$ & $100^\circ$ & 1,2 & 0,8 & $0{,}5^\circ$ \\
     azul & $(-147{,}3;\ 33{,}2;\ -10{,}0)$ & $(-145{,}6;\ 33{,}0;\ -9{,}8)$ & $95^\circ$ & 1,2 & 1,7 & $0{,}6^\circ$ \\
-    rosa & $(16{,}3;\ 274{,}4;\ -10{,}0)$ & $(16{,}7;\ 269{,}6;\ -13{,}5)$ & $80^\circ$ & 4,0 & 5,9 & $1{,}6^\circ$ \\
+    rosa & $(16{,}3;\ 274{,}9;\ -10{,}0)$ & $(16{,}6;\ 270{,}1;\ -13{,}5)$ & $80^\circ$ & 4,1 & 5,9 & $1{,}6^\circ$ \\
     \bottomrule
   \end{tabular}}
 \end{table}
 
-\begin{figure}[H]
-  \centering
-  \begin{minipage}[b]{0.48\textwidth}
+A Figura~\ref{fig:mapa_alvos} apresenta a distribuição das peças no plano horizontal, enquanto a Figura~\ref{fig:erros} permite comparar os erros do modelo e de alcance registados para cada alvo.
+
+\begin{figure}[htbp]
     \centering
-    \input{graph/mapa_alvos}
-    \caption{Peças da demonstração vistas de cima, no referencial da base (cm), com os limites de alcance.}
-    \label{fig:mapa_alvos}
-  \end{minipage}\hfill
-  \begin{minipage}[b]{0.48\textwidth}
-    \centering
-    \input{graph/erros}
-    \caption{Erros de modelo e de alcance em cada peça.}
-    \label{fig:erros}
-  \end{minipage}
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \input{graph/mapa_alvos}
+        \caption{Distribuição das peças no referencial da base, numa vista superior, com indicação dos limites de alcance.}
+        \label{fig:mapa_alvos}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \input{graph/erros}
+        \caption{Comparação dos erros do modelo e de alcance para cada peça.}
+        \label{fig:erros}
+    \end{minipage}
 \end{figure}
 
-Nos sete alvos alcançáveis, a garra chegou a menos de 6~mm do ponto pedido e as juntas ficaram a menos de $1{,}6^\circ$ dos ângulos calculados. A altura $z = -10$~mm no referencial da base corresponde a 20~mm acima da mesa. Quatro peças, a 39--41~cm do eixo da base, foram declaradas inalcançáveis pela cinemática inversa antes de o braço se mover. O erro de alcance cresce com a distância ao eixo da base, sendo máximo no alvo mais afastado (rosa, a 27~cm), o que é compatível com o braço a descair com o próprio peso quando está mais esticado.
+Nos sete alvos alcançados, os erros de alcance registados situaram-se entre $0{,}8$ mm e $5{,}9$ mm, enquanto os erros do modelo variaram entre $1{,}2$ mm e $4{,}1$ mm.
+
+Relativamente aos ângulos articulares, as diferenças máximas entre os valores pretendidos e os valores lidos situaram-se entre $0{,}4^\circ$ e $1{,}6^\circ$.
+
+As posições pretendidas apresentam uma coordenada vertical $z=-10$ mm relativamente ao referencial da base, correspondente, na configuração do cenário considerada, a uma altura de $20$ mm acima da superfície da mesa.
+
+Para além dos sete alvos apresentados, foram registadas quatro posições para as quais o algoritmo não encontrou uma solução válida. Estas posições situavam-se a distâncias horizontais aproximadas de $39$ a $41$ cm do eixo da base, tendo sido rejeitadas antes da execução do movimento.
+
+Esta rejeição está relacionada com as condições de alcançabilidade e com as restrições impostas na implementação da cinemática inversa.
+
+O menor erro de alcance foi registado na peça verde, com $0{,}8$ mm, enquanto o maior ocorreu na peça rosa, com $5{,}9$ mm.
+
+A peça rosa apresenta também o maior erro do modelo, de $4{,}0$ mm, e a maior diferença articular, de $1{,}6^\circ$, encontrando-se entre os alvos mais afastados da base.
+
+Estes resultados sugerem que as configurações mais estendidas podem apresentar maiores dificuldades de posicionamento. No entanto, os valores registados não permitem estabelecer uma relação direta entre a distância ao eixo da base e o erro obtido, uma vez que este também pode depender da configuração articular e do comportamento dinâmico do manipulador.
+
+De forma geral, a demonstração permitiu verificar a capacidade do sistema para calcular configurações articulares, executar movimentos até diferentes posições e identificar alvos para os quais não foi encontrada uma solução válida.

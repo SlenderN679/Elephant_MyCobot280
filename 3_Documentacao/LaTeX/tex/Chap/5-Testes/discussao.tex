@@ -2,17 +2,81 @@
 \label{sec:disc}
 
 \subsection{Validação do modelo}
- 
-O erro do modelo compara a posição calculada pela cinemática direta, com as juntas lidas no simulador, com a posição real do centro de preensão. Ficou entre 1,2 e 4,0~mm nos alvos testados, abaixo da tolerância de 5~mm, o que valida em conjunto a função \texttt{direct\_kin}, a conversão \texttt{world\_to\_base} e os comprimentos dos elos medidos no cenário. As diferenças que restam são pequenas e podem vir de os comprimentos medidos não coincidirem exatamente com a geometria do modelo do robô no CoppeliaSim e de o centro de preensão ser definido a partir de um ponto do modelo. Este erro não depende do movimento, pois só compara dois cálculos da mesma pose, e por isso mede a qualidade do modelo e não a do controlo.
- 
+
+Nos alvos testados, o erro do modelo variou entre $1{,}2$ mm e $4{,}1$ mm, permanecendo abaixo da tolerância de $5$ mm considerada no diagnóstico. Estes resultados evidenciam uma boa correspondência entre as posições calculadas pela função \texttt{direct\_kin} e as posições do centro de preensão obtidas diretamente no CoppeliaSim.
+
+As diferenças observadas podem estar relacionadas com pequenas discrepâncias entre os comprimentos dos elos utilizados na formulação matemática e a geometria efetiva do manipulador no simulador, bem como com a definição do ponto correspondente ao centro de preensão.
+
+Uma vez que este erro é calculado utilizando os mesmos ângulos articulares para determinar ambas as posições, permite avaliar a consistência do modelo geométrico independentemente da capacidade do manipulador para atingir uma configuração pretendida.
+
+Deste modo, os valores obtidos validam a adequação do modelo de cinemática direta e dos parâmetros geométricos utilizados para representar o posicionamento do centro de preensão no cenário considerado.
+
 \subsection{Erro de alcance e erro nas juntas}
- 
-O erro de alcance compara o ponto pedido com a posição real da garra, pelo que mistura dois efeitos: o erro do modelo e o facto de as juntas não chegarem exatamente aos ângulos pedidos. O erro nas juntas isola o segundo. Se o erro de alcance for semelhante ao erro do modelo e o erro nas juntas for pequeno, o movimento atinge o ponto pedido e o erro restante vem do modelo. Se o erro de alcance for maior, a diferença vem de as juntas ficarem ainda a caminho ou abaixo do ângulo pedido, por exemplo por efeito da gravidade ou do tempo de estabilização, de 2~s, ser curto para o movimento em causa.
+
+O erro de alcance resulta da diferença entre a posição pretendida e a posição efetivamente alcançada pelo manipulador, sendo influenciado tanto pelas aproximações do modelo cinemático como pelas diferenças entre os ângulos articulares pretendidos e os ângulos efetivamente atingidos.
+
+O erro articular permite avaliar esta última componente, através da comparação entre os ângulos calculados e os ângulos lidos durante a execução.
+
+Nos testes realizados, os erros de alcance variaram entre $0{,}8$ mm e $5{,}9$ mm, enquanto as diferenças articulares máximas se situaram entre $0{,}4^\circ$ e $1{,}6^\circ$.
+
+Quando o erro de alcance apresenta uma magnitude semelhante à do erro do modelo e as diferenças articulares são reduzidas, os desvios observados podem estar associados principalmente às aproximações geométricas consideradas.
+
+Por outro lado, quando o erro de alcance é superior, as diferenças entre os ângulos pretendidos e os efetivamente atingidos podem contribuir para o desvio de posicionamento.
+
+Estas diferenças podem resultar, por exemplo, da influência da gravidade sobre as juntas, particularmente em configurações mais estendidas, ou de o tempo de estabilização de $2$ s considerado nos testes não ser suficiente para atingir completamente a configuração pretendida.
+
+O maior erro de alcance foi registado na peça rosa, com $5{,}9$ mm, correspondendo também ao maior erro do modelo, de $4{,}0$ mm, e à maior diferença articular, de $1{,}6^\circ$.
+
+Este resultado é compatível com a maior dificuldade de posicionamento em configurações próximas dos limites de alcance, nas quais pequenas diferenças articulares podem originar desvios mais significativos na posição do centro de preensão.
+
+Contudo, os resultados obtidos não permitem determinar isoladamente a contribuição de cada um destes fatores para o erro final.
+
 \subsection{Alcance e inclinação da garra}
- 
-A cinemática inversa tenta primeiro a inclinação preferida, com a garra na vertical, e só se esta falhar inclina a garra. Com a implementação que usámos, para alvos a poucos centímetros da mesa, o alcance horizontal é de cerca de 27--28~cm do eixo da base com a garra na vertical e passa a cerca de 36--37~cm quando se permite inclinar a garra até $30^\circ$ da horizontal. Os alvos mais afastados da base são, por isso, os que exigem inclinar a garra, e são também os que deixam o braço quase esticado, onde pequenos erros nas juntas se traduzem em erros maiores de posição. Por outro lado, um alvo demasiado perto do eixo da base pode ser inalcançável, porque o desvio lateral $L_5$ impede a garra de chegar ao eixo de J1.
- 
+
+A inclinação da garra constitui um parâmetro fundamental na resolução da cinemática inversa, uma vez que influencia a posição do pulso relativamente ao centro de preensão e, consequentemente, a região de trabalho alcançável pelo manipulador.
+
+Na implementação desenvolvida, o algoritmo procura inicialmente uma solução com a inclinação preferencial $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo. Quando esta configuração não permite alcançar o alvo, são testadas inclinações alternativas.
+
+Nos testes de alcance realizados, para alvos situados a poucos centímetros da superfície da mesa, verificou-se que o alcance horizontal do manipulador é de aproximadamente $27$ a $28$ cm relativamente ao eixo da base quando a garra permanece na vertical.
+
+Ao permitir a alteração da inclinação da garra, considerando valores até $\psi=30^\circ$, o alcance horizontal aumentou para aproximadamente $36$ a $37$ cm nas condições analisadas.
+
+Este aumento demonstra a importância da adaptação da orientação da garra, permitindo alcançar posições que não seriam acessíveis com a inclinação preferencial de $90^\circ$.
+
+O comportamento também é evidenciado no segundo exemplo da Secção~\ref{sec:ik_resultados}, no qual a posição pretendida não apresenta uma solução geométrica para $\psi=90^\circ$. Ao reduzir a inclinação para aproximadamente $82{,}27^\circ$, torna-se possível encontrar uma configuração articular válida.
+
+No entanto, à medida que o manipulador se aproxima dos limites do seu espaço de trabalho, os elos tendem a apresentar configurações mais estendidas, nas quais pequenas variações articulares podem provocar alterações mais significativas na posição do centro de preensão.
+
+Esta situação pode contribuir para o aumento dos erros de posicionamento, especialmente quando o braço se encontra sujeito aos efeitos da gravidade.
+
+Nos testes realizados no CoppeliaSim, quatro posições situadas a aproximadamente $39$ a $41$ cm do eixo da base foram rejeitadas pela cinemática inversa, por não terem sido encontradas configurações válidas segundo as restrições implementadas.
+
+Por outro lado, posições demasiado próximas do eixo da base também podem ser inalcançáveis, devido ao desvio lateral $L_5$ existente na estrutura do manipulador.
+
+Na implementação da cinemática inversa, é utilizada a condição $r>L_5$, pelo que posições com uma distância horizontal inferior ou igual ao desvio lateral são rejeitadas.
+
+Assim, o alcance efetivo do manipulador depende não apenas dos comprimentos dos elos, mas também da inclinação da garra, dos limites articulares e das restrições consideradas na resolução da cinemática inversa.
+
 \subsection{Limitações}
- 
-O movimento \texttt{move\_joints} interpola as juntas, e não a posição da garra, pelo que a trajetória do \textit{end-effector} entre dois pontos não é uma reta; passa pela pose inicial para evitar a mesa, mas não é uma trajetória planeada no espaço cartesiano. Quando é preciso um movimento em linha reta, usa-se \texttt{move\_linear}, que resolve a cinemática inversa a cada passo. Além disso, os resultados são de simulação e usam as posições reais dos objetos, que só o simulador conhece, apenas para definir os alvos e medir os erros; no braço real, os alvos viriam da câmara e não existiria o erro do modelo medido desta forma.
- 
+
+Apesar dos resultados obtidos, a abordagem desenvolvida apresenta algumas limitações relacionadas com o planeamento dos movimentos, as configurações articulares consideradas e a utilização de um ambiente de simulação.
+
+A função \texttt{move\_joints} realiza uma interpolação no espaço das juntas, e não diretamente no espaço cartesiano. Consequentemente, a trajetória descrita pelo centro de preensão entre duas posições não é necessariamente uma linha reta.
+
+Esta função permite executar movimentos suaves entre configurações articulares, podendo ser utilizada para deslocar o manipulador até uma posição de aproximação antes de realizar movimentos mais precisos junto dos objetos.
+
+Quando é necessário um movimento em linha reta, recorre-se à função \texttt{move\_linear}, que determina sucessivamente novas configurações articulares através da cinemática inversa, procurando fazer evoluir o centro de preensão ao longo da trajetória pretendida.
+
+Nos movimentos verticais, a função \texttt{plan\_vertical} permite selecionar uma inclinação fixa da garra para toda a trajetória, evitando alterações bruscas da configuração articular durante a aproximação ao objeto.
+
+Contudo, a execução destes movimentos continua condicionada pela existência de soluções válidas ao longo do percurso e pela capacidade do manipulador para acompanhar as configurações articulares calculadas.
+
+Outra limitação está relacionada com as restrições adotadas na cinemática inversa. A junta J5 é mantida a $0^\circ$ e a configuração com o cotovelo para cima é utilizada por defeito. Estas escolhas simplificam a resolução geométrica, mas restringem o conjunto de configurações articulares exploradas.
+
+Por fim, os resultados apresentados foram obtidos no CoppeliaSim, utilizando as posições dos objetos disponibilizadas pelo ambiente de simulação para definir os alvos e avaliar o desempenho do sistema.
+
+Num manipulador físico, estas posições teriam de ser obtidas através de um sistema de perceção, nomeadamente por visão artificial, sendo necessário considerar os erros associados à identificação e localização dos objetos.
+
+Além disso, a aplicação num sistema real exigiria considerar fatores como a calibração das juntas, as características dos atuadores, as tolerâncias mecânicas e a influência das condições físicas de funcionamento.
+
+Deste modo, os resultados obtidos demonstram a viabilidade da abordagem geométrica desenvolvida em ambiente de simulação, constituindo uma base para futuras melhorias na precisão do posicionamento, no planeamento de trajetórias e na integração com sistemas de visão artificial.

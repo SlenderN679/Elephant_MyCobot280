@@ -2,26 +2,20 @@
 \section{Enquadramento e objetivos}
 \label{sec:enq-e-obj}
 
-Os manipuladores robóticos desempenham um papel importante na automação industrial, sendo utilizados em tarefas que exigem precisão, repetibilidade e flexibilidade de movimentos. O seu funcionamento depende do conhecimento da geometria do manipulador e da relação entre as variáveis articulares e o posicionamento do \textit{end effector} no espaço de trabalho.
+Os manipuladores robóticos são utilizados na indústria para realizar tarefas que exigem precisão e movimentos controlados. Para isso, é necessário conhecer a relação entre os ângulos das juntas e a posição da garra.
 
-Neste contexto, o presente projeto centra-se no estudo do manipulador myCobot~280, recorrendo ao MATLAB para implementar os algoritmos cinemáticos e ao CoppeliaSim para simular e avaliar o comportamento do robô.
+Neste trabalho, é estudada a cinemática do manipulador myCobot~280, utilizando o MATLAB para realizar os cálculos e controlar os movimentos, e o CoppeliaSim para simular o seu funcionamento.
 
-Os principais objetivos do trabalho são:
+Os principais objetivos são:
 
 \begin{itemize}
-    \item Desenvolver a formulação matemática da cinemática direta e inversa do manipulador;
+    \item Desenvolver e implementar em MATLAB os modelos de cinemática direta e inversa;
 
-    \item Implementar os modelos cinemáticos em MATLAB;
+    \item Calcular a posição do ponto de preensão e os ângulos das juntas necessários para alcançar diferentes alvos;
 
-    \item Determinar a posição do centro de preensão e a direção da garra a partir dos ângulos articulares;
+    \item Implementar movimentos no espaço das juntas e trajetórias em linha reta;
 
-    \item Calcular as configurações articulares necessárias para alcançar posições pretendidas, considerando a inclinação da garra e os limites das juntas;
+    \item Integrar o MATLAB com o CoppeliaSim e explorar a localização de objetos através de visão artificial;
 
-    \item Implementar movimentos no espaço das juntas e trajetórias no espaço cartesiano;
-
-    \item Integrar o MATLAB com o CoppeliaSim para executar e visualizar os movimentos do manipulador;
-
-    \item Explorar a utilização da visão artificial na identificação e localização de objetos;
-
-    \item Validar os modelos implementados através da comparação entre os resultados calculados e os obtidos em simulação.
+    \item Testar os modelos e avaliar os erros de posicionamento obtidos na simulação.
 \end{itemize}

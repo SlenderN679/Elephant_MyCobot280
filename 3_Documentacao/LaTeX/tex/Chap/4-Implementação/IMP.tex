@@ -1,55 +1,105 @@
+
 \chapter{Implementação em MATLAB}
 \label{ch:imp}
 
-Neste subcapítulo, é apresentado a implementação das cinemáticas na junção com o cenário de simulação do CoppeliaSim do manipulador robótico MyCobot280 em MATLAB. 
+Neste capítulo, é apresentada a implementação dos algoritmos de cinemática direta e inversa do manipulador robótico myCobot~280 em MATLAB, bem como a sua integração com o ambiente de simulação CoppeliaSim.
+
+São descritos os mecanismos de comunicação entre os dois programas, a organização do código desenvolvido e as funções utilizadas para calcular as configurações articulares e executar os movimentos do manipulador.
 
 \section{Comunicação entre o MATLAB e o CoppeliaSim}
 \label{sec:comunicacao}
 
-A simulação corre em modo síncrono (\texttt{sim.setStepping(true)}): só avança um passo, de cerca de 50~ms, quando o MATLAB o pede. Assim, enquanto o MATLAB calcula, o simulador fica parado, e os resultados não dependem da velocidade do computador. A Tabela~\ref{tab:api} mostra as funções usadas no movimento do braço, das classes \texttt{mycobot\_interface} e \texttt{simulator\_interface} fornecidas.
+A comunicação entre o MATLAB e o CoppeliaSim \cite{louro_matlab, louro_codigo, coppelia_zmq} permite controlar as juntas do manipulador, obter os respetivos ângulos articulares e acompanhar a evolução dos movimentos em simulação.
+
+O simulador é executado em modo síncrono, através da instrução \texttt{sim.setStepping(true)}. Neste modo, a simulação apenas avança quando o MATLAB solicita um novo passo, permitindo sincronizar os cálculos dos algoritmos com a atualização do estado do robô.
+
+No cenário utilizado, o passo de simulação é de aproximadamente $50$ ms. Esta abordagem permite controlar a sequência de execução dos movimentos sem depender diretamente da velocidade de processamento do computador.
+
+A comunicação é efetuada através das classes \texttt{mycobot\_interface} e \texttt{simulator\_interface} \cite{louro_codigo}, que disponibilizam funções para interagir com o manipulador e com o ambiente de simulação.
+
+A Tabela~\ref{tab:api} apresenta as principais funções utilizadas.
 
 \begin{table}[H]
-  \centering
-  \caption{Funções usadas para comunicar com o simulador.}
-  \label{tab:api}
-  \small
-  \begin{tabular}{p{4.4cm}p{4.0cm}p{3.6cm}}
-    \hline
-    Função MATLAB & Chamada à API & Para quê \\[2pt]
-    \hline
-    \texttt{robot\_arm.set\_joints(q)} & \texttt{sim.setJoint}\allowbreak\texttt{TargetPosition} & definir os ângulos pretendidos \\
-    \texttt{robot\_arm.get\_joints()} & \texttt{sim.getJointPosition} & ler os ângulos das juntas \\
-    \texttt{sim\_interface.}\allowbreak\texttt{step\_simulation()} & \texttt{sim.step} & avançar um passo de tempo \\
-    \texttt{sim\_interface.}\allowbreak\texttt{get\_simulation\_time()} & \texttt{sim.getSimulationTime} & tempo de simulação \\
-    \hline
-  \end{tabular}
+    \centering
+    \caption{Funções utilizadas na comunicação com o CoppeliaSim.}
+    \label{tab:api}
+    \small
+    \begin{tabular}{p{4.4cm}p{4.0cm}p{3.6cm}}
+        \hline
+        Função MATLAB & Chamada à API & Finalidade \\[2pt]
+        \hline
+        \texttt{robot\_arm.set\_joints(q)}
+        & \texttt{sim.setJoint}\allowbreak\texttt{TargetPosition}
+        & Definir as posições articulares pretendidas \\
+
+        \texttt{robot\_arm.get\_joints()}
+        & \texttt{sim.getJointPosition}
+        & Ler os ângulos atuais das juntas \\
+
+        \texttt{sim\_interface.}\allowbreak\texttt{step\_simulation()}
+        & \texttt{sim.step}
+        & Avançar um passo de simulação \\
+
+        \texttt{sim\_interface.}\allowbreak\texttt{get\_simulation\_time()}
+        & \texttt{sim.getSimulationTime}
+        & Obter o tempo de simulação \\
+        \hline
+    \end{tabular}
 \end{table}
 
-As leituras das juntas são as que os \textit{encoders} do braço real leriam. As posições reais dos objetos, que só o simulador conhece, são usadas apenas nos testes de diagnóstico e para medir os erros.
+Durante a execução dos movimentos, os ângulos articulares são obtidos através da interface do manipulador, reproduzindo a leitura das posições das juntas que seria efetuada num sistema físico.
+
+Por sua vez, o CoppeliaSim permite obter diretamente as posições dos elementos do cenário, possibilitando a transformação de coordenadas e a comparação entre os resultados calculados e os observados em simulação.
 
 \section{Organização do código}
 \label{sec:organizacao}
- 
-O código foi subdividido em vários pacotes para organizar as funções e para melhorar a para o tornar mais modular, facilitando assim a alteração ou criação de novos comportamentos.
+
+O código desenvolvido foi organizado em diferentes pacotes e funções, de forma a separar os cálculos cinemáticos, o planeamento dos movimentos e a comunicação com o simulador.
+
+Esta organização modular facilita a compreensão do funcionamento do sistema, a realização de testes e a introdução de novas funcionalidades.
+
+O pacote \texttt{+movement} reúne as principais funções relacionadas com a cinemática e o movimento do manipulador, apresentadas na Tabela~\ref{tab:funcoes}.
 
 \begin{table}[H]
-  \centering
-  \caption{Funções do pacote \texttt{+movement} usadas para o movimento do braço.}
-  \label{tab:funcoes}
-  \begin{tabular}{ll}
-    \hline
-    Função & O que faz \\
-    \hline
-    \texttt{direct\_kin} & cinemática direta (Capítulo~\ref{ch:dir_kin}) \\
-    \texttt{ik\_2dof} & braço planar de 2 DOF, como na aula \\
-    \texttt{inverse\_kin} & cinemática inversa (Capítulo~\ref{ch:inv_kin}) \\
-    \texttt{move\_joints} & movimento suave no espaço das juntas \\
-    \texttt{move\_linear} & movimento da garra em linha reta \\
-    \texttt{go\_home} & regresso à pose inicial a partir de qualquer pose \\
-    \texttt{plan\_vertical} & escolha de uma inclinação para toda uma descida \\
-    \hline
-  \end{tabular}
+    \centering
+    \caption{Principais funções do pacote \texttt{+movement}.}
+    \label{tab:funcoes}
+    \begin{tabular}{ll}
+        \hline
+        Função & Finalidade \\
+        \hline
+        \texttt{direct\_kin}
+        & Cálculo da cinemática direta \\
+
+        \texttt{ik\_2dof}
+        & Cinemática inversa de um braço planar de 2 DOF \\
+
+        \texttt{inverse\_kin}
+        & Cálculo da cinemática inversa do manipulador \\
+
+        \texttt{solve\_pitch}
+        & Resolução da cinemática inversa para uma inclinação fixa \\
+
+        \texttt{move\_joints}
+        & Movimento suave no espaço das juntas \\
+
+        \texttt{move\_linear}
+        & Movimento em linha reta no espaço cartesiano \\
+
+        \texttt{go\_home}
+        & Regresso à configuração inicial \\
+
+        \texttt{plan\_vertical}
+        & Planeamento de movimentos verticais com inclinação fixa \\
+        \hline
+    \end{tabular}
 \end{table}
+
+As funções \texttt{direct\_kin} e \texttt{inverse\_kin} implementam as formulações matemáticas apresentadas nos Capítulos~\ref{ch:dir_kin} e~\ref{ch:inv_kin}, respetivamente.
+
+As restantes funções permitem selecionar configurações articulares válidas, planear trajetórias e executar movimentos controlados, recorrendo aos modelos cinemáticos desenvolvidos.
+
+Nas secções seguintes, são apresentados os principais procedimentos implementados para a cinemática direta, a cinemática inversa e o controlo dos movimentos do manipulador.
 
 \input{tex/Chap/4-Implementação/direct}
 \input{tex/Chap/4-Implementação/inverse}

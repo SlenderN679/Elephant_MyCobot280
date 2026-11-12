@@ -35,7 +35,7 @@ A distância frontal necessária para alcançar o alvo pode então ser determina
     \label{eq:ik_d}
 \end{equation}
 
-Para que exista uma solução real, é necessário verificar a condição $r\geq L_5$. Quando $r<L_5$, o alvo encontra-se demasiado próximo do eixo da base para ser alcançado segundo o modelo geométrico adotado.
+Para que exista uma solução real, é necessário verificar a condição $r\geq L_5$. Quando $r<L_5$, o alvo encontra-se demasiado próximo do eixo da base para ser alcançado segundo o modelo geométrico adotado. Na implementação em MATLAB, é utilizada a condição mais restritiva $r>L_5$, sendo também rejeitado o caso limite $r=L_5$, correspondente a uma distância frontal nula.
 
 Considera-se a raiz positiva de $d$, correspondente à configuração em que o braço se encontra orientado para a frente da base. Esta escolha permite selecionar uma das configurações geométricas possíveis e simplificar a resolução da cinemática inversa.
 
@@ -75,6 +75,6 @@ Na ausência deste desvio, ou seja, para $L_5=0$, e considerando $d>0$, a expres
 
 O termo $\frac{\pi}{2}$ resulta da configuração de referência adotada, na qual o braço se encontra orientado segundo o sentido positivo do eixo $y$, quando $q_1=0^\circ$.
 
-Deste modo, a inclusão do desvio lateral $L_5$ permite determinar corretamente a orientação da base, constituindo uma etapa fundamental para a resolução da cinemática inversa do myCobot~280.
+Deste modo, a consideração do desvio lateral $L_5$ permite calcular a orientação da junta J1 e a distância frontal $d$ necessária para alcançar a posição pretendida. Estas grandezas constituem as entradas da etapa seguinte, na qual são determinados os ângulos das juntas J2, J3 e J4 através da análise geométrica no plano lateral.
 
 \clearpage

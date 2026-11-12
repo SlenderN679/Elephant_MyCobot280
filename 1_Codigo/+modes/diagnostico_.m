@@ -188,9 +188,9 @@ function [S, status] = diagnostico_(action, S, ctx, SHAKE)
                              'na garra   = depois de fechar e subir 3 cm: desvio da peça e inclinação\n']);
                 end
                 % 2. visão
-                movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
-                                 [], deg2rad(ctx.VISION_POSE));
-                vision.vision_check(ctx.sim_interface);
+                %movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
+                %                 [], deg2rad(ctx.VISION_POSE));
+                %vision.vision_check(ctx.sim_interface);
                 movement.go_home(ctx.SHAKE, ctx.robot_arm, ctx.sim_interface, ctx.Links, ctx.qMin, ctx.qMax, ...
                                  [], deg2rad(ctx.HOME_POSE));
                 status = 'finished';
