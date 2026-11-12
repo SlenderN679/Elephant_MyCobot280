@@ -2,9 +2,9 @@
 \chapter{Formulação da cinemática direta}
 \label{ch:dir_kin}
 
-A cinemática direta permite determinar a posição e a orientação do \textit{end effector} de um manipulador robótico a partir das suas variáveis articulares. No presente projeto, esta abordagem é utilizada para calcular a posição do centro de preensão do myCobot~280, expressa pelas coordenadas $(x,y,z)$, com base nos ângulos das seis juntas $(q_1,\ldots,q_6)$ e nas dimensões dos elos. Para uma configuração articular conhecida, o modelo cinemático direto permite determinar uma única pose do manipulador.
+\hspace*{\parindent}A cinemática direta permite determinar a posição e a orientação do \textit{end effector} de um manipulador robótico a partir das suas variáveis articulares. No presente projeto, esta abordagem é utilizada para calcular a posição do centro de preensão do myCobot~280, expressa pelas coordenadas $(x,y,z)$, com base nos ângulos das seis juntas $(q_1,\ldots,q_6)$ e nas dimensões dos elos. Para uma configuração articular conhecida, o modelo cinemático direto permite determinar uma única pose do manipulador.
 
-O myCobot~280 é um manipulador constituído por seis juntas rotativas. Cada junta permite uma rotação em torno de um determinado eixo, enquanto os elos estabelecem as distâncias entre os respetivos eixos de rotação. Na configuração de referência adotada, correspondente a todas as juntas a $0^\circ$, o braço encontra-se na vertical e a garra na horizontal, orientada segundo o sentido positivo do eixo $y$.
+O myCobot~280 é um manipulador constituído por seis juntas rotativas. Cada junta permite uma rotação em torno de um determinado eixo, enquanto os elos estabelecem as distâncias entre os eixos de rotação. Na configuração de referência adotada, correspondente a todas as juntas a $0^\circ$, o braço encontra-se na vertical e a garra na horizontal, orientada segundo o sentido positivo do eixo $y$.
 
 Nesta configuração, a junta J1 roda em torno do eixo $z$, as juntas J2, J3 e J4 rodam em torno de eixos paralelos a $x$, a junta J5 roda em torno de um eixo paralelo a $z$ e a junta J6 permite a rotação da garra em torno do seu próprio eixo longitudinal. Estas direções correspondem à configuração de referência, podendo os eixos das juntas alterar a sua orientação relativamente à base durante o movimento.
 
@@ -29,12 +29,16 @@ A Figura~\ref{fig:3d} apresenta uma representação tridimensional do manipulado
 % Vista 3D do braço
 \begin{figure}[H]
     \centering
-    \resizebox{0.5\textwidth}{!}{\input{./graph/vista_3d.tex}}
+    \resizebox{0.5\textwidth}{!}{
+        \input{./graph/vista_3d.tex}
+    }
     \caption{Representação tridimensional do manipulador myCobot~280.}
     \label{fig:3d}
 \end{figure}
 
-O cálculo da posição é realizado em duas etapas. Inicialmente, determina-se a posição no plano lateral, através das coordenadas $(d,h)$, considerando os ângulos $q_2$, $q_3$ e $q_4$, conforme apresentado na Secção~\ref{sec:plano_lateral}. Posteriormente, a rotação da junta J1 permite transformar essa posição para o referencial da base, obtendo as coordenadas tridimensionais $(x,y,z)$, como descrito na Secção~\ref{sec:plano_horizontal}.
+O cálculo da posição é realizado em duas etapas. Inicialmente, determina-se a posição no plano lateral, através das coordenadas $(d,h)$, considerando os ângulos $q_2$, $q_3$ e $q_4$, bem como a influência de $q_5$ na projeção da garra, conforme apresentado na Secção~\ref{sec:plano_lateral}.
+
+Posteriormente, a rotação da junta J1 permite transformar essa posição para o referencial da base, obtendo as coordenadas tridimensionais $(x,y,z)$, como descrito na Secção~\ref{sec:plano_horizontal}.
 
 Os parâmetros geométricos utilizados nesta formulação foram obtidos a partir do modelo do manipulador no CoppeliaSim e encontram-se apresentados na Tabela~\ref{tab:elos}.
 
@@ -57,7 +61,9 @@ Os parâmetros geométricos utilizados nesta formulação foram obtidos a partir
     \end{tabular}
 \end{table}
 
-Os comprimentos apresentados correspondem às medidas utilizadas no cenário de simulação, podendo apresentar pequenas diferenças relativamente aos valores fornecidos pelo fabricante. O parâmetro $L_1$ representa a altura da segunda junta relativamente à base, enquanto $L_2$, $L_3$, $L_4$ e $L_6$ correspondem às distâncias entre juntas consecutivas. O parâmetro $L_5$ representa o desvio lateral da estrutura e $L_7$ corresponde à distância entre a última junta e o centro de preensão.
+Os comprimentos apresentados correspondem às medidas utilizadas no cenário de simulação, podendo apresentar pequenas diferenças relativamente aos valores fornecidos pelo fabricante.
+
+O parâmetro $L_1$ representa a altura da segunda junta relativamente à base, enquanto $L_2$, $L_3$, $L_4$ e $L_6$ correspondem às distâncias entre juntas consecutivas. O parâmetro $L_5$ representa o desvio lateral da estrutura e $L_7$ corresponde à distância entre a última junta e o centro de preensão.
 
 % Secções do capítulo
 \input{tex/Chap/2-Direct_Kin/plano_lateral}

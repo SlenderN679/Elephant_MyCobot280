@@ -3,14 +3,14 @@
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {2.1}{\ignorespaces Comprimentos dos elos, medidos no cenário do CoppeliaSim.}}{4}{table.caption.7}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Soluções geométricas do manipulador planar de dois graus de liberdade.}}{22}{table.caption.15}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Soluções geométricas do manipulador planar de dois graus de liberdade.}}{21}{table.caption.15}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Funções usadas para comunicar com o simulador.}}{30}{table.caption.19}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Funções do pacote \texttt {+movement} usadas para o movimento do braço.}}{31}{table.caption.20}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Entradas e saídas de \texttt {direct\_kin}.}}{32}{table.caption.21}%
-\contentsline {table}{\numberline {4.4}{\ignorespaces Entradas e saídas de \texttt {inverse\_kin}.}}{34}{table.caption.22}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Funções usadas para comunicar com o simulador.}}{30}{table.caption.20}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Funções do pacote \texttt {+movement} usadas para o movimento do braço.}}{31}{table.caption.21}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Entradas e saídas de \texttt {direct\_kin}.}}{32}{table.caption.22}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Entradas e saídas de \texttt {inverse\_kin}.}}{34}{table.caption.23}%
 \contentsline {table}{\numberline {4.5}{\ignorespaces Argumentos de \texttt {ik\_2dof}.}}{35}{table.4.5}%
 \contentsline {table}{\numberline {4.6}{\ignorespaces Argumentos de \texttt {solve\_pitch}.}}{35}{table.4.6}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Resultados do movimento até diferentes posições alvo no simulador.}}{42}{table.caption.25}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Resultados do movimento até diferentes posições alvo no simulador.}}{42}{table.caption.26}%
 \addvspace {10\p@ }

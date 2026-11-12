@@ -75,12 +75,14 @@ Os ângulos articulares considerados são:
 
 \begin{equation}
     \mathbf{q}=
-    (18{,}84^\circ;\
-    -12{,}74^\circ;\
-    -94{,}21^\circ;\
-    16{,}95^\circ;\
-    0^\circ;\
-    0^\circ)
+    \begin{bmatrix}
+    18{,}84^\circ &
+    -12{,}74^\circ &
+    -94{,}21^\circ &
+    16{,}95^\circ &
+    0^\circ &
+    0^\circ
+    \end{bmatrix}
     \label{eq:q_trabalho}
 \end{equation}
 
@@ -96,8 +98,8 @@ Aplicando as relações definidas para os ângulos absolutos, obtêm-se:
 Substituindo estes valores nas equações do plano lateral, obtêm-se as coordenadas:
 
 \begin{equation}
-    d=0{,}1893\ \text{m},\qquad
-    h=0{,}0600\ \text{m}
+    d\approx0{,}1893\ \text{m},\qquad
+    h\approx0{,}0600\ \text{m}
 \end{equation}
 
 Considerando a rotação da base e o desvio lateral do manipulador, a posição tridimensional do centro de preensão é:
@@ -108,7 +110,7 @@ Considerando a rotação da base e o desvio lateral do manipulador, a posição 
     \ \text{m}
 \end{equation}
 
-Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
+Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal do eixo da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
 
 A Figura~\ref{fig:poses_fk} apresenta as duas configurações consideradas na verificação da cinemática direta.
 
@@ -123,9 +125,11 @@ A Figura~\ref{fig:poses_fk} apresenta as duas configurações consideradas na ve
 
 \subsubsection{Validação no CoppeliaSim}
 
-A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, comparando a posição do centro de preensão calculada pela cinemática direta com a posição obtida diretamente no CoppeliaSim.
+A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, no ficheiro \texttt{diagnostico\_.m}. Este procedimento permite comparar a posição do centro de preensão calculada pelo modelo matemático com a posição fornecida diretamente pelo CoppeliaSim.
 
-O erro de posicionamento é determinado através da distância euclidiana entre as duas posições, sendo expresso em milímetros:
+Para cada configuração testada, o programa lê os ângulos articulares efetivos do manipulador, calcula a posição correspondente através da função \texttt{movement.direct\_kin} e obtém a posição do objeto \texttt{graspCenter} relativamente ao referencial da base.
+
+O erro do modelo é calculado através da distância euclidiana entre as duas posições:
 
 \begin{equation}
     e_{\mathrm{modelo}} =
@@ -137,14 +141,26 @@ O erro de posicionamento é determinado através da distância euclidiana entre 
     \label{eq:erro_modelo}
 \end{equation}
 
-onde $\mathbf{p}_{\mathrm{DK}}$ representa a posição calculada pelo modelo de cinemática direta e $\mathbf{p}_{\mathrm{sim}}$ corresponde à posição do centro de preensão obtida no CoppeliaSim, ambas expressas em metros e relativamente ao referencial da base.
+onde $\mathbf{p}_{\mathrm{DK}}$ representa a posição calculada pela cinemática direta e $\mathbf{p}_{\mathrm{sim}}$ corresponde à posição obtida no CoppeliaSim, ambas expressas em metros e relativamente ao referencial da base. O fator $1000$ permite apresentar o erro em milímetros.
 
-No modo de diagnóstico, o programa obtém os ângulos articulares do manipulador, calcula a posição através da função de cinemática direta e compara o resultado com a posição fornecida pelo simulador.
+O modo de diagnóstico calcula também o erro de alcance, definido pela diferença entre a posição pretendida e a posição efetivamente atingida:
 
-Nos resultados reportados para as configurações testadas, as diferenças observadas situaram-se entre $1{,}2$ mm e $4{,}0$ mm, indicando uma boa aproximação entre o modelo geométrico desenvolvido e o comportamento do manipulador em simulação.
+\begin{equation}
+    e_{\mathrm{alcance}} =
+    1000
+    \left\|
+    \mathbf{p}_{\mathrm{pretendida}} -
+    \mathbf{p}_{\mathrm{sim}}
+    \right\|_2
+    \label{eq:erro_alcance}
+\end{equation}
 
-Adicionalmente, o programa permite calcular o erro entre a posição pretendida e a posição efetivamente alcançada, possibilitando avaliar o desempenho do sistema de posicionamento.
+Estes dois indicadores permitem avaliar aspetos distintos do sistema. O erro do modelo quantifica a diferença entre a formulação geométrica e a posição fornecida pelo simulador, enquanto o erro de alcance considera também o desempenho do movimento executado pelo manipulador.
 
-Foi ainda considerada a consistência entre a cinemática direta e a cinemática inversa, verificando se a aplicação sucessiva dos dois modelos permite recuperar a posição inicialmente pretendida.
+Na implementação, ambos os erros são apresentados em milímetros, sendo utilizada uma tolerância de $5$ mm para assinalar situações que requerem verificação.
 
-\clearpage
+O programa apresenta ainda um resumo dos resultados obtidos para as diferentes posições testadas, incluindo os valores máximos dos erros calculados.
+
+A comparação entre estas grandezas permite avaliar a consistência do modelo cinemático e identificar eventuais diferenças entre o posicionamento calculado e o comportamento observado em simulação.
+
+A análise detalhada dos resultados do diagnóstico e do desempenho do sistema é apresentada no capítulo de resultados e discussão.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  11 NOV 2026 23:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  12 NOV 2026 09:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -941,10 +941,7 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count409
-) (main.aux
-Package babel Info: 'portuguese' activates 'portuges' shorthands.
-(babel)             Reported on input line 17.
-)
+) (main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
@@ -985,7 +982,6 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring ON on input line 77.
- (main.out) (main.out)
 \@outlinefile=\write8
 \openout8 = `main.out'.
 
@@ -1032,8 +1028,10 @@ Package caption Info: End \AtBeginDocument code.
 (main.glsdefs)
 Package pgfplots notification 'compat/show suggested version=true': you might benefit from \pgfplotsset{compat=1.18} (current compat level: 1.17).
 
+Package babel Info: 'portuguese' activates 'portuges' shorthands.
+(babel)             Reported on input line 77.
 (title.tex
-<img/logo.png, id=198, 321.2pt x 132.495pt>
+<img/logo.png, id=6, 321.2pt x 132.495pt>
 File: img/logo.png Graphic file (type png)
 <use img/logo.png>
 Package pdftex.def Info: img/logo.png  used on input line 13.
@@ -1080,46 +1078,35 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \@gls@deffile=\write9
 \openout9 = `main.glsdefs'.
 
-) (main.toc
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 3.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 3.
+)
+No file main.toc.
+\tf@toc=\write10
+\openout10 = `main.toc'.
+
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.41 ...{5}Resultados e discuss√£o}{37}{chapter.5}
-                                                  % [1
+l.89 \newpage
+              [1
 
-])
-\tf@toc=\write10
-\openout10 = `main.toc'.
-
- [2] (main.lof)
+]
+No file main.lof.
 \tf@lof=\write11
 \openout11 = `main.lof'.
 
- [3
+[2
 
-{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}] (main.lot
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 9.
- (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-))
+]
+No file main.lot.
 \tf@lot=\write12
 \openout12 = `main.lot'.
 
- [4
+[3
 
 ] (tex/Chap/1-Intro/INTRO.tex
 Cap√≠tulo 1.
-(tex/Chap/1-Intro/deducao.tex) (tex/Chap/1-Intro/enq-e-obj.tex
-Underfull \hbox (badness 10000) in paragraph at lines 9--11
-
- []
-
-[1
+(tex/Chap/1-Intro/fundamentos.tex) (tex/Chap/1-Intro/enq-e-obj.tex [1
 
 
 ]
@@ -1128,46 +1115,171 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ))) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [2{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
 Cap√≠tulo 2.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 5.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 5.
+
+LaTeX Warning: Reference `fig:3d' on page 3 undefined on input line 27.
+
 [3
 
-{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}] (graph/vista_3d.tex
+{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}] (graph/vista_3d.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10.95> on input line 50.
-) [4] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [5] [6] (graph/soma_projecoes.tex
+)
+
+LaTeX Warning: Reference `sec:plano_lateral' on page 4 undefined on input line 39.
+
+
+LaTeX Warning: Reference `sec:plano_horizontal' on page 4 undefined on input line 41.
+
+
+LaTeX Warning: Reference `tab:elos' on page 4 undefined on input line 43.
+
+[4] (tex/Chap/2-Direct_Kin/plano_lateral.tex
+
+LaTeX Warning: Reference `fig:lateral' on page 5 undefined on input line 5.
+
+(graph/vista_lateral.tex) [5]
+
+LaTeX Warning: Reference `eq:j3' on page 6 undefined on input line 61.
+
+
+LaTeX Warning: Reference `eq:j4' on page 6 undefined on input line 61.
+
+[6]
+
+LaTeX Warning: Reference `fig:soma_projecoes' on page 7 undefined on input line 107.
+
+(graph/soma_projecoes.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 22.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 22.
-) [7] [8]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [9
+) [7] [8]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex
 
-] [10{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}] [11]) (tex/Chap/2-Direct_Kin/resumo.tex [12
+LaTeX Warning: Reference `fig:topo' on page 9 undefined on input line 7.
 
-] (graph/poses_fk.tex) [13] [14] [15])) (tex/Chap/3-Inverse_kin/INV_KIN.tex
+
+LaTeX Warning: Reference `sec:plano_lateral' on page 9 undefined on input line 7.
+
+(graph/vista_cima.tex)
+
+LaTeX Warning: Reference `fig:topo' on page 9 undefined on input line 20.
+
+
+LaTeX Warning: Reference `sec:plano_lateral' on page 9 undefined on input line 24.
+
+[9
+
+]
+
+LaTeX Warning: Reference `ch:inv_kin' on page 10 undefined on input line 83.
+
+) (tex/Chap/2-Direct_Kin/resumo.tex [10{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
+
+LaTeX Warning: Reference `eq:angulos' on page 11 undefined on input line 7.
+
+
+LaTeX Warning: Reference `eq:angulos' on page 11 undefined on input line 42.
+
+[11]
+
+LaTeX Warning: Reference `tab:elos' on page 12 undefined on input line 61.
+
+
+LaTeX Warning: Reference `fig:poses_fk' on page 12 undefined on input line 115.
+
+(graph/poses_fk.tex) [12]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 128.
+ (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Overfull \hbox (10.87744pt too wide) in paragraph at lines 130--131
+\T1/lmr/m/n/12 ma-ni-pu-la-dor, cal-cula a po-si-Á„o cor-res-pon-dente atra-vÈs da fun-Á„o \T1/lmtt/m/n/12 movement.direct_kin
+ []
+
+[13])) (tex/Chap/3-Inverse_kin/INV_KIN.tex [14]
 Cap√≠tulo 3.
-[16
 
+LaTeX Warning: Reference `sec:ik_horizontal' on page 15 undefined on input line 18.
+
+
+LaTeX Warning: Reference `sec:ik_lateral' on page 15 undefined on input line 20.
+
+[15
 
 ]
 Overfull \hbox (10.72615pt too wide) in paragraph at lines 59--60
 \T1/lmr/m/n/12 am-bi-ente de si-mu-la-Á„o como en-tra-das para o c·l-culo da ci-ne-m·-tica in-versa, encontrando-
  []
 
-(graph/mundo_base.tex) [17] (tex/Chap/3-Inverse_Kin/plano_horizontal.tex [18] [19]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [20
 
-] (graph/alcance_pulso.tex) [21] (graph/cotovelo_cima_baixo.tex) [22]
+LaTeX Warning: Reference `fig:mundo_base' on page 16 undefined on input line 61.
+
+(graph/mundo_base.tex) [16] (tex/Chap/3-Inverse_Kin/plano_horizontal.tex
+
+LaTeX Warning: Reference `eq:xyz' on page 17 undefined on input line 7.
+
+
+LaTeX Warning: Reference `fig:topo' on page 17 undefined on input line 15.
+
+[17] [18]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex
+
+LaTeX Warning: Reference `eq:ik_d' on page 19 undefined on input line 5.
+
+
+LaTeX Warning: Reference `fig:2dof' on page 19 undefined on input line 7.
+
+(graph/ik_2dof.tex) [19
+
+]
+
+LaTeX Warning: Reference `fig:alcance_pulso' on page 20 undefined on input line 101.
+
+(graph/alcance_pulso.tex) [20]
+
+LaTeX Warning: Reference `tab:ik_solucoes' on page 21 undefined on input line 114.
+
+
+LaTeX Warning: Reference `fig:cima_baixo' on page 21 undefined on input line 134.
+
+(graph/cotovelo_cima_baixo.tex) [21]
 Overfull \hbox (3.57584pt too wide) in paragraph at lines 165--166
 []\T1/lmr/m/n/12 Para con-ver-ter os ‚n-gu-los ob-ti-dos em va-lo-res ar-ti-cu-la-res do ma-ni-pu-la-dor, considera-
  []
 
-[23] (graph/orientacao_q6.tex) [24]
+[22] (graph/orientacao_q6.tex) [23]
 Overfull \hbox (1.075pt too wide) in paragraph at lines 220--221
 []\T1/lmr/m/n/12 Os ‚n-gu-los ar-ti-cu-la-res s„o ini-ci-al-mente nor-ma-li-za-dos para o in-ter-valo $\OT1/lmr/m/n/12 ] \OMS/lmsy/m/n/12 ^^@ \OT1/lmr/m/n/12 180[]\OML/lmm/m/it/12 ; \OT1/lmr/m/n/12 180[]]$\T1/lmr/m/n/12 . 
  []
 
-[25] (graph/escolha_inclinacao.tex) [26] [27]) (tex/Chap/3-Inverse_Kin/resumo.tex [28
+[24]
 
-] [29])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
+LaTeX Warning: Reference `fig:inclinacao' on page 25 undefined on input line 275.
+
+(graph/escolha_inclinacao.tex) [25] [26]) (tex/Chap/3-Inverse_Kin/resumo.tex
+
+LaTeX Warning: Reference `eq:mundo_base' on page 27 undefined on input line 33.
+
+
+LaTeX Warning: Reference `eq:ik_final' on page 27 undefined on input line 35.
+
+[27
+
+]
+
+LaTeX Warning: Reference `eq:dk_final' on page 28 undefined on input line 41.
+
+
+LaTeX Warning: Reference `sec:ik_resultados' on page 28 undefined on input line 41.
+
+(graph/fluxo_ik.tex) [28] [29])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
 Cap√≠tulo 4.
+
+LaTeX Warning: Reference `tab:api' on page 30 undefined on input line 9.
+
 
 Overfull \hbox (7.02893pt too wide) in paragraph at lines 20--20
 []|\T1/lmtt/m/n/10.95 robot_arm.set_joints(q)| 
@@ -1208,16 +1320,34 @@ Overfull \hbox (6.91238pt too wide) in paragraph at lines 23--23
 []|\T1/lmtt/m/n/10.95 sim.getSimulationTime| 
  []
 
+
+LaTeX Warning: Reference `ch:dir_kin' on page 30 undefined on input line 43.
+
+
+LaTeX Warning: Reference `ch:inv_kin' on page 30 undefined on input line 45.
+
 [30
 
 
-] (tex/Chap/4-Implementa√ß√£o/direct.tex (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+] (tex/Chap/4-Implementa√ß√£o/direct.tex
+
+LaTeX Warning: Reference `eq:dk_final' on page 31 undefined on input line 4.
+
+(C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 6.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <8> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 7.
- [31]) (tex/Chap/4-Implementa√ß√£o/inverse.tex [32] [33]
+
+
+LaTeX Warning: Reference `tab:elos' on page 31 undefined on input line 56.
+
+[31]) (tex/Chap/4-Implementa√ß√£o/inverse.tex
+
+LaTeX Warning: Reference `eq:ik_final' on page 32 undefined on input line 4.
+
+[32] [33]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 198.
@@ -1243,7 +1373,25 @@ Cap√≠tulo 5.
 (tex/Chap/5-Testes/resultados.tex [37
 
 
-] [38] [39] (graph/exemplos_ik.tex) [40] [41]) (tex/Chap/5-Testes/demonstracao.tex (graph/mapa_alvos.tex)
+]
+
+LaTeX Warning: Reference `eq:ik_theta3' on page 38 undefined on input line 68.
+
+
+LaTeX Warning: Reference `eq:ik_q234' on page 38 undefined on input line 68.
+
+
+LaTeX Warning: Reference `eq:q_trabalho' on page 38 undefined on input line 93.
+
+[38]
+
+LaTeX Warning: Reference `sec:ik_lateral' on page 39 undefined on input line 162.
+
+[39]
+
+LaTeX Warning: Reference `fig:exemplos_ik' on page 40 undefined on input line 212.
+
+(graph/exemplos_ik.tex) [40] [41]) (tex/Chap/5-Testes/demonstracao.tex (graph/mapa_alvos.tex)
 Overfull \hbox (4.186pt too wide) in paragraph at lines 42--37
  [][] 
  []
@@ -1274,7 +1422,12 @@ This document will not have a glossary.
 
 [47
 
-] (main.aux)
+] (main.aux
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1283,21 +1436,33 @@ L3 programming layer <2025-12-24>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 706454F28119DFCB5114CF014B949579;8932.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  DBE048DC8881F4028AA22128EA5F2945;9025.
  ) 
 Here is how much of TeX's memory you used:
- 47709 strings out of 467871
- 1079611 string characters out of 5418376
- 2562788 words of memory out of 5000000
- 75314 multiletter control sequences out of 15000+600000
+ 47803 strings out of 467871
+ 1080999 string characters out of 5418376
+ 2558545 words of memory out of 5000000
+ 75414 multiletter control sequences out of 15000+600000
  744775 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,21n,97p,2574b,2465s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on main.pdf (52 pages, 781914 bytes).
+Output written on main.pdf (51 pages, 744527 bytes).
 PDF statistics:
- 1090 PDF objects out of 1200 (max. 8388607)
- 400 named destinations out of 1000 (max. 500000)
- 406 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 822 PDF objects out of 1000 (max. 8388607)
+ 401 named destinations out of 1000 (max. 500000)
+ 22 words of extra memory for PDF output out of 10000 (max. 10000000)
 

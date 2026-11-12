@@ -13,7 +13,9 @@ A análise do movimento do manipulador no plano lateral permite determinar a pos
 
 \subsection{Ângulos absolutos}
 
-Os ângulos articulares $q_i$ representam as rotações de cada junta relativamente à sua configuração de referência. Para determinar a posição das diferentes juntas através das projeções dos elos, torna-se conveniente definir ângulos absolutos, medidos relativamente à horizontal do plano de movimento.
+Os ângulos articulares $q_i$ representam as rotações das juntas relativamente à configuração de referência do manipulador. Na abordagem geométrica adotada, as rotações sucessivas das juntas J2, J3 e J4 são combinadas para determinar a orientação absoluta de cada elo no plano lateral.
+
+Para determinar a posição das diferentes juntas através das projeções dos elos, torna-se conveniente definir ângulos absolutos, medidos relativamente à horizontal do plano de movimento.
 
 Na configuração de referência, correspondente a todas as juntas a $0^\circ$, o braço encontra-se na vertical. Assim, quando $q_2=0$, o elo $L_2$ apresenta uma inclinação de $90^\circ$ relativamente à horizontal. Os ângulos absolutos dos elos seguintes são obtidos através da soma das rotações articulares, considerando o sentido positivo definido para cada junta.
 
@@ -82,7 +84,7 @@ Admitindo que os segmentos $L_6$ e $L_7$ se encontram alinhados ao longo do eixo
     \label{eq:distancia_garra}
 \end{equation}
 
-Considerando inicialmente $q_5=0^\circ$, esta distância encontra-se no plano do braço, segundo a direção definida pelo ângulo $\alpha$.
+Considerando inicialmente $q_5=0^\circ$, o eixo longitudinal da garra permanece no plano de movimento do braço, sendo a sua orientação definida pelo ângulo $\alpha$. Esta hipótese permite determinar a posição do centro de preensão através das projeções dos elos no plano lateral.
 
 Assim, somando as projeções de todos os elos, obtêm-se as coordenadas do centro de preensão:
 
@@ -139,7 +141,7 @@ onde $l$ representa o desvio lateral total relativamente ao plano de referência
 
 Na implementação da cinemática inversa desenvolvida neste projeto, considera-se $q_5=0^\circ$, simplificando o cálculo e obtendo-se $l=L_5$.
 
-Por sua vez, a junta J6 permite a rotação da garra em torno do seu eixo longitudinal. Uma vez que o centro de preensão se encontra alinhado com esse eixo, a variação de $q_6$ não altera a sua posição, influenciando apenas a orientação dos dedos da garra.
+Por sua vez, a junta J6 permite ajustar a orientação dos dedos da garra através de uma rotação em torno do eixo longitudinal do \textit{end effector}. Considerando que o centro de preensão se encontra alinhado com este eixo, a rotação de J6 não altera a sua posição.
 
 Consequentemente, a junta J6 não intervém nas expressões utilizadas para determinar as coordenadas do centro de preensão.
 
