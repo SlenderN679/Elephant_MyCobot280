@@ -2,18 +2,26 @@
 \section{Enquadramento e objetivos}
 \label{sec:enq-e-obj}
 
-Os manipuladores robóticos são amplamente utilizados em aplicações industriais e de automação, permitindo realizar tarefas que exigem precisão, repetibilidade e controlo de movimentos. Neste contexto, o estudo da cinemática é fundamental para compreender e controlar o posicionamento do \textit{end effector} no espaço de trabalho.
+Os manipuladores robóticos desempenham um papel importante na automação industrial, sendo utilizados em tarefas que exigem precisão, repetibilidade e flexibilidade de movimentos. O seu funcionamento depende do conhecimento da geometria do manipulador e da relação entre as variáveis articulares e o posicionamento do \textit{end effector} no espaço de trabalho.
 
-O presente projeto centra-se no estudo do braço robótico MyCobot280, recorrendo ao MATLAB e ao CoppeliaSim para implementar e testar diferentes funcionalidades.
+Neste contexto, o presente projeto centra-se no estudo do manipulador myCobot~280, recorrendo ao MATLAB para implementar os algoritmos cinemáticos e ao CoppeliaSim para simular e avaliar o comportamento do robô.
 
 Os principais objetivos do trabalho são:
-\\
+
 \begin{itemize}
-    \item Desenvolver o modelo matemático da cinemática direta e inversa do manipulador;
-    \item Implementar os cálculos cinemáticos em MATLAB;
-    \item Determinar a posição e orientação do \textit{end effector} a partir das variáveis articulares;
-    \item Calcular os ângulos articulares necessários para atingir posições pretendidas;
-    \item Integrar o MATLAB com o CoppeliaSim para simular os movimentos do robô;
-    \item Explorar a utilização de visão artificial para identificar objetos e auxiliar o posicionamento do \textit{end effector};
-    \item Validar o funcionamento das soluções implementadas através de simulações.
+    \item Desenvolver a formulação matemática da cinemática direta e inversa do manipulador;
+
+    \item Implementar os modelos cinemáticos em MATLAB;
+
+    \item Determinar a posição do centro de preensão e a direção da garra a partir dos ângulos articulares;
+
+    \item Calcular as configurações articulares necessárias para alcançar posições pretendidas, considerando a inclinação da garra e os limites das juntas;
+
+    \item Implementar movimentos no espaço das juntas e trajetórias no espaço cartesiano;
+
+    \item Integrar o MATLAB com o CoppeliaSim para executar e visualizar os movimentos do manipulador;
+
+    \item Explorar a utilização da visão artificial na identificação e localização de objetos;
+
+    \item Validar os modelos implementados através da comparação entre os resultados calculados e os obtidos em simulação.
 \end{itemize}

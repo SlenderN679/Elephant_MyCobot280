@@ -71,7 +71,7 @@ Uma vez que as componentes $d$ e $l$ são perpendiculares entre si, a distância
     \label{eq:r}
 \end{equation}
 
-A orientação da posição do centro de preensão no plano horizontal, relativamente ao eixo $x$, é dada por:
+Para uma posição horizontal não nula ($r>0$), a direção do centro de preensão relativamente ao eixo $x$ é determinada através da função $\operatorname{atan2}$, que permite identificar corretamente o quadrante do ponto considerado:
 
 \begin{equation}
     \operatorname{atan2}(y,x)
@@ -80,6 +80,4 @@ A orientação da posição do centro de preensão no plano horizontal, relativa
     \label{eq:angulo_horizontal}
 \end{equation}
 
-Esta relação estabelece a correspondência entre a orientação da base e a posição do centro de preensão no plano horizontal, sendo posteriormente utilizada na formulação da cinemática inversa para determinar o ângulo da junta J1.
-
-\clearpage
+Esta relação permite estabelecer a correspondência entre a posição do centro de preensão e a orientação da base, constituindo a base para o cálculo do ângulo articular $q_1$ na formulação da cinemática inversa, apresentada no Capítulo~\ref{ch:inv_kin}.

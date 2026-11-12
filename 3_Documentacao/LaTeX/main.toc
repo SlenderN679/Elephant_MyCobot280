@@ -1,6 +1,6 @@
 \babel@toc {portuguese}{}\relax 
 \contentsline {chapter}{\numberline {1}Introdução}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Dedução}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.1}Fundamentos da cinemática}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Enquadramento e objetivos}{1}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Formulação da cinemática direta}{3}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Plano lateral}{5}{section.2.1}%
@@ -12,24 +12,24 @@
 \contentsline {subsection}{\numberline {2.2.1}Desvio lateral}{9}{subsection.2.2.1}%
 \contentsline {subsection}{\numberline {2.2.2}Rotação da base}{10}{subsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.2.3}Distância ao eixo da base}{10}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Resumo e verificação}{12}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Verificação dos resultados}{12}{subsection.2.3.1}%
-\contentsline {subsubsection}{Configuração de referência}{12}{subsection.2.3.1}%
-\contentsline {subsubsection}{Configuração de trabalho}{13}{equation.2.20}%
-\contentsline {subsubsection}{Validação no CoppeliaSim}{14}{figure.caption.11}%
-\contentsline {chapter}{\numberline {3}Formulação da cinemática inversa}{16}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Do referencial do mundo para o da base}{17}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Plano horizontal: junta 1}{18}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Distância em frente}{18}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Ângulo da junta 1}{19}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Plano lateral: juntas 2, 3 e 4}{20}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Ângulo da garra imposto e ponto do pulso}{20}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Braço planar de 2 DOF: juntas 2 e 3}{21}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Junta 4 e passagem para os ângulos das juntas}{23}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Junta 6}{24}{subsection.3.3.4}%
-\contentsline {subsection}{\numberline {3.3.5}Soluções rejeitadas}{25}{subsection.3.3.5}%
-\contentsline {subsection}{\numberline {3.3.6}Escolha da inclinação}{26}{subsection.3.3.6}%
-\contentsline {section}{\numberline {3.4}Resumo}{28}{section.3.4}%
+\contentsline {section}{\numberline {2.3}Resumo e verificação}{11}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Verificação dos resultados}{11}{subsection.2.3.1}%
+\contentsline {subsubsection}{Configuração de referência}{11}{subsection.2.3.1}%
+\contentsline {subsubsection}{Configuração de trabalho}{12}{equation.2.20}%
+\contentsline {subsubsection}{Validação no CoppeliaSim}{13}{figure.caption.11}%
+\contentsline {chapter}{\numberline {3}Formulação da cinemática inversa}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Do referencial do mundo para o da base}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Plano horizontal: junta 1}{17}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Distância em frente}{17}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Ângulo da junta 1}{18}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Plano lateral: juntas 2, 3 e 4}{19}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Ângulo da garra imposto e ponto do pulso}{19}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Braço planar de 2 DOF: juntas 2 e 3}{20}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Junta 4 e passagem para os ângulos das juntas}{22}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Junta 6}{23}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Soluções rejeitadas}{24}{subsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.3.6}Escolha da inclinação}{25}{subsection.3.3.6}%
+\contentsline {section}{\numberline {3.4}Resumo}{27}{section.3.4}%
 \contentsline {chapter}{\numberline {4}Implementação em MATLAB}{30}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Comunicação entre o MATLAB e o CoppeliaSim}{30}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Organização do código}{30}{section.4.2}%
