@@ -1,69 +1,72 @@
 %Vista lateral do robô
+% (L4 desenhado inclinado para se ver o ângulo theta_C; a garra
+%  é perpendicular a L4, por isso alpha = theta_C - 90 graus)
 \begin{tikzpicture}[scale=0.3,
                     % Estilos
                         link/.style={line width=2.2pt, line cap=round},
                         junta/.style={circle, draw, fill=white, line width=1pt, inner sep=2.2pt},
                         cota/.style={gray!70!black, thin},
                         ang/.style={->, thin},
-                        qang/.style={->, thin, red!70!black}]
+                        qang/.style={->, thin, red!75!black},
+                        qcota/.style={red!60, thin, dashed}]
 
   % Coordenadas das juntas
     \coordinate (J1) at (0,0);
     \coordinate (J2) at (0,13.2);
     \coordinate (J3) at (3.8,23.5);
     \coordinate (J4) at (13.2,21.9);
-    \coordinate (J5) at (20.5,21.9);
-    \coordinate (J6) at (20.5,6.7);
+    \coordinate (J5) at (20.06,24.40);
+    \coordinate (J6) at (25.26,10.12);
 
   % Eixos
-    \draw[->, thin] (-4,0) -- (26.5,0) node[below left] {$d$};
-    \draw[->, thin] (J1) -- (0,28) node[left] {$h$};
+    \draw[->, thin] (-4,0) -- (31,0) node[below left] {$d$};
+    \draw[->, thin] (J1) -- (0,29) node[left] {$h$};
 
   % Base
     \fill[gray!25] (-3,-0.8) rectangle (3,0);
-    \draw[thick] (-5,0) -- (26,0);
-  
+    \draw[thick] (-5,0) -- (30.5,0);
+
+  % Ângulos absolutos (theta_A, theta_B, theta_C e alpha, a partir da horizontal)
+    \draw[cota, dashed] (J2) -- ++(6,0);
+    \draw[ang] ($(J2)+(4,0)$) arc[start angle=0, end angle=69.75, radius=4] node[pos=0.55, right=1pt] {$\theta_A$};
+    \draw[cota, dashed] (J3) -- ++(9,0);
+    \draw[ang] ($(J3)+(8,0)$) arc[start angle=0, end angle=-9.66, radius=8] node[pos=0.5, right=2pt] {$\theta_B$};
+    \draw[cota, dashed] (J4) -- ++(7,0);
+    \draw[ang] ($(J4)+(4.5,0)$) arc[start angle=0, end angle=20, radius=4.5] node[pos=0.5, right=1pt] {$\theta_C$};
+    \draw[cota, dashed] (J5) -- ++(5,0);
+    \draw[ang] ($(J5)+(3.5,0)$) arc[start angle=0, end angle=-70, radius=3.5] node[pos=0.45, right=2pt] {$\alpha$};
+
+  % Ângulos das juntas (q2, q3, q4, relativos ao elo anterior)
+    \draw[qcota] (J2) -- ++(0,7.5);
+    \draw[qang] ($(J2)+(0,6.5)$) arc[start angle=90, end angle=69.75, radius=6.5] node[pos=0.5, left=3pt] {$q_2 < 0$};
+    \draw[qcota] (J3) -- ++(69.75:5);
+    \draw[qang] ($(J3)+(69.75:4)$) arc[start angle=69.75, end angle=-9.66, radius=4] node[pos=0.35, above right=0pt] {$q_3 < 0$};
+    \draw[qcota] (J4) -- ++(-9.66:5);
+    \draw[qang] ($(J4)+(-9.66:3)$) arc[start angle=-9.66, end angle=20, radius=3];
+    \node[red!75!black] at ($(J4)+(3.6,-3)$) {$q_4 > 0$};
+
   % Braços
-    \draw[link] (J1)  -- node[pos=0.8, right] {$L_1$} (J2);
-    \draw[link] (J2) -- node[pos=0.45, right] {$L_2$} (J3);
-    \draw[link] (J3) -- node[pos=0.3, below=1pt] {$L_3$} (J4);
-    \draw[link] (J4) -- node[above] {$L_4$} (J5);
-    \draw[link] (J5) -- node[right] {$D = L_6 + L_7$} (J6);
-  
+    \draw[link] (J1)  -- node[pos=0.55, right] {$L_1$} (J2);
+    \draw[link] (J2) -- node[right] {$L_2$} (J3);
+    \draw[link] (J3) -- node[below left=0pt and -2pt] {$L_3$} (J4);
+    \draw[link] (J4) -- node[above=1pt] {$L_4$} (J5);
+    \draw[link] (J5) -- node[right=2pt] {$D = L_6 + L_7$} (J6);
+
+  % Garra (perpendicular a L4)
+    \begin{scope}[shift={(J6)}, rotate=20]
+      \draw[line width=1.4pt] (-1.1,1.5) -- (-1.1,-0.5) (1.2,1.5) -- (1.2,-0.5);
+      \draw[line width=1.4pt] (-1.1,1.5) -- (1.2,1.5);
+    \end{scope}
+
   % Juntas
     \node[junta] at (J2) {};  \node[left=5pt]  at (J2) {J2 (ombro)};
-    \node[junta] at (J3) {};  \node[above left=2pt] at (J3) {J3 (cotovelo)};
-    \node[junta] at (J4) {};  \node[below left=4pt and -6pt] at (J4) {J4 (pulso)};
+    \node[junta] at (J3) {};  \node[above left=3pt and 0pt] at (J3) {J3 (cotovelo)};
+    \node[junta] at (J4) {};  \node[below=5pt] at (J4) {J4 (pulso)};
     \node[junta] at (J5) {};  \node[above=4pt] at (J5) {J5};
-    \fill (J6) circle (6pt);   \node[below right=1pt and 4pt] at (J6) {centro de preensão $(d, h)$};
-  
-  % Garra
-    \draw[line width=1.4pt] (19.4,8.2) -- (19.4,6.2) (21.7,8.2) -- (21.7,6.2);
-    \draw[line width=1.4pt] (19.4,8.2) -- (21.7,8.2);
-  
+    \fill (J6) circle (6pt);   \node[below right=4pt and 2pt] at (J6) {centro de preensão $(d, h)$};
+
   % Guias
-    \draw[cota, dashed] (J6) -- (20.5,0);
-    \draw[cota, dashed] (J6) -- (0,6.7);
-
-  
-  % Ângulos absolutos (a partir da horizontal)
-    \draw[cota, dashed] (J2) -- ++(6,0);
-    \draw[ang] ($(J2)+(4,0)$) arc[start angle=0, end angle=70, radius=4] node[pos=0.6, right=1pt] {$\theta_A$};
-    \draw[cota, dashed] (J3) -- ++(7.5,0);
-    \draw[ang] ($(J3)+(6.5,0)$) arc[start angle=0, end angle=-10, radius=6.5] node[pos=0.6, right=2pt] {$\theta_B$};
-    \draw[cota, dashed] (J5) -- ++(4.5,0);
-    \draw[ang] ($(J5)+(3,0)$) arc[start angle=0, end angle=-90, radius=3] node[pos=0.5, right=2pt] {$\alpha$};
-
-  % Ângulos das juntas (relativos: a partir do elo anterior)
-    \draw[qang] ($(J2)+(90:8)$) arc[start angle=90, end angle=70, radius=8] node[pos=0.3, above left=1pt and 0pt, red!70!black] {$q_2 < 0$};
-    \draw[cota, dashed, red!50] (J3) -- ++(70:5);
-    \draw[qang] ($(J3)+(70:3)$) arc[start angle=70, end angle=-10, radius=3] node[pos=0.3, right=1pt, red!70!black] {$q_3 < 0$};
-    \draw[cota, dashed, red!50] (J4) -- ++(-10:6);
-    \draw[qang] ($(J4)+(-10:5)$) arc[start angle=-10, end angle=0, radius=5] node[pos=0, below=2pt, xshift=-6pt, red!70!black] {$q_4 > 0$};
-
-  % Convenção de sinal
-  %  \draw[->, thick, red!70!black] (27,26) ++(-30:1.6) arc[start angle=-30, end angle=250, radius=1.6];
-  %  \node[red!70!black] at (27,26) {$+$};
-  %  \node[right=2pt, align=left, font=\small] at (28.8,26) {ângulo positivo:\\sentido anti-horário};
+    \draw[cota, dashed] (J6) -- (25.26,0);
+    \draw[cota, dashed] (J6) -- (0,10.12);
 
 \end{tikzpicture}

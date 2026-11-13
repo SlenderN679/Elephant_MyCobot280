@@ -14,7 +14,7 @@ A cinemática inversa foi resolvida seguindo a ordem inversa: primeiro, determin
 
 Para uma inclinação fixa, a solução é analítica, sendo verificadas as condições de alcance e os limites articulares. Quando a inclinação preferencial de $90^\circ$ não permite alcançar o alvo, o algoritmo procura uma alternativa e realiza um refinamento por bisseção.
 
-No segundo exemplo analisado, um alvo situado a aproximadamente $30$ cm do eixo da base exigiu uma inclinação de $82{,}27^\circ$. Em ambos os exemplos, a cinemática direta aplicada aos ângulos calculados pela cinemática inversa permitiu recuperar as posições pretendidas, confirmando a consistência dos modelos.
+No segundo exemplo analisado, um alvo situado a 13 cm do eixo da base exigiu inclinar a garra para a base, até aproximadamente $95{,}69^\circ$, para não ultrapassar o limite de flexão do cotovelo. Em ambos os exemplos, a cinemática direta aplicada aos ângulos calculados pela cinemática inversa permitiu recuperar as posições pretendidas, confirmando a consistência dos modelos.
 
 \section*{Implementação e resultados}
 
@@ -22,7 +22,7 @@ Os modelos foram implementados em MATLAB através das funções \texttt{direct\_
 
 A comunicação com o CoppeliaSim foi realizada em modo síncrono, permitindo controlar os movimentos e acompanhar a posição do ponto de preensão através das leituras articulares.
 
-Na demonstração, foram alcançados sete alvos, com erros inferiores a $6$ mm de todos os alvos alcançãveis.
+Na demonstração, foram alcançados sete alvos, com erros inferiores a $6$ mm em todos os alvos alcançáveis.
 
 Os testes de alcance demonstraram também a importância da inclinação da garra. Para alvos próximos da superfície da mesa, a garra desce na vertical entre cerca de 15,8 e 25,5 cm do eixo da base, sendo o alcance máximo de 35,2 cm com a garra inclinada.
 
