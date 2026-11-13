@@ -33,7 +33,7 @@ Como a inclinação $\psi$ é o grau de liberdade escolhido, o algoritmo complet
     \item passar o alvo do referencial do mundo para o da base (Equação~\ref{eq:mundo_base});
     \item calcular $r$, $d$ e $q_1$; se $r \leq L_5$, o alvo é inalcançável;
     \item para $\psi = 90^\circ$, calcular o ponto do pulso, o braço de 2 DOF e as juntas pela Equação~\eqref{eq:ik_final}, e verificar as condições de existência;
-    \item se não houver solução, repetir o passo 3 para $\psi = 95^\circ, 100^\circ, \dots, 135^\circ$ (para a base) e depois $\psi = 85^\circ, 80^\circ, \dots, 30^\circ$ (para fora), até encontrar uma inclinação válida;
+    \item se não houver solução, repetir o passo 3 para $\psi = 95^\circ, 85^\circ, 100^\circ, 80^\circ$, \dots, alternando de 5 em 5 graus dentro de [30°, 135°], até encontrar uma inclinação válida;;
     \item refinar por bisseção, entre a inclinação válida e a anterior, para ficar com a inclinação válida mais próxima de $90^\circ$;
     \item se nenhuma inclinação tiver solução, o alvo é declarado inalcançável.
 \end{enumerate}

@@ -1,0 +1,47 @@
+\subsection{Exemplo de execução}
+\label{sec:exemplo_execucao}
+
+Para ilustrar o movimento \textit{move end-effector to target position}, apresenta-se a execução para a peça vermelha situada na posição $(X, Y) = (150;\ -50)$~mm do referencial do mundo, detetada pela câmara. A posição é convertida para o referencial da base através da função \texttt{world\_to\_base}, obtendo-se o alvo $(x, y, z) = (66{,}1;\ 199{,}9;\ -10{,}0)$~mm, isto é, 2~cm acima da mesa. A função \texttt{inverse\_kin} calcula os ângulos das juntas com a garra na vertical ($\psi = 90^\circ$), a função \texttt{move\_joints} leva o braço até à posição de aproximação, por cima da peça, e a função \texttt{move\_linear} desce na vertical até ao alvo.
+
+A Figura~\ref{fig:execucao} mostra as diferentes fases do movimento no CoppeliaSim e a Listagem~\ref{lst:execucao} apresenta a informação escrita pelo programa no fim do movimento.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{graph/exec_1.png}\\[2pt]
+    {\footnotesize (a) pose inicial}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{graph/exec_2.png}\\[2pt]
+    {\footnotesize (b) por cima da peça, após a \texttt{move\_joints}}
+  \end{minipage}
+
+  \vspace{6pt}
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{graph/exec_3.png}\\[2pt]
+    {\footnotesize (c) no alvo, após a descida com a \texttt{move\_linear}}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{graph/exec_4.png}\\[2pt]
+    {\footnotesize (d) regresso à pose inicial (\texttt{go\_home})}
+  \end{minipage}
+  \caption{Execução do movimento até à peça vermelha no CoppeliaSim.}
+  \label{fig:execucao}
+\end{figure}
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, frame=single,
+                   caption={Saída do programa para a peça vermelha (posições no referencial da base, em m).},
+                   label={lst:execucao}]
+== 1. red (150, -50) ==
+go_home: pose inicial alcançada
+ pedido (base)        :  0.0661  0.1999 -0.0100   (garra a 90 graus)
+ direct_kin (base)    :  0.0666  0.1978 -0.0110
+ graspCenter (base)   :  0.0657  0.1967 -0.0113   <- simulador
+ erros: modelo 1.5 mm OK | alcance 3.5 mm OK | juntas 0.8 graus
+\end{lstlisting}
+
+A posição calculada pela \texttt{direct\_kin}, a partir das juntas lidas, difere 1,5~mm da posição real do centro de preensão, e a garra ficou a 3,5~mm do ponto pedido. O mesmo procedimento foi repetido para as restantes peças, sendo os resultados apresentados na Tabela~\ref{tab:demo_sim}.

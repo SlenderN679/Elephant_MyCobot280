@@ -2,84 +2,50 @@
 \chapter{Conclusão}
 \label{ch:conclusao}
 
-Neste trabalho, foi desenvolvida e implementada a cinemática do manipulador robótico myCobot~280, desde a formulação matemática dos modelos de cinemática direta e inversa até à demonstração do movimento do centro de preensão da garra para diferentes posições alvo, utilizando o MATLAB em comunicação com o CoppeliaSim.
+Neste trabalho, foram desenvolvidos e implementados os modelos de cinemática direta e inversa do manipulador robótico myCobot~280, recorrendo ao MATLAB e ao CoppeliaSim para calcular, executar e validar movimentos até diferentes posições alvo.
 
-Os objetivos inicialmente definidos foram cumpridos, tendo sido deduzidos os modelos cinemáticos, realizada a sua implementação em MATLAB e estabelecida a integração com o ambiente de simulação. A validação foi efetuada através de exemplos numéricos e de testes de posicionamento do manipulador.
+Os objetivos definidos foram cumpridos, desde a formulação matemática dos modelos até à sua implementação e validação em ambiente de simulação.
 
 \section*{Formulação}
 
-A cinemática direta foi desenvolvida através de uma abordagem geométrica, baseada na decomposição do manipulador em dois planos.
+A cinemática direta foi desenvolvida através de uma abordagem geométrica, dividindo o movimento do manipulador em dois planos. No plano lateral, determinaram-se a distância frontal e a altura do ponto de preensão a partir das projeções dos elos. No plano horizontal, consideraram-se a rotação da junta J1 e o desvio lateral $L_5$ para obter as coordenadas cartesianas $(x,y,z)$.
 
-No plano lateral, a posição do centro de preensão é determinada a partir das projeções dos elos, utilizando os ângulos absolutos associados às juntas J2, J3 e J4, bem como a inclinação da garra. No plano horizontal, a rotação da junta J1 e o desvio lateral $L_5$ permitem determinar as coordenadas cartesianas $(x,y,z)$ relativamente ao referencial da base.
+A cinemática inversa foi resolvida seguindo a ordem inversa: primeiro, determinam-se a orientação da base e a distância frontal; depois, fixa-se a inclinação da garra e aplica-se a lei dos cossenos a um manipulador planar de dois graus de liberdade, permitindo calcular os ângulos das juntas J2, J3 e J4.
 
-A cinemática inversa foi formulada recorrendo à mesma decomposição geométrica, mas seguindo a ordem inversa dos cálculos.
+Para uma inclinação fixa, a solução é analítica, sendo verificadas as condições de alcance e os limites articulares. Quando a inclinação preferencial de $90^\circ$ não permite alcançar o alvo, o algoritmo procura uma alternativa e realiza um refinamento por bisseção.
 
-Inicialmente, no plano horizontal, são determinadas a orientação da base, $q_1$, e a distância frontal $d$. Posteriormente, no plano lateral, fixa-se uma inclinação para a garra e reduz-se o problema a um manipulador planar de dois graus de liberdade, resolvido através da lei dos cossenos. Esta resolução permite determinar os ângulos das juntas J2 e J3, sendo o ângulo de J4 calculado a partir da orientação pretendida para a garra.
-
-Para uma inclinação fixa, a resolução é analítica, sendo verificadas as condições de alcançabilidade e os limites articulares. Por defeito, é utilizada a configuração com o cotovelo para cima.
-
-Quando não existe uma solução válida para a inclinação preferencial de $90^\circ$, o algoritmo procura inclinações alternativas, realizando posteriormente um refinamento por bisseção para encontrar uma orientação próxima da inicialmente pretendida.
-
-Esta abordagem permitiu alcançar posições que seriam inacessíveis com a garra orientada verticalmente para baixo. No segundo exemplo analisado, correspondente a um alvo situado a aproximadamente $30$ cm do eixo da base, foi necessário ajustar a inclinação da garra para cerca de $82{,}27^\circ$.
-
-Em ambos os exemplos, a aplicação da cinemática direta aos ângulos obtidos pela cinemática inversa permitiu recuperar as posições pretendidas dentro da precisão numérica considerada, confirmando a consistência matemática dos modelos desenvolvidos.
+No segundo exemplo analisado, um alvo situado a aproximadamente $30$ cm do eixo da base exigiu uma inclinação de $82{,}27^\circ$. Em ambos os exemplos, a cinemática direta aplicada aos ângulos calculados pela cinemática inversa permitiu recuperar as posições pretendidas, confirmando a consistência dos modelos.
 
 \section*{Implementação e resultados}
 
-Os modelos cinemáticos foram implementados em MATLAB através das funções \texttt{direct\_kin} e \texttt{inverse\_kin}, sendo posteriormente integrados com as funções responsáveis pela execução dos movimentos do manipulador.
+Os modelos foram implementados em MATLAB através das funções \texttt{direct\_kin} e \texttt{inverse\_kin}, sendo integrados com as funções de movimento \texttt{move\_joints}, \texttt{move\_linear}, \texttt{plan\_vertical} e \texttt{go\_home}.
 
-A função \texttt{move\_joints} permite executar movimentos suaves no espaço das juntas, enquanto a função \texttt{move\_linear} é utilizada para realizar trajetórias aproximadamente retilíneas no espaço cartesiano.
+A comunicação com o CoppeliaSim foi realizada em modo síncrono, permitindo controlar os movimentos e acompanhar a posição do ponto de preensão através das leituras articulares.
 
-Para movimentos verticais, a função \texttt{plan\_vertical} permite selecionar uma inclinação fixa da garra que seja válida ao longo de toda a trajetória. Por sua vez, a função \texttt{go\_home} permite regressar à configuração inicial, realizando previamente uma subida de segurança quando necessário.
+Na demonstração, foram alcançados sete alvos, com erros de posicionamento entre $0{,}8$ e $5{,}9$ mm e diferenças articulares máximas entre $0{,}4^\circ$ e $1{,}6^\circ$. O erro do modelo situou-se entre $1{,}2$ e $4{,}1$ mm, permanecendo abaixo da tolerância de $5$ mm considerada no diagnóstico.
 
-A comunicação entre o MATLAB e o CoppeliaSim foi estabelecida em modo síncrono, permitindo coordenar o envio dos comandos articulares com a evolução da simulação. As funções de movimento utilizam as leituras das juntas para acompanhar a execução e avaliar a posição do centro de preensão.
+Os testes de alcance demonstraram também a importância da inclinação da garra. Para alvos próximos da superfície da mesa, a garra desce na vertical entre cerca de 15,8 e 25,5 cm do eixo da base, sendo o alcance máximo de 35,2 cm com a garra inclinada.
 
-Na demonstração realizada no simulador, o manipulador foi deslocado até diferentes peças distribuídas sobre a mesa.
+Por outro lado, quatro alvos situados a cerca de $39$ a $41$ cm do eixo da base foram rejeitados pela cinemática inversa, por não terem sido encontradas configurações válidas.
 
-Nos sete alvos alcançados, o erro de posicionamento foi inferior a $6$ mm, com um valor máximo de $5{,}9$ mm. As diferenças articulares máximas registadas variaram entre $0{,}4^\circ$ e $1{,}6^\circ$.
-
-O erro do modelo, calculado através da comparação entre a posição fornecida pela cinemática direta e a posição do centro de preensão obtida no CoppeliaSim, situou-se entre $1{,}2$ mm e $4{,}1$ mm, permanecendo abaixo da tolerância de $5$ mm considerada no diagnóstico.
-
-Estes resultados demonstram uma boa correspondência entre o modelo geométrico implementado e o posicionamento do manipulador no ambiente de simulação.
-
-Os testes de alcance também evidenciaram a importância da inclinação da garra. Para alvos situados a poucos centímetros da superfície da mesa, verificou-se um alcance horizontal aproximado de $27$ a $28$ cm relativamente ao eixo da base, mantendo a garra vertical.
-
-Ao permitir a alteração da inclinação da garra, considerando valores até $\psi=30^\circ$, o alcance aumentou para aproximadamente $36$ a $37$ cm nas condições testadas.
-
-Por outro lado, quatro posições situadas a cerca de $39$ a $41$ cm do eixo da base foram rejeitadas pela cinemática inversa antes da execução do movimento, por não terem sido encontradas configurações válidas segundo as restrições implementadas.
-
-Deste modo, os resultados demonstraram não apenas a capacidade de posicionamento do manipulador, mas também a importância da verificação da alcançabilidade antes da execução dos movimentos.
+Estes resultados confirmam a capacidade do sistema para executar movimentos até diferentes posições e identificar alvos fora das condições de alcance estabelecidas.
 
 \section*{Limitações}
 
-Apesar dos resultados obtidos, foram identificadas algumas limitações na abordagem desenvolvida.
+Apesar dos resultados obtidos, foram identificadas algumas limitações. Os erros de posicionamento podem resultar de diferenças entre o modelo geométrico e o simulador, de desvios articulares e de efeitos dinâmicos, como a gravidade e o tempo de estabilização.
 
-Em primeiro lugar, os erros de posicionamento podem ser influenciados pelas diferenças entre o modelo geométrico e o modelo utilizado no simulador, bem como pelos desvios entre os ângulos articulares pretendidos e os efetivamente atingidos.
+O maior erro de alcance ocorreu na peça rosa, uma das mais afastadas da base, sugerindo maiores dificuldades de posicionamento em configurações mais estendidas.
 
-O maior erro de alcance foi registado na peça rosa, uma das mais afastadas da base, sendo compatível com uma maior dificuldade de posicionamento quando o manipulador apresenta uma configuração mais estendida.
+Além disso, a função \texttt{move\_joints} não garante trajetórias retilíneas, sendo necessário recorrer à função \texttt{move\_linear} para movimentos cartesianos. A cinemática inversa também mantém J5 fixa a $0^\circ$ e utiliza, por defeito, a configuração com o cotovelo para cima, limitando as soluções exploradas.
 
-Nestas condições, pequenas diferenças articulares podem provocar desvios mais significativos no centro de preensão. Os efeitos da gravidade e o tempo de estabilização também podem contribuir para estas diferenças, embora não tenha sido possível determinar isoladamente a sua influência.
-
-Outra limitação está relacionada com a estratégia de movimento. A interpolação realizada pela função \texttt{move\_joints} não garante uma trajetória retilínea do centro de preensão, sendo necessário recorrer à função \texttt{move\_linear} quando se pretende seguir uma trajetória cartesiana.
-
-Além disso, a resolução da cinemática inversa considera a junta J5 fixa a $0^\circ$ e privilegia, por defeito, a configuração com o cotovelo para cima. Estas escolhas simplificam a implementação, mas limitam o conjunto de configurações articulares exploradas.
-
-Por fim, os resultados apresentados foram obtidos em ambiente de simulação. Embora o CoppeliaSim permita avaliar os algoritmos em condições controladas, a sua utilização não substitui os testes num manipulador físico.
-
-A identificação e localização dos objetos num sistema real também introduziriam fontes adicionais de erro, associadas ao sistema de visão e à calibração entre os diferentes referenciais.
+Por fim, os resultados foram obtidos exclusivamente em simulação, não incluindo os erros adicionais associados ao funcionamento de um robô físico ou à localização de objetos através de uma câmara real.
 
 \section*{Trabalho futuro}
 
-Como trabalho futuro, pretende-se adaptar a implementação desenvolvida para a utilização com o manipulador físico myCobot~280, aproveitando os modelos cinemáticos e as funções de movimento já implementados.
+Como trabalho futuro, pretende-se adaptar o sistema ao manipulador físico myCobot~280. Para isso, será necessário calibrar uma câmara para identificar a posição das peças e transformar essas coordenadas para o referencial da base.
 
-Uma das primeiras etapas consistirá na calibração de uma câmara real, de forma a identificar a posição das peças sobre a mesa e converter corretamente as coordenadas detetadas para o referencial da base do manipulador.
+Será também necessário adaptar a comunicação entre o MATLAB e o robô, calibrar as juntas e estudar formas de compensar os efeitos da gravidade, das folgas mecânicas e dos erros de posicionamento.
 
-Será também necessário adaptar a interface de comunicação utilizada em MATLAB para permitir o envio de comandos diretamente ao robô físico, substituindo a comunicação com o ambiente de simulação.
+Por fim, deverão ser implementadas medidas de segurança, como a limitação das velocidades e forças dos motores e a verificação de colisões durante os movimentos.
 
-Outra etapa importante será a calibração das juntas, incluindo a verificação dos respetivos pontos de referência e a avaliação de possíveis diferenças entre o modelo geométrico e o comportamento real do manipulador.
-
-Deverão ainda ser estudadas estratégias para compensar os efeitos da gravidade, as folgas mecânicas e os erros de posicionamento, particularmente em configurações mais estendidas.
-
-Por fim, será importante reforçar as condições de segurança durante a execução dos movimentos, através da limitação das velocidades e das forças aplicadas, bem como da verificação de possíveis colisões com os objetos e com o ambiente de trabalho.
-
-Estas melhorias permitirão evoluir da validação em simulação para a implementação experimental de um sistema de manipulação robótica, integrando cinemática, planeamento de movimentos e visão artificial.
+Estas melhorias permitirão passar da validação em simulação para a utilização do manipulador físico, integrando os modelos cinemáticos, o planeamento de movimentos e a visão artificial.

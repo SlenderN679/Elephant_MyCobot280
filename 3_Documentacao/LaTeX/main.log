@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  12 NOV 2026 12:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.5)  13 NOV 2026 00:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1033,7 +1033,7 @@ Package caption Info: End \AtBeginDocument code.
 Package pgfplots notification 'compat/show suggested version=true': you might benefit from \pgfplotsset{compat=1.18} (current compat level: 1.17).
 
 (title.tex
-<img/logo.png, id=210, 321.2pt x 132.495pt>
+<img/logo.png, id=214, 321.2pt x 132.495pt>
 File: img/logo.png Graphic file (type png)
 <use img/logo.png>
 Package pdftex.def Info: img/logo.png  used on input line 13.
@@ -1043,33 +1043,33 @@ Package pdftex.def Info: img/logo.png  used on input line 13.
 LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
 (Font)              using `T1/lmr/bx/n' instead on input line 32.
 
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 42.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 41.
 (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 42.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 41.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 42.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 41.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 42.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 41.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <17.28> on input line 42.
+(Font)              <17.28> on input line 41.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 42.
+(Font)              <12> on input line 41.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 42.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 42.
+(Font)              <10> on input line 41.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 41.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 42.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -1089,7 +1089,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.40 ...entos em linha reta}{38}{subsection.4.5.2}
+l.40 ...entos em linha reta}{36}{subsection.4.5.2}
                                                   % [1
 
 ])
@@ -1102,7 +1102,7 @@ l.40 ...entos em linha reta}{38}{subsection.4.5.2}
 
  [3
 
-{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}] (main.lot
+{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}] (main.lot
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 9.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1112,99 +1112,99 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
  [4
 
-{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}] (tex/Chap/1-Intro/INTRO.tex
+] (tex/Chap/1-Intro/INTRO.tex
 Cap√≠tulo 1.
-(tex/Chap/1-Intro/fundamentos.tex) (tex/Chap/1-Intro/enq-e-obj.tex [1
-
-
-]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 12.
+(tex/Chap/1-Intro/fundamentos.tex) (tex/Chap/1-Intro/enq-e-obj.tex
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 10.
  (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-))) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [2{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
+))) (tex/Chap/2-Direct_Kin/DIR_KIN.tex [1
+
+
+{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
 Cap√≠tulo 2.
 (graph/vista_3d.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10.95> on input line 50.
-) [3
+) [2
 
-] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [4] [5] (graph/soma_projecoes.tex
+] (tex/Chap/2-Direct_Kin/plano_lateral.tex (graph/vista_lateral.tex) [3] [4] (graph/soma_projecoes.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 22.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 22.
-) [6] [7] [8]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [9
+) [5] [6]) (tex/Chap/2-Direct_Kin/plano_horizontal.tex (graph/vista_cima.tex) [7
 
-] [10{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]) (tex/Chap/2-Direct_Kin/resumo.tex (graph/poses_fk.tex) [11] [12])) (tex/Chap/3-Inverse_kin/INV_KIN.tex [13]
+] [8{C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]) (tex/Chap/2-Direct_Kin/resumo.tex (graph/poses_fk.tex) [9] [10])) (tex/Chap/3-Inverse_kin/INV_KIN.tex [11]
 Cap√≠tulo 3.
-[14
+[12
 
-] (graph/mundo_base.tex) (tex/Chap/3-Inverse_Kin/plano_horizontal.tex [15] [16] [17]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [18
+] (graph/mundo_base.tex) (tex/Chap/3-Inverse_Kin/plano_horizontal.tex [13] [14] [15]) (tex/Chap/3-Inverse_Kin/plano_lateral.tex (graph/ik_2dof.tex) [16
 
-] (graph/alcance_pulso.tex) [19] (graph/cotovelo_cima_baixo.tex) [20]
+] (graph/alcance_pulso.tex) [17] (graph/cotovelo_cima_baixo.tex) [18]
 Overfull \hbox (3.57584pt too wide) in paragraph at lines 165--166
 []\T1/lmr/m/n/12 Para con-ver-ter os ‚n-gu-los ob-ti-dos em va-lo-res ar-ti-cu-la-res do ma-ni-pu-la-dor, considera-
  []
 
-[21] (graph/orientacao_q6.tex) [22] [23] (graph/escolha_inclinacao.tex) [24] [25]) (tex/Chap/3-Inverse_Kin/resumo.tex [26
+[19] (graph/orientacao_q6.tex) [20] [21] (graph/escolha_inclinacao.tex) [22] [23]) (tex/Chap/3-Inverse_Kin/resumo.tex [24
 
-] [27])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
+] [25])) (tex/Chap/4-Implementa√ß√£o/IMP.tex
 Cap√≠tulo 4.
 
-Overfull \hbox (43.85413pt too wide) in paragraph at lines 14--15
+Overfull \hbox (43.85413pt too wide) in paragraph at lines 13--14
 []\T1/lmr/m/n/12 O si-mu-la-dor È exe-cu-tado em modo sÌn-crono, atra-vÈs da ins-tru-Á„o \T1/lmtt/m/n/12 sim.setStepping(true)\T1/lmr/m/n/12 .
  []
 
 
-Overfull \hbox (44.23477pt too wide) in paragraph at lines 18--19
+Overfull \hbox (44.23477pt too wide) in paragraph at lines 17--18
 []\T1/lmr/m/n/12 A co-mu-ni-ca-Á„o È efe-tu-ada atra-vÈs das clas-ses \T1/lmtt/m/n/12 mycobot_interface \T1/lmr/m/n/12 e \T1/lmtt/m/n/12 simulator_interface
  []
 
 
-Overfull \hbox (7.02893pt too wide) in paragraph at lines 31--32
+Overfull \hbox (7.02893pt too wide) in paragraph at lines 30--31
 []|\T1/lmtt/m/n/10.95 robot_arm.set_joints(q)| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 32--33
+Underfull \hbox (badness 10000) in paragraph at lines 31--32
 []|\T1/lmtt/m/n/10.95 sim.setJoint
  []
 
 
-Overfull \hbox (1.2802pt too wide) in paragraph at lines 35--36
+Overfull \hbox (1.2802pt too wide) in paragraph at lines 34--35
 []|\T1/lmtt/m/n/10.95 robot_arm.get_joints()| 
  []
 
 
-Overfull \hbox (1.16365pt too wide) in paragraph at lines 36--37
+Overfull \hbox (1.16365pt too wide) in paragraph at lines 35--36
 []|\T1/lmtt/m/n/10.95 sim.getJointPosition| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
+Underfull \hbox (badness 10000) in paragraph at lines 38--39
 []|\T1/lmtt/m/n/10.95 sim_interface.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 43--44
+Underfull \hbox (badness 10000) in paragraph at lines 42--43
 []|\T1/lmtt/m/n/10.95 sim_interface.
  []
 
 
-Overfull \hbox (6.91238pt too wide) in paragraph at lines 44--45
+Overfull \hbox (6.91238pt too wide) in paragraph at lines 43--44
 []|\T1/lmtt/m/n/10.95 sim.getSimulationTime| 
  []
 
-[28
+[26
 
 
-] (tex/Chap/4-Implementa√ß√£o/direct.tex [29] (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+] (tex/Chap/4-Implementa√ß√£o/direct.tex [27] (C:\Users\Geral\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 13.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <8> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 14.
- [30]) (tex/Chap/4-Implementa√ß√£o/inverse.tex [31] [32] [33] [34] [35]) (tex/Chap/4-Implementa√ß√£o/move.tex [36]
+ [28]) (tex/Chap/4-Implementa√ß√£o/inverse.tex [29] [30] [31] [32] [33]) (tex/Chap/4-Implementa√ß√£o/move.tex [34]
 Overfull \hbox (1.43726pt too wide) in paragraph at lines 10--12
 []\T1/lmr/bx/n/12 TransformaÁ„o de co-or-de-na-das: \T1/lmr/m/n/12 a po-si-Á„o pre-ten-dida $\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 X[]; Y[]; Z[]\OT1/lmr/m/n/12 )$
  []
@@ -1214,22 +1214,48 @@ Overfull \hbox (69.02682pt too wide) in paragraph at lines 10--12
 \T1/lmr/m/n/12 È con-ver-tida para o re-fe-ren-cial da base do ma-ni-pu-la-dor atra-vÈs da fun-Á„o \T1/lmtt/m/n/12 aux.world_to_base\T1/lmr/m/n/12 ,
  []
 
-[37] [38] (graph/move.tex) [39])) (tex/Chap/5-Testes/TEST.tex [40]
+[35] [36] (graph/move.tex) [37])) (tex/Chap/5-Testes/TEST.tex [38]
 Cap√≠tulo 5.
-(tex/Chap/5-Testes/resultados.tex [41
+(tex/Chap/5-Testes/resultados.tex [39
 
-] [42] [43] (graph/exemplos_ik.tex) [44]) (tex/Chap/5-Testes/demonstracao.tex [45] (graph/mapa_alvos.tex) (graph/erros.tex
+] (graph/exemplo1_ik.tex) [40] [41] (graph/exemplo2_ik.tex) [42]) (tex/Chap/5-Testes/demonstracao.tex [43] (graph/mapa_alvos.tex) (graph/erros.tex
 Package pgfplots info on input line 17: Using 'lua backend=false' for axis: x coord trafo unsupported.
-) [46]) (tex/Chap/5-Testes/discussao.tex [47] [48]
-Overfull \hbox (6.19217pt too wide) in paragraph at lines 68--69
-[]\T1/lmr/m/n/12 Quando È ne-ces-s·-rio um mo-vi-mento em li-nha reta, recorre-se ‡ fun-Á„o \T1/lmtt/m/n/12 move_linear\T1/lmr/m/n/12 ,
+) [44]) (tex/Chap/5-Testes/execucao.tex
+<img/exec_1.png, id=971, 381.67593pt x 335.75438pt>
+File: img/exec_1.png Graphic file (type png)
+<use img/exec_1.png>
+Package pdftex.def Info: img/exec_1.png  used on input line 20.
+(pdftex.def)             Requested size: 208.13574pt x 183.09265pt.
+<img/exec_2.png, id=972, 381.67593pt x 335.75438pt>
+File: img/exec_2.png Graphic file (type png)
+<use img/exec_2.png>
+Package pdftex.def Info: img/exec_2.png  used on input line 25.
+(pdftex.def)             Requested size: 208.13574pt x 183.09265pt.
+<img/exec_3.png, id=973, 382.42876pt x 334.24875pt>
+File: img/exec_3.png Graphic file (type png)
+<use img/exec_3.png>
+Package pdftex.def Info: img/exec_3.png  used on input line 32.
+(pdftex.def)             Requested size: 208.13574pt x 181.91458pt.
+<img/exec_4.png, id=974, 383.18156pt x 336.50719pt>
+File: img/exec_4.png Graphic file (type png)
+<use img/exec_4.png>
+Package pdftex.def Info: img/exec_4.png  used on input line 37.
+(pdftex.def)             Requested size: 208.13574pt x 182.7843pt.
+ [45]) (tex/Chap/5-Testes/discussao.tex [46 <./img/exec_1.png> <./img/exec_2.png> <./img/exec_3.png> <./img/exec_4.png>] [47])) (tex/Chap/6-Conclusao/CONC.tex [48]
+Cap√≠tulo 6.
+
+Overfull \hbox (2.62657pt too wide) in paragraph at lines 13--14
+[]\T1/lmr/m/n/12 A ci-ne-m·-tica in-versa foi re-sol-vida se-guindo a or-dem in-versa: pri-meiro, determinam-
  []
 
-[49])) (tex/Chap/6-Conclusao/CONC.tex [50]
-Cap√≠tulo 6.
-[51
 
-] [52] [53]) (tex/Chap/7-Bibliografia/BIB.tex [54]
+Overfull \hbox (22.91118pt too wide) in paragraph at lines 21--22
+\T1/lmtt/m/n/12 inverse_kin\T1/lmr/m/n/12 , sendo in-te-gra-dos com as fun-Áıes de mo-vi-mento \T1/lmtt/m/n/12 move_joints\T1/lmr/m/n/12 , \T1/lmtt/m/n/12 move_linear\T1/lmr/m/n/12 ,
+ []
+
+[49
+
+]) (tex/Chap/7-Bibliografia/BIB.tex [50]
 Underfull \hbox (badness 3260) in paragraph at lines 17--18
 []\T1/lmr/m/n/12 L. Louro e E. Bi-cho, \T1/lmr/m/it/12 Win-dows_zeromq_mycobot\T1/lmr/m/n/12 : in-ter-face MATLAB--
  []
@@ -1255,7 +1281,7 @@ Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-[55
+[51
 
 ] (main.aux)
  ***********
@@ -1267,20 +1293,20 @@ L3 programming layer <2025-12-24>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: F0578FEB25A81F27BC3F6AC586016D84;9781.
+(rerunfilecheck)             Checksum: 6FAACA5B29D65BB8B1D51F3DDD1F538D;9950.
  ) 
 Here is how much of TeX's memory you used:
- 47939 strings out of 467871
- 1083758 string characters out of 5418376
- 2294645 words of memory out of 5000000
- 75480 multiletter control sequences out of 15000+600000
- 744410 words of font info for 116 fonts, out of 8000000 for 9000
+ 48033 strings out of 467871
+ 1085546 string characters out of 5418376
+ 2297906 words of memory out of 5000000
+ 75563 multiletter control sequences out of 15000+600000
+ 750423 words of font info for 118 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,21n,97p,2574b,2469s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt8.pfb><C:/Users/Geral/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on main.pdf (60 pages, 824383 bytes).
+Output written on main.pdf (56 pages, 1920426 bytes).
 PDF statistics:
- 1236 PDF objects out of 1440 (max. 8388607)
- 465 named destinations out of 1000 (max. 500000)
- 430 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1263 PDF objects out of 1440 (max. 8388607)
+ 470 named destinations out of 1000 (max. 500000)
+ 458 words of extra memory for PDF output out of 10000 (max. 10000000)
 

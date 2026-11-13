@@ -24,47 +24,15 @@ Quando a posição do alvo é fornecida no referencial do mundo do CoppeliaSim, 
 
 A função \texttt{move\_joints} permite deslocar o manipulador entre duas configurações articulares, garantindo uma evolução suave dos ângulos das juntas.
 
-Para este efeito, são considerados os ângulos iniciais $\mathbf{q}_0$ e os ângulos pretendidos $\mathbf{q}_f$, sendo a trajetória definida por:
+Em vez de enviar diretamente os ângulos finais, a função calcula, em cada passo de simulação, uma configuração intermédia entre a configuração inicial e a pretendida. Todas as juntas iniciam e terminam o movimento ao mesmo tempo, independentemente da amplitude da rotação de cada uma.
 
-\begin{equation}
-    \mathbf{q}(t)=
-    \mathbf{q}_0+
-    s(t)(\mathbf{q}_f-\mathbf{q}_0)
-    \label{eq:move_joints}
-\end{equation}
+A evolução entre as duas configurações segue um perfil suave, em forma de S: as juntas arrancam devagar, aceleram até ao meio do movimento e abrandam até parar na posição pretendida. Desta forma, o movimento começa e termina com velocidade nula, evitando alterações bruscas da velocidade e solavancos no manipulador.
 
-onde $s(t)$ representa uma função de interpolação que varia entre $0$ e $1$.
-
-Na implementação, é utilizada uma interpolação cúbica:
-
-\begin{equation}
-    s(\tau)=3\tau^2-2\tau^3,
-    \qquad 0\leq\tau\leq1
-    \label{eq:interp_suave}
-\end{equation}
-
-em que $\tau=t/T$ corresponde ao tempo normalizado e $T$ representa a duração prevista do movimento.
-
-Esta função apresenta derivada nula nos instantes inicial e final, permitindo que as juntas iniciem e terminem o movimento com velocidade nula, evitando alterações bruscas da velocidade.
-
-A duração do movimento é determinada a partir da junta que apresenta a maior variação angular:
-
-\begin{equation}
-    T=
-    \frac{1{,}5
-    \displaystyle\max_i|q_{f,i}-q_{0,i}|}
-    {\omega_{\max}}
-    \label{eq:tempo_movimento}
-\end{equation}
-
-onde $\omega_{\max}$ representa a velocidade angular máxima pretendida, definida por defeito como $30^\circ/\mathrm{s}$.
-
-O fator $1{,}5$ resulta da velocidade máxima da função de interpolação cúbica, permitindo limitar a velocidade das juntas durante o movimento.
+A duração do movimento é definida pela junta que tem de rodar mais. Esta duração é calculada de modo a que a velocidade dessa junta nunca ultrapasse a velocidade máxima pretendida, de $30^\circ$/s por defeito. As restantes juntas, como rodam menos no mesmo tempo, movem-se mais devagar.
 
 A execução é realizada de forma sincronizada, sendo enviadas configurações articulares intermédias ao manipulador em cada passo de simulação.
 
 No final, a função verifica se todas as juntas se encontram a menos de $1^\circ$ dos respetivos valores pretendidos.
-
 \subsection{Movimentos em linha reta}
 
 Para movimentos de aproximação a objetos, nomeadamente durante a descida da garra até uma peça, é utilizada a função \texttt{move\_linear}.

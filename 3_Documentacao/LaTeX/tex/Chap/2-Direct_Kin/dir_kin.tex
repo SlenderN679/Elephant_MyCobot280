@@ -2,7 +2,7 @@
 \chapter{Formulação da cinemática direta}
 \label{ch:dir_kin}
 
-A cinemática direta permite determinar a posição e a orientação da garra a partir dos ângulos das juntas do manipulador. Neste trabalho, é utilizada para calcular a posição do ponto de preensão do myCobot~280, expressa pelas coordenadas $(x,y,z)$, considerando os ângulos articulares $(q_1,\ldots,q_6)$ e os comprimentos dos elos.
+A cinemática direta permite calcular a posição do ponto de preensão do braço robótico, expressa pelas coordenadas $(x,y,z)$, considerando os ângulos articulares $(q_1,\ldots,q_6)$ e o comprimentos dos elos.
 
 O myCobot~280 possui seis juntas rotativas. Na configuração de referência, em que todos os ângulos são iguais a $0^\circ$, o braço encontra-se na vertical e a garra na horizontal, orientada segundo o sentido positivo do eixo $y$.
 
@@ -33,11 +33,11 @@ A Figura~\ref{fig:3d} apresenta a estrutura do manipulador, identificando as jun
     \label{fig:3d}
 \end{figure}
 
-O cálculo da posição é dividido em duas etapas. Primeiro, no plano lateral, determinam-se a distância frontal $d$ e a altura $h$, considerando as juntas J2 a J5, conforme apresentado na Secção~\ref{sec:plano_lateral}.
+O cálculo da posição é dividido em duas etapas. Primeiro, no plano lateral, determina-se a distância frontal $d$ e a altura $h$, considerando as juntas J2 a J5, conforme apresentado na Secção~\ref{sec:plano_lateral}.
 
 Depois, no plano horizontal, considera-se a rotação da junta J1 e o desvio lateral da estrutura para obter as coordenadas tridimensionais $(x,y,z)$, como descrito na Secção~\ref{sec:plano_horizontal}.
 
-Os comprimentos dos elos foram obtidos a partir do modelo do manipulador no CoppeliaSim e encontram-se apresentados na Tabela~\ref{tab:elos}.
+Os comprimentos dos elos foram obtidos a partir do modelo do manipulador no CoppeliaSim \cite{elephant} e encontram-se apresentados na Tabela~\ref{tab:elos}. Estes valores podem apresentar pequenas diferenças face às medidas fornecidas pelo fabricante.
 
 \begin{table}[htbp]
     \centering
@@ -57,8 +57,6 @@ Os comprimentos dos elos foram obtidos a partir do modelo do manipulador no Copp
         \hline
     \end{tabular}
 \end{table}
-
-Os valores apresentados correspondem às dimensões utilizadas no cenário de simulação, podendo existir pequenas diferenças relativamente às medidas fornecidas pelo fabricante.
 
 O parâmetro $L_1$ representa a altura do ombro, $L_2$, $L_3$, $L_4$ e $L_6$ representam os comprimentos entre juntas, $L_5$ corresponde ao desvio lateral e $L_7$ representa a distância entre J6 e o ponto de preensão.
 

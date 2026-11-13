@@ -67,7 +67,7 @@ function main()
 % (todos limpam o alvo, se CLEAR_TARGET = 1)
 %======================================================================
    
-    MODE = 0;
+    MODE = 1;
 
 %----------------------------------    
     % Display do modo no terminal
@@ -110,7 +110,7 @@ function main()
 
     % opções gerais (1 = ligado, 0 = desligado)
     IS_CUBE = @(obj) obj ~= BLUE_CYLINDER;  % cubos: J6 alinha os dedos com as faces
-    RANDOM_START = 1;                       % 1 - (teste, só simulação) começar numa pose aleatória do braço
+    RANDOM_START = 0;                       % 1 - (teste, só simulação) começar numa pose aleatória do braço
     SHOW_ZONES = 1;                         % 1 - desenhar na mesa as zonas de alcance e a zona morta de J1
     CELEBRATE = 1;                          % 1 - dança de celebração quando todas as tarefas correm bem
     END_WHEN_DONE = 1;                      % 1 - parar a simulação quando todas as tarefas acabarem
@@ -151,7 +151,7 @@ function main()
     % opções da visão e cor de cada objeto (as cores têm de existir em
     % vision_colors.m: red, orange, yellow, green, blue, pink)
     COMPARE_VISION = 1;                    % 1 - escrever o erro visão vs. simulador (só testes)
-    SHOW_VISION    = 1;                    % 1 - mostrar o resultado da visão (figura + marcas na mesa)
+    SHOW_VISION    = 0;                    % 1 - mostrar o resultado da visão (figura + marcas na mesa)
 
     OBJ_NAME = {'BlueCube','BlueCylinder','RedCylinder','TargetGreen','BLOCK_ORANGE','BLOCK_PINK','BLOCK_YELLOW', 'BLOCK_RED'};
     % cor de cada objeto (índice = número do objeto). !!!CONFIRMAR no cenário!!!
