@@ -2,80 +2,49 @@
 \section{Movimento até uma posição alvo}
 \label{sec:imp_move}
 
-O movimento do manipulador até uma posição pretendida envolve a transformação das coordenadas do alvo, o cálculo da configuração articular e a execução do movimento através das funções desenvolvidas em MATLAB.
+O movimento do manipulador até uma posição pretendida envolve a transformação das coordenadas, o cálculo da configuração articular e a execução do movimento em MATLAB.
 
-Quando a posição do alvo é fornecida no referencial do mundo do CoppeliaSim, o procedimento pode ser dividido nas seguintes etapas:
+Quando o alvo é definido no referencial do mundo do CoppeliaSim, o procedimento segue quatro etapas:
 
 \begin{enumerate}
-    \item \textbf{Transformação de coordenadas:}
-    a posição pretendida $(X_{\mathrm{target}},Y_{\mathrm{target}},Z_{\mathrm{target}})$ é convertida para o referencial da base do manipulador através da função \texttt{aux.world\_to\_base}, considerando a translação e a rotação entre os dois referenciais;
+    \item \textbf{Transformação de coordenadas:} a função \texttt{aux.world\_to\_base} converte a posição do alvo para o referencial da base;
 
-    \item \textbf{Cálculo da configuração articular:}
-    a função \texttt{inverse\_kin} determina os ângulos necessários para alcançar a posição pretendida, respeitando as restrições geométricas e articulares definidas. Caso não exista uma solução válida, o movimento pode ser rejeitado antes da sua execução;
+    \item \textbf{Cinemática inversa:} a função \texttt{inverse\_kin} determina uma configuração articular válida, respeitando as restrições estabelecidas;
 
-    \item \textbf{Execução do movimento:}
-    após determinar uma configuração válida, o manipulador pode ser deslocado através da função \texttt{move\_joints}, que realiza a interpolação dos ângulos articulares, ou da função \texttt{move\_linear}, utilizada quando se pretende seguir uma trajetória aproximadamente retilínea no espaço cartesiano;
+    \item \textbf{Execução:} o movimento é realizado através de \texttt{move\_joints}, no espaço das juntas, ou de \texttt{move\_linear}, para trajetórias aproximadamente retilíneas;
 
-    \item \textbf{Verificação do posicionamento:}
-    os ângulos articulares obtidos durante a execução podem ser utilizados pela função \texttt{direct\_kin} para calcular a posição do centro de preensão e avaliar a diferença relativamente à posição pretendida.
+    \item \textbf{Verificação:} a função \texttt{direct\_kin} permite calcular a posição alcançada e avaliar o erro relativamente ao alvo.
 \end{enumerate}
 
 \subsection{Movimento no espaço das juntas}
 
-A função \texttt{move\_joints} permite deslocar o manipulador entre duas configurações articulares, garantindo uma evolução suave dos ângulos das juntas.
+A função \texttt{move\_joints} realiza a interpolação entre a configuração articular inicial e a pretendida, enviando posições intermédias ao manipulador em cada passo de simulação.
 
-Em vez de enviar diretamente os ângulos finais, a função calcula, em cada passo de simulação, uma configuração intermédia entre a configuração inicial e a pretendida. Todas as juntas iniciam e terminam o movimento ao mesmo tempo, independentemente da amplitude da rotação de cada uma.
+É utilizado um perfil de movimento suave, em forma de S, com velocidade nula no início e no fim, evitando alterações bruscas. Todas as juntas iniciam e terminam o movimento simultaneamente.
 
-A evolução entre as duas configurações segue um perfil suave, em forma de S: as juntas arrancam devagar, aceleram até ao meio do movimento e abrandam até parar na posição pretendida. Desta forma, o movimento começa e termina com velocidade nula, evitando alterações bruscas da velocidade e solavancos no manipulador.
+A duração é determinada pela junta com maior deslocamento angular, respeitando uma velocidade máxima de $30^\circ$/s, por defeito. No final, verifica-se se o erro de cada junta é inferior a $1^\circ$.
 
-A duração do movimento é definida pela junta que tem de rodar mais. Esta duração é calculada de modo a que a velocidade dessa junta nunca ultrapasse a velocidade máxima pretendida, de $30^\circ$/s por defeito. As restantes juntas, como rodam menos no mesmo tempo, movem-se mais devagar.
-
-A execução é realizada de forma sincronizada, sendo enviadas configurações articulares intermédias ao manipulador em cada passo de simulação.
-
-No final, a função verifica se todas as juntas se encontram a menos de $1^\circ$ dos respetivos valores pretendidos.
 \subsection{Movimentos em linha reta}
 
-Para movimentos de aproximação a objetos, nomeadamente durante a descida da garra até uma peça, é utilizada a função \texttt{move\_linear}.
+A função \texttt{move\_linear} permite realizar trajetórias aproximadamente retilíneas no espaço cartesiano, sendo especialmente útil na aproximação a objetos.
 
-Ao contrário do movimento no espaço das juntas, esta função faz evoluir um ponto de referência ao longo da direção que une a posição atual do centro de preensão à posição pretendida.
+O ponto de referência avança progressivamente até ao alvo, respeitando a velocidade máxima e a aceleração definida por \texttt{cfg.ACC}. A velocidade aumenta no início e diminui perto do destino, permitindo uma paragem suave.
 
-Em cada passo de simulação, o programa atualiza a velocidade do ponto de referência, respeitando a velocidade máxima definida e a aceleração configurada através do parâmetro \texttt{cfg.ACC}.
+Em cada passo, a função \texttt{inverse\_kin} calcula os ângulos necessários para alcançar a posição intermédia.
 
-A velocidade é aumentada gradualmente e reduzida à medida que o ponto se aproxima do destino, de forma a evitar uma paragem brusca.
-
-Para cada posição intermédia, a função \texttt{inverse\_kin} calcula os ângulos articulares correspondentes, que são enviados ao manipulador.
-
-Após o ponto de referência atingir o destino, o programa compara a posição pretendida com a posição calculada pela cinemática direta a partir dos ângulos efetivamente lidos.
-
-Quando necessário, é aplicada uma correção progressiva ao ponto de referência para compensar diferenças de posicionamento, incluindo os efeitos associados à gravidade.
-
-O movimento é considerado concluído com sucesso quando o erro de posicionamento é inferior a $3$ mm, dentro das condições de execução estabelecidas.
+A posição efetiva é verificada através de \texttt{direct\_kin}, podendo ser aplicada uma correção progressiva para compensar desvios, incluindo os associados à gravidade. O movimento é considerado concluído quando o erro de posicionamento é inferior a $3$ mm.
 
 \subsection{Planeamento de movimentos verticais}
 
-Antes de executar determinados movimentos verticais, a função \texttt{plan\_vertical} seleciona uma inclinação fixa da garra que permita percorrer toda a trajetória.
+Antes de determinados movimentos verticais, a função \texttt{plan\_vertical} procura uma inclinação da garra que seja válida ao longo de toda a trajetória.
 
-Este procedimento é particularmente importante durante a aproximação a objetos situados perto da base do manipulador, onde pequenas alterações de posição podem exigir variações significativas dos ângulos articulares.
+A procura começa em $\psi=90^\circ$, correspondente à garra orientada para baixo. Para cada inclinação candidata, são verificadas posições ao longo do percurso em intervalos de $2$ mm.
 
-O algoritmo testa diferentes inclinações, começando pela orientação vertical para baixo, correspondente a $\psi=90^\circ$.
+Uma inclinação apenas é aceite se existir uma solução válida em todos os pontos, se as variações das juntas J1 a J4 entre pontos consecutivos não ultrapassarem $5^\circ$ e, quando aplicável, se não forem detetadas colisões do manipulador consigo próprio.
 
-Para cada inclinação candidata, são verificadas sucessivamente as posições ao longo da trajetória vertical, em intervalos de $2$ mm.
+É utilizada a configuração com o cotovelo para cima, mantendo a inclinação constante durante a descida para evitar alterações bruscas da configuração articular.
 
-Uma inclinação apenas é aceite quando são satisfeitas as seguintes condições:
-
-\begin{itemize}
-    \item Existe uma solução válida de cinemática inversa para todos os pontos da trajetória;
-
-    \item A variação de cada uma das juntas J1 a J4 entre posições consecutivas não ultrapassa $5^\circ$;
-
-    \item Quando a verificação de colisões está ativada, as configurações articulares não provocam colisões do manipulador consigo próprio.
-\end{itemize}
-
-Durante esta verificação, é utilizada a configuração com o cotovelo para cima, sendo mantida a mesma inclinação da garra ao longo de todo o movimento.
-
-Esta abordagem reduz a possibilidade de alterações abruptas das configurações articulares durante a descida.
-
-A Figura~\ref{fig:move} apresenta uma representação esquemática da sequência de aproximação a uma peça.
+A Figura~\ref{fig:move} ilustra a sequência de aproximação a uma peça.
 
 \begin{figure}[htbp]
     \centering
@@ -86,18 +55,12 @@ A Figura~\ref{fig:move} apresenta uma representação esquemática da sequência
 
 \subsection{Regresso à pose inicial}
 
-A função \texttt{go\_home} permite deslocar o manipulador para uma configuração inicial previamente definida, independentemente da posição articular de partida, desde que o movimento seja realizável.
+A função \texttt{go\_home} permite regressar a uma configuração inicial previamente definida.
 
-O procedimento começa pela abertura da garra e pela leitura dos ângulos articulares atuais.
+O procedimento começa pela abertura da garra e pela leitura dos ângulos atuais. A posição do centro de preensão é calculada através de \texttt{direct\_kin}.
 
-Através da função \texttt{direct\_kin}, é determinada a posição do centro de preensão. Caso a sua altura seja inferior ao valor de segurança definido, de $0{,}15$ m relativamente à base, o algoritmo procura realizar uma subida gradual antes do regresso à configuração inicial.
+Se a altura for inferior a $0{,}15$ m relativamente à base, o algoritmo tenta realizar uma subida gradual, utilizando \texttt{inverse\_kin} e procurando manter a inclinação da garra. Esta etapa é interrompida caso não existam soluções válidas ou ocorram variações articulares excessivas.
 
-Durante esta subida, são calculadas sucessivamente novas configurações articulares através da função \texttt{inverse\_kin}, procurando manter a inclinação inicial da garra.
+De seguida, a função \texttt{move\_joints} realiza o regresso à configuração inicial. O movimento é considerado bem-sucedido quando o desvio de cada junta é inferior a $1^\circ$.
 
-Se não for possível encontrar uma configuração válida ou se forem detetadas variações articulares excessivas, a subida é interrompida e o programa avança para a etapa seguinte.
-
-Posteriormente, a função \texttt{move\_joints} é utilizada para executar o movimento suave até à configuração inicial.
-
-Por fim, os ângulos articulares são novamente lidos, sendo o regresso considerado bem-sucedido quando todas as juntas apresentam um desvio inferior a $1^\circ$ relativamente aos valores pretendidos.
-
-Este procedimento baseia-se nas leituras articulares, permitindo utilizar a mesma lógica de controlo com a interface do manipulador simulado ou com uma interface compatível de um braço físico.
+Este procedimento utiliza as leituras articulares do manipulador, sendo compatível com a interface de simulação e com uma interface equivalente de um robô físico.

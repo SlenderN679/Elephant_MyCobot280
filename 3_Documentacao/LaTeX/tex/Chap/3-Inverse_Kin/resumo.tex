@@ -1,54 +1,113 @@
+
 \section{Resumo}
 \label{sec:ik_resumo}
 
-Juntando os dois planos, a cinemática inversa do myCobot~280, para um alvo $(x, y, z)$ no referencial da base e uma inclinação da garra $\psi$, com $D = L_6 + L_7$, $L_A = L_2$ e $L_B = L_3$, é:
+A cinemática inversa permite determinar os ângulos articulares do myCobot~280 a partir da posição pretendida $(x,y,z)$ e da inclinação da garra $\psi$.
+
+A resolução segue três etapas: cálculo da orientação da base, determinação da posição do pulso e cálculo dos ângulos das juntas J2, J3 e J4.
+
+Considerando $D=L_6+L_7$, $L_A=L_2$ e $L_B=L_3$, as expressões utilizadas são apresentadas de seguida.
+
+\subsubsection*{1. Plano horizontal}
+
+A partir das coordenadas do alvo, calculam-se a distância ao eixo da base, a distância frontal e a rotação da junta J1:
+
+\begin{align*}
+    r &= \sqrt{x^2+y^2}\\
+    d &= \sqrt{r^2-L_5^2}\\
+    q_1 &= \operatorname{atan2}(y,x)
+    -\operatorname{atan2}(d,L_5)
+\end{align*}
+
+\subsubsection*{2. Posição do pulso}
+
+Definindo a inclinação da garra, determina-se a posição do pulso relativamente ao ombro, descontando as contribuições dos segmentos $L_4$ e $D$:
+
+\begin{align*}
+    \alpha_3 &= -\psi\\
+    x_{3d} &= d-D\cos\alpha_3
+    -L_4\cos(\alpha_3+90^\circ)\\
+    y_{3d} &= (z-L_1)-D\sin\alpha_3
+    -L_4\sin(\alpha_3+90^\circ)
+\end{align*}
+
+\subsubsection*{3. Braço planar de 2 DOF}
+
+Conhecida a posição do pulso, calculam-se a distância $r_3$ e os ângulos auxiliares através da lei dos cossenos:
+
+\begin{align*}
+    r_3 &= \sqrt{x_{3d}^2+y_{3d}^2}\\
+    \alpha_1 &= \operatorname{atan2}(y_{3d},x_{3d})\\
+    \beta_1 &= \arccos\left(
+    \frac{L_A^2+r_3^2-L_B^2}{2L_A r_3}
+    \right)\\
+    \beta_2 &= \arccos\left(
+    \frac{L_A^2+L_B^2-r_3^2}{2L_A L_B}
+    \right)
+\end{align*}
+
+Para a configuração com o cotovelo para cima, obtêm-se:
+
+\begin{align*}
+    \theta_1 &= \alpha_1+\beta_1\\
+    \theta_2 &= -(180^\circ-\beta_2)\\
+    \theta_3 &= (\alpha_3+90^\circ)-\theta_1-\theta_2
+\end{align*}
+
+Finalmente, os ângulos articulares do manipulador são:
+
 \begin{equation}
     \boxed{
     \begin{aligned}
-        &\text{plano horizontal:} && r = \sqrt{x^2 + y^2}, \quad d = \sqrt{r^2 - L_5^2}\\
-        & && q_1 = \operatorname{atan2}(y, x) - \operatorname{atan2}(d, L_5)\\[4pt]
-        &\text{ponto do pulso:} && \alpha_3 = -\psi\\
-        & && x_{3d} = d - D\cos\alpha_3 - L_4\cos(\alpha_3 + 90^\circ)\\
-        & && y_{3d} = (z - L_1) - D\sin\alpha_3 - L_4\sin(\alpha_3 + 90^\circ)\\[4pt]
-        &\text{braço de 2 DOF:} && r_3 = \sqrt{x_{3d}^2 + y_{3d}^2}, \quad \alpha_1 = \operatorname{atan2}(y_{3d}, x_{3d})\\
-        & && \beta_1 = \arccos\frac{L_A^2 + r_3^2 - L_B^2}{2L_A r_3}\\
-        & && \beta_2 = \arccos\frac{L_A^2 + L_B^2 - r_3^2}{2L_A L_B}\\
-        & && \theta_1 = \alpha_1 + \beta_1, \quad \theta_2 = -(180^\circ - \beta_2)\\
-        & && \theta_3 = (\alpha_3 + 90^\circ) - \theta_1 - \theta_2\\[4pt]
-        &\text{juntas:} && q_2 = \theta_1 - 90^\circ, \quad q_3 = \theta_2, \quad q_4 = \theta_3, \quad q_5 = 0\\
-        & && q_6 = \operatorname{mod}(q_1 - \gamma + 45^\circ,\ 90^\circ) - 45^\circ
-    \end{aligned}}
+        q_2 &= \theta_1-90^\circ\\
+        q_3 &= \theta_2\\
+        q_4 &= \theta_3\\
+        q_5 &= 0^\circ
+    \end{aligned}
+    }
     \label{eq:ik_final}
 \end{equation}
 
-A solução existe se as três condições seguintes se verificarem:
+A junta J6 é utilizada para alinhar os dedos da garra com a orientação $\gamma$ de uma peça cúbica, quando esta é conhecida e $\psi>45^\circ$:
+
+\begin{equation}
+    q_6=
+    \operatorname{mod}(q_1-\gamma+45^\circ,\;90^\circ)
+    -45^\circ
+\end{equation}
+
+Caso contrário, considera-se $q_6=0^\circ$.
+
+\subsubsection*{Verificação das soluções}
+
+Uma solução apenas é aceite quando são respeitadas as condições de alcance e as restrições implementadas:
+
 \begin{itemize}
-    \item o alvo está fora do desvio lateral: $r > L_5$;
-    \item o pulso está ao alcance dos dois elos: $|L_2 - L_3| \leq r_3 \leq L_2 + L_3$;
-    \item as juntas ficam dentro dos limites, o cotovelo não dobra mais de $140^\circ$ e o cotovelo, J4 e J5 ficam acima da base.
+    \item A distância horizontal deve satisfazer $r>L_5$;
+    \item O pulso deve respeitar $|L_2-L_3|\leq r_3\leq L_2+L_3$;
+    \item Os ângulos articulares devem respeitar os limites permitidos, com $|q_3|\leq140^\circ$, e as juntas J3, J4 e J5 devem permanecer acima do nível de referência.
 \end{itemize}
 
-Como a inclinação $\psi$ é o grau de liberdade escolhido, o algoritmo completo é:
+\subsubsection*{Procedimento do algoritmo}
+
+O algoritmo completo segue os seguintes passos:
+
 \begin{enumerate}
-    \item passar o alvo do referencial do mundo para o da base (Equação~\ref{eq:mundo_base});
-    \item calcular $r$, $d$ e $q_1$; se $r \leq L_5$, o alvo é inalcançável;
-    \item para $\psi = 90^\circ$, calcular o ponto do pulso, o braço de 2 DOF e as juntas pela Equação~\eqref{eq:ik_final}, e verificar as condições de existência;
-    \item se não houver solução, repetir o passo 3 para $\psi = 95^\circ, 85^\circ, 100^\circ, 80^\circ$, \dots, alternando de 5 em 5 graus dentro de [30°, 135°], até encontrar uma inclinação válida;;
-    \item refinar por bisseção, entre a inclinação válida e a anterior, para ficar com a inclinação válida mais próxima de $90^\circ$;
-    \item se nenhuma inclinação tiver solução, o alvo é declarado inalcançável.
+    \item Converter a posição do alvo do referencial do mundo para o da base, através da Equação~\eqref{eq:mundo_base};
+
+    \item Calcular $r$, $d$ e $q_1$, rejeitando o alvo se $r\leq L_5$;
+
+    \item Tentar a inclinação preferencial $\psi=90^\circ$, calculando os restantes ângulos e verificando as condições de validade;
+
+    \item Se não existir uma solução válida, testar inclinações alternativas em incrementos de $5^\circ$, no intervalo de $30^\circ$ a $135^\circ$;
+
+    \item Quando é encontrada uma inclinação válida, realizar um refinamento por bisseção para procurar uma orientação mais próxima da preferencial;
+
+    \item Caso nenhuma inclinação permita obter uma configuração válida, considerar o alvo inalcançável segundo as restrições implementadas.
 \end{enumerate}
 
-Ao contrário da cinemática direta, que dá sempre uma única posição, a cinemática inversa pode não ter solução, e para cada inclinação tem duas, das quais se usa a de cotovelo para cima. Aplicando a cinemática direta (Equação~\ref{eq:dk_final}) às juntas obtidas, volta-se ao alvo pedido, como se mostra na Secção~\ref{sec:ik_resultados}.
+Para uma inclinação fixa, podem existir duas soluções geométricas, correspondentes ao cotovelo para cima e para baixo. Na implementação, é utilizada por defeito a primeira configuração.
 
-% Fluxograma (temporariamente oculto)
-\iffalse
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{graph/fluxograma.png}
-    \caption{Fluxograma do algoritmo de cinemática inversa.}
-    \label{fig:fluxograma}
-\end{figure}
-\fi
-
+A consistência dos resultados é verificada aplicando a cinemática direta, apresentada na Equação~\eqref{eq:dk_final}, aos ângulos obtidos, como demonstrado na Secção~\ref{sec:ik_resultados}.
 
 \clearpage

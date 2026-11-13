@@ -1,5 +1,4 @@
-
-\section{Resultados para o caso em estudo}
+\section{Resultados matemáticos para o caso em estudo}
 \label{sec:ik_resultados}
 
 Para validar a cinemática inversa, foram consideradas duas posições de teste: uma alcançável com a garra na vertical e outra que exige alterar a sua inclinação. Em ambos os casos, os ângulos obtidos são verificados através da cinemática direta.
@@ -30,6 +29,7 @@ Considerando o desvio lateral $L_5$, calcula-se a distância frontal:
     d=\sqrt{r^2-L_5^2}
     =\sqrt{0{,}20^2-0{,}0646^2}
     \approx0{,}1893\ \text{m}
+    \label{eq:ex1_d}
 \end{equation}
 
 O ângulo da junta J1 é obtido por:
@@ -37,7 +37,7 @@ O ângulo da junta J1 é obtido por:
 \begin{equation}
     q_1=\operatorname{atan2}(y,x)
     -\operatorname{atan2}(d,L_5)
-    \approx18{,}84^\circ
+    \approx\underline{18{,}84^\circ}
 \end{equation}
 
 \subsubsection*{Cálculo no plano lateral}
@@ -46,14 +46,15 @@ Conhecida a orientação da base, determina-se a posição do pulso J4 relativam
 
 Para a inclinação considerada, obtém-se:
 
-\begin{align*}
-    x_{3d} &= d-L_4
+
+\begin{equation}
+    x_{3d} = d-L_4
     =0{,}1893-0{,}0731
     \approx0{,}1162\ \text{m}\\
-    y_{3d} &= z-L_1+D
+    y_{3d} = z-L_1+D
     =0{,}06-0{,}1316+0{,}1513
     =0{,}0797\ \text{m}
-\end{align*}
+\end{equation}
 
 A distância entre o ombro e o pulso é calculada por:
 
@@ -72,24 +73,22 @@ Aplicando a abordagem geométrica e a lei dos cossenos, obtêm-se os ângulos au
 
 Selecionando a solução com o cotovelo para cima:
 
-\begin{align*}
-    \theta_1 &=\alpha_1+\beta_1
+\begin{equation}
+    \theta_1 =\alpha_1+\beta_1
     =77{,}26^\circ\\
-    \theta_2 &=-(180^\circ-\beta_2)
+    \theta_2 =-(180^\circ-\beta_2)
     =-94{,}21^\circ
-\end{align*}
+\end{equation}
 
 Nesta configuração, o cotovelo encontra-se a aproximadamente $0{,}239$ m de altura, em comparação com $0{,}116$ m na solução com o cotovelo para baixo, ficando mais afastado da superfície de trabalho.
 
 Aplicando as Equações~\eqref{eq:ik_theta3} e~\eqref{eq:ik_q234}, determinam-se os ângulos articulares restantes:
 
-\begin{align*}
-    q_2 &=77{,}26^\circ-90^\circ
-    =-12{,}74^\circ\\
-    q_3 &=-94{,}21^\circ\\
-    q_4 &=0^\circ-77{,}26^\circ+94{,}21^\circ
-    =16{,}95^\circ
-\end{align*}
+\begin{equation}
+    q_2 =77{,}26^\circ-90^\circ=\underline{-12{,}74^\circ}\quad
+    q_3 =\underline{-94{,}21^\circ}\quad
+    q_4 =0^\circ-77{,}26^\circ+94{,}21^\circ=\underline{16{,}95^\circ}
+\end{equation}
 
 Obtém-se, assim, a seguinte configuração articular:
 
@@ -106,17 +105,38 @@ Obtém-se, assim, a seguinte configuração articular:
     \label{eq:ik_exemplo1}
 \end{equation}
 
-Esta configuração corresponde à posição de trabalho utilizada anteriormente na verificação da cinemática direta, apresentada na Equação~\eqref{eq:q_trabalho}.
-
 \subsubsection*{Verificação pela cinemática direta}
 
-Introduzindo os ângulos calculados no modelo de cinemática direta, recupera-se aproximadamente a posição inicialmente definida:
+Para verificar a solução, os ângulos obtidos são introduzidos no modelo de cinemática direta, percorrendo os dois planos pela mesma ordem da formulação: primeiro o plano lateral e depois o plano horizontal.
+
+No plano lateral, os ângulos absolutos de cada elo são:
 
 \begin{equation}
-    (x,y,z)\approx
-    (0{,}0000;\ 0{,}2000;\ 0{,}0600)
-    \ \text{m}
+    \begin{gathered}
+    \theta_A=q_2+90^\circ=77{,}26^\circ,\qquad
+    \theta_B=\theta_A+q_3=-16{,}95^\circ,\\
+    \theta_C=\theta_B+q_4=0^\circ,\qquad
+    \alpha=\theta_C-90^\circ=-90^\circ
+    \end{gathered}
 \end{equation}
+
+O elo $L_4$ fica na horizontal e a garra aponta verticalmente para baixo, como pretendido. Somando as projeções de cada elo, obtém-se:
+
+\begin{align}
+    d&=0{,}0243+0{,}0918+0{,}0731+0=0{,}1893\ \text{m}\\
+    h&=0{,}1316+0{,}1077-0{,}0280+0-0{,}1513=\underline{0{,}0600\ \text{m}}
+\end{align}
+
+onde as parcelas correspondem, por ordem, aos elos $L_1$ (apenas em $h$), $L_2$, $L_3$, $L_4$ e à garra $D$. A distância frontal $d$ coincide com a obtida na Equação~\eqref{eq:ex1_d} e a altura $h$ com a altura pretendida.
+
+No plano horizontal, com $l=L_5$ (uma vez que $q_5=0^\circ$) e $q_1=18{,}84^\circ$:
+
+\begin{align}
+    x&=l\cos q_1-d\sin q_1=0{,}0611-0{,}0611=\underline{0{,}0000\ \text{m}}\\
+    y&=l\sin q_1+d\cos q_1=0{,}0209+0{,}1791=\underline{0{,}2000\ \text{m}}
+\end{align}
+
+Recupera-se, assim, a posição pretendida, $(x,y,z)=(0;\ 0{,}20;\ 0{,}06)$~m. Na coordenada $x$, a rotação da base anula exatamente o desvio lateral $L_5$, o que confirma o cálculo de $q_1$ no plano horizontal.
 
 A Figura~\ref{fig:exemplo1} representa a configuração obtida.
 
@@ -131,78 +151,126 @@ A Figura~\ref{fig:exemplo1} representa a configuração obtida.
 
 \subsection{Exemplo 2: alvo que exige alterar a inclinação da garra}
 
-No segundo exemplo, define-se uma posição de teste mais afastada da base e próxima da superfície de trabalho:
+No segundo exemplo, define-se uma posição de teste próxima da base e da superfície de trabalho:
 
 \begin{equation}
-    (x,y,z)=(0{,}05;\ 0{,}30;\ 0{,}02)\ \text{m}
+    (x,y,z)=(0;\ 0{,}13;\ 0{,}02)\ \text{m}
 \end{equation}
 
-\subsubsection*{Verificação do alcance}
+\subsubsection*{Cálculo no plano horizontal}
 
 Aplicando as equações do plano horizontal:
 
-\begin{align*}
-    r &=\sqrt{x^2+y^2}
-    =\sqrt{0{,}05^2+0{,}30^2}
-    \approx0{,}3041\ \text{m}\\
-    d &=\sqrt{r^2-L_5^2}
-    =\sqrt{0{,}3041^2-0{,}0646^2}
-    \approx0{,}2972\ \text{m}
-\end{align*}
-
-Inicialmente, considera-se a inclinação preferencial $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo.
-
-Para esta orientação, as coordenadas do pulso relativamente ao ombro são:
-
-\begin{align*}
-    x_{3d} &=d-L_4
-    \approx0{,}2241\ \text{m}\\
-    y_{3d} &=z-L_1+D
-    =0{,}0397\ \text{m}
-\end{align*}
-
-A distância necessária entre o ombro e o pulso é:
-
 \begin{equation}
-    r_3=\sqrt{x_{3d}^2+y_{3d}^2}
-    \approx0{,}2276\ \text{m}
+    \label{eq:exemplo2}
+    r=\sqrt{0^2+0{,}13^2}=0{,}1300\ \text{m},\qquad
+    d=\sqrt{r^2-L_5^2}=\sqrt{0{,}13^2-0{,}0646^2}\approx0{,}1128\ \text{m}
 \end{equation}
 
-Contudo, os elos $L_2$ e $L_3$ apenas permitem uma distância máxima de:
-
 \begin{equation}
-    L_2+L_3=0{,}2064\ \text{m}
+    q_1=\operatorname{atan2}(0{,}13;\ 0)-\operatorname{atan2}(0{,}1128;\ 0{,}0646)
+    =90^\circ-60{,}20^\circ=\underline{29{,}80^\circ}
 \end{equation}
 
-Como $r_3>L_2+L_3$, não existe uma solução geométrica para $\psi=90^\circ$. Esta impossibilidade também se verifica pela lei dos cossenos, cujo argumento é aproximadamente $-1{,}434$, fora do intervalo $[-1,1]$.
+O ângulo $q_1$ não depende da inclinação da garra, pelo que se mantém durante toda a procura.
 
-\subsubsection*{Ajuste da inclinação da garra}
+\subsubsection*{Tentativa com a garra na vertical}
 
-Uma vez que o alvo não é alcançável com a garra na vertical, o algoritmo procura outra inclinação, seguindo o procedimento descrito na Secção~\ref{sec:ik_lateral}.
-
-Após a procura e o refinamento por bisseção, obtém-se:
+Considerando a inclinação preferencial $\psi=90^\circ$, as coordenadas do pulso relativamente ao ombro são:
 
 \begin{equation}
-    \psi\approx82{,}27^\circ
+    \begin{gathered}
+    x_{3d}=d-L_4=0{,}1128-0{,}0731=0{,}0397\ \text{m}\\
+    y_{3d}=z-L_1+D=0{,}02-0{,}1316+0{,}1513=0{,}0397\ \text{m}
+    \end{gathered}
 \end{equation}
-
-O valor calculado antes do arredondamento é aproximadamente $82{,}2743^\circ$.
-
-Com esta inclinação, a distância entre o ombro e o pulso aproxima-se do alcance máximo:
 
 \begin{equation}
-    r_3\approx L_2+L_3
+    r_3=\sqrt{x_{3d}^2+y_{3d}^2}\approx0{,}0562\ \text{m}
 \end{equation}
 
-O braço fica praticamente estendido, mas é possível encontrar uma configuração articular válida:
+O pulso fica muito perto do ombro, mas dentro do alcance dos dois elos ($|L_2-L_3|=0{,}0144\ \text{m}\le r_3\le L_2+L_3=0{,}2064\ \text{m}$), pelo que a lei dos cossenos tem solução:
+
+\begin{equation}
+    \beta_2=\arccos\!\left(\frac{L_2^2+L_3^2-r_3^2}{2L_2L_3}\right)\approx30{,}57^\circ
+    \;\Rightarrow\;
+    \theta_2=-(180^\circ-\beta_2)\approx-149{,}43^\circ
+\end{equation}
+
+Contudo, o cotovelo teria de dobrar $149{,}43^\circ$, acima do limite de $140^\circ$ definido nas condições de existência (Secção~\ref{sec:ik_lateral}). Ao contrário do que acontece num alvo afastado, o problema não é a falta de alcance, mas o facto de o alvo estar demasiado perto da base: para manter a garra na vertical, o braço teria de se dobrar sobre si próprio. Assim, não existe uma solução válida para $\psi=90^\circ$.
+
+\subsubsection*{Procura da inclinação da garra}
+
+O algoritmo testa, então, inclinações afastadas de $5^\circ$ em $5^\circ$ da vertical, começando pelo lado da base. A Tabela~\ref{tab:ex2_procura} resume as inclinações testadas.
+
+\begin{table}[H]
+    \centering
+    \caption{Inclinações testadas no Exemplo 2, pela ordem da procura.}
+    \label{tab:ex2_procura}
+    \begin{tabular}{ccccc}
+        \toprule
+        Ordem & $\psi$ & $r_3$ [m] & $\theta_2$ (cotovelo) & Resultado \\
+        \midrule
+        1 & $90^\circ$  & 0,0562 & $-149{,}43^\circ$ & cotovelo acima de $140^\circ$ \\
+        2 & $95^\circ$  & 0,0700 & $-141{,}14^\circ$ & cotovelo acima de $140^\circ$ \\
+        3 & $85^\circ$  & 0,0423 & $-157{,}71^\circ$ & cotovelo acima de $140^\circ$ \\
+        4 & $100^\circ$ & 0,0837 & $-132{,}77^\circ$ & válida \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+A tabela mostra o efeito da inclinação: inclinar a garra para a base ($\psi>90^\circ$) afasta o pulso do ombro, aumentando $r_3$ e reduzindo a dobra do cotovelo, enquanto inclinar a garra para fora ($\psi<90^\circ$) aproxima o pulso do ombro e agrava o problema.
+
+A primeira inclinação válida é $\psi=100^\circ$. Como a inclinação anterior do mesmo lado ($95^\circ$) não tem solução, a inclinação válida mais próxima da vertical encontra-se entre $95^\circ$ e $100^\circ$. O intervalo é dividido ao meio sucessivamente (Figura~\ref{fig:bissecao}): $97{,}5^\circ$ é válida, $96{,}25^\circ$ é válida, $95{,}625^\circ$ não tem solução, e assim sucessivamente. Ao fim das 15 iterações, obtém-se:
+
+\begin{equation}
+    \psi\approx95{,}69^\circ
+\end{equation}
+
+\subsubsection*{Solução para a inclinação encontrada}
+
+Para esta inclinação, com $\alpha_3=-95{,}69^\circ$, o pulso encontra-se em:
+
+\begin{equation}
+    x_{3d}\approx0{,}0551\ \text{m},\qquad
+    y_{3d}\approx0{,}0462\ \text{m},\qquad
+    r_3\approx0{,}0719\ \text{m}
+\end{equation}
+
+Aplicando a lei dos cossenos:
+
+\begin{equation}
+    \alpha_1\approx40{,}00^\circ,\qquad
+    \beta_1\approx59{,}15^\circ,\qquad
+    \beta_2\approx40{,}00^\circ
+\end{equation}
+
+Selecionando a solução com o cotovelo para cima:
+
+\begin{equation}
+    \theta_1=\alpha_1+\beta_1=99{,}15^\circ,\qquad
+    \theta_2=-(180^\circ-\beta_2)=-140{,}00^\circ
+\end{equation}
+
+O cotovelo fica exatamente no limite de $140^\circ$. Este resultado é esperado: a bisseção procura a fronteira entre as inclinações válidas e as que não têm solução, e essa fronteira é definida, neste caso, pela dobra máxima do cotovelo.
+
+Aplicando as Equações~\eqref{eq:ik_theta3} e~\eqref{eq:ik_q234}:
+
+\begin{equation}
+    q_2=99{,}15^\circ-90^\circ=\underline{9{,}15^\circ}\quad
+    q_3=\underline{-140{,}00^\circ}\quad
+    q_4=(\alpha_3+90^\circ)-\theta_1-\theta_2\approx\underline{35{,}17^\circ}
+\end{equation}
+
+Obtém-se, assim, a seguinte configuração articular:
 
 \begin{equation}
     \boxed{
     \mathbf{q}=
-    (2{,}80^\circ;\
-    -81{,}96^\circ;\
-    -0{,}21^\circ;\
-    -0{,}10^\circ;\
+    (29{,}80^\circ;\
+    9{,}15^\circ;\
+    -140{,}00^\circ;\
+    35{,}17^\circ;\
     0^\circ;\
     0^\circ)
     }
@@ -211,22 +279,39 @@ O braço fica praticamente estendido, mas é possível encontrar uma configuraç
 
 \subsubsection*{Verificação pela cinemática direta}
 
-Aplicando a cinemática direta aos ângulos obtidos, recupera-se aproximadamente a posição pretendida:
+Aplicando o mesmo procedimento do Exemplo 1, os ângulos absolutos são:
 
 \begin{equation}
-    (x,y,z)\approx
-    (0{,}05;\ 0{,}30;\ 0{,}02)
-    \ \text{m}
+    \theta_A=99{,}15^\circ,\qquad
+    \theta_B=-40{,}85^\circ,\qquad
+    \theta_C=-5{,}69^\circ,\qquad
+    \alpha=-95{,}69^\circ
 \end{equation}
+
+O primeiro elo fica ligeiramente inclinado para trás ($\theta_A>90^\circ$) e a garra aponta para baixo, $5{,}69^\circ$ inclinada para a base. No plano lateral:
+
+\begin{align}
+    d&=-0{,}0175+0{,}0726+0{,}0727-0{,}0150=0{,}1128\ \text{m}\\
+    h&=0{,}1316+0{,}1090-0{,}0628-0{,}0072-0{,}1506=\underline{0{,}0200\ \text{m}}
+\end{align}
+
+Neste caso, o elo $L_2$ e a garra contribuem negativamente para a distância frontal, por estarem inclinados para o lado da base. O valor de $d$ coincide com o da Equação~\eqref{eq:exemplo2}. No plano horizontal, com $q_1=29{,}80^\circ$:
+
+\begin{equation}
+    x=0{,}0561-0{,}0561=\underline{0{,}0000\ \text{m}},\qquad
+    y=0{,}0321+0{,}0979=\underline{0{,}1300\ \text{m}}
+\end{equation}
+
+Recupera-se, assim, a posição pretendida, $(x,y,z)=(0;\ 0{,}13;\ 0{,}02)$~m.
 
 A direção longitudinal da garra no referencial da base é:
 
 \begin{equation}
     \mathbf{v}_{\mathrm{garra}}\approx
-    (-0{,}0066;\ 0{,}1343;\ -0{,}9909)
+    (0{,}0492;\ -0{,}0860;\ -0{,}9951)
 \end{equation}
 
-Este vetor indica que a garra continua predominantemente orientada para baixo, mas apresenta uma ligeira inclinação relativamente à vertical.
+Este vetor indica que a garra continua predominantemente orientada para baixo, com uma ligeira inclinação para o lado da base (componente negativa segundo $y$).
 
 A Figura~\ref{fig:exemplo2} apresenta a configuração obtida.
 
@@ -235,13 +320,15 @@ A Figura~\ref{fig:exemplo2} apresenta a configuração obtida.
     \resizebox{0.5\textwidth}{!}{
         \input{graph/exemplo2_ik}
     }
-    \caption{Configuração obtida no Exemplo 2, no plano lateral, com o braço quase estendido e a garra inclinada ($\psi\approx82{,}27^\circ$).}
+    \caption{Configuração obtida no Exemplo 2, no plano lateral, com o cotovelo no limite de $140^\circ$ e a garra inclinada para a base ($\psi\approx95{,}69^\circ$).}
     \label{fig:exemplo2}
 \end{figure}
 
 \subsection{Análise dos resultados}
 
-No primeiro exemplo, foi possível alcançar a posição pretendida com a garra vertical. No segundo, foi necessário ajustar a sua inclinação para aproximadamente $82{,}27^\circ$, devido às limitações geométricas de alcance.
+No primeiro exemplo, foi possível alcançar a posição pretendida com a garra vertical. No segundo, o alvo estava demasiado perto da base para a garra descer na vertical sem o cotovelo ultrapassar o limite de $140^\circ$, pelo que foi necessário inclinar a garra para a base, até aproximadamente $95{,}69^\circ$.
+
+Para alvos afastados, o comportamento é o oposto: a limitação passa a ser o alcance dos elos ($r_3>L_2+L_3$) e a garra é inclinada para fora ($\psi<90^\circ$), como se verifica nos ensaios no simulador (Secção~\ref{sec:demo_sim}).
 
 Em ambos os casos, a cinemática direta permitiu recuperar as posições definidas, confirmando a consistência matemática entre os dois modelos.
 

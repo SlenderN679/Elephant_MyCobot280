@@ -32,20 +32,21 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
 %
 % Como funciona (J5 = 0), com a lógica das aulas (braço planar de 3 elos
 % com o ângulo do pulso imposto + rotação da base):
-%   1. J1 (base): theta1 = atan2(y, x). O plano do braço está desviado L5 do
-%      eixo de J1 e com J1 = 0 o braço aponta para +y, por isso
-%      J1 = atan2(y,x) - atan2(d, L5), d = distância em frente no plano do braço.
-%   2. Impõe-se o ângulo da garra alpha3 (3 incógnitas, 2 equações no plano ->
-%      fixa-se a inclinação): o ponto do pulso (J4) = alvo menos o elo J4->J5
-%      e o desvio J5->centro de preensão (x3d = xd - Lc*cos(alpha3), ...).
-%   3. J2, J3: braço planar de 2 elos até ao pulso (ik_2dof: alpha1, beta1,
-%      beta2, cotovelo para cima). J4 = alpha3 - theta1 - theta2.
-%   As inclinações são testadas a partir da preferida (vertical), afastando
-%   cada vez mais para os dois lados: inclinada para a base (> 90 graus, boa
-%   para objetos perto da base) ou para fora (< 90 graus, objetos longe).
-%   Rejeitam-se as soluções fora dos limites das juntas, com o cotovelo
-%   dobrado mais de ELBOW_MAX (quase encostado ao braço, onde a gravidade
-%   impede de chegar ao alvo) ou com o cotovelo ou o pulso abaixo da base.
+%   1. plano horizontal - J1 (base): theta1 = atan2(y, x). O plano do braço
+%      está desviado L5 do eixo de J1 e com J1 = 0 o braço aponta para +y, por
+%      isso J1 = atan2(y,x) - atan2(d, L5), d = distância em frente no plano.
+%   2. inclinação da garra: com fixedPitch usa-se prefPitch; senão, a função
+%      solve_pitch escolhe a inclinação mais próxima da preferida que tenha
+%      solução (3 incógnitas, 2 equações no plano -> fixa-se a inclinação).
+%   3. plano lateral - impõe-se o ângulo da garra alpha3: o ponto do pulso (J4)
+%      = alvo menos o elo J4->J5 e o desvio J5->centro de preensão
+%      (x3d = xd - Lc*cos(alpha3), ...). J2, J3: braço planar de 2 elos até ao
+%      pulso (ik_2dof: alpha1, beta1, beta2, cotovelo para cima).
+%      J4 = alpha3 - theta1 - theta2.
+%   4. rejeitam-se as soluções fora dos limites das juntas, com o cotovelo
+%      dobrado mais de ELBOW_MAX (quase encostado ao braço, onde a gravidade
+%      impede de chegar ao alvo) ou com o cotovelo ou o pulso abaixo da base.
+%   5. J6 alinha os dedos com as faces do cubo.
 
     % Passo 0: valores por defeito dos argumentos opcionais
     if nargin < 5 || isempty(qMin)
@@ -73,76 +74,74 @@ function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin,
     armJoints   = zeros(1, 6);
     isReachable = false;
     pitchUsed   = NaN;
+    wrap = @(t) atan2(sin(t), cos(t));
+    ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
 
-    % Passo 1: distância horizontal ao eixo de J1. O braço está desviado L5 para
-    % o lado, por isso a distância "em frente" no plano do braço é dFwd
+    if ~strcmp(family, 'down')
+        family = 'up';                   % qualquer outro valor: cotovelo para cima
+    end
+
+    % Passo 1: plano horizontal. Distância horizontal ao eixo de J1; o braço
+    % está desviado L5 para o lado, por isso a distância "em frente" no plano
+    % do braço é dFwd. J1 aponta o plano do braço para o alvo
     r = hypot(x, y);
     if r <= L(5)
         return;                         % dentro do desvio lateral: inalcançável
     end
     dFwd = sqrt(r^2 - L(5)^2);          % d: distância em frente, no plano do braço
     hJ2  = z - L(1);                    % h: altura relativa a J2 (ombro)
+    q1   = atan2(y, x) - atan2(dFwd, L(5));
 
-    % Passo 2: limites de segurança da solução
-    ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
-    PITCH_MAX = deg2rad(135);           % garra no máximo 45 graus inclinada para a base
-    PITCH_MIN = deg2rad(30);            % garra sempre pelo menos 30 graus abaixo da horizontal
-                                        % (a apontar para cima não serve para apanhar nada)
-    STEP      = deg2rad(5);
-
-    if ~strcmp(family, 'down')
-        family = 'up';                   % qualquer outro valor: cotovelo para cima
-    end
+    % Passo 2: inclinação da garra. Com fixedPitch usa-se só a pedida; senão,
+    % solve_pitch procura a inclinação mais próxima da preferida com solução
     if fixedPitch
-        dList = 0;                       % só a inclinação pedida
+        psi = prefPitch;
     else
-        dList = 0:STEP:(PITCH_MAX - PITCH_MIN);
-    end
-    % Passo 3: procurar uma inclinação da garra que tenha solução, começando pela
-    % preferida e afastando-se de 5 em 5 graus (primeiro para a base, depois para fora)
-    for d = dList
-        % candidatos com desvio d da inclinação preferida: primeiro para a
-        % base (+d), depois para fora (-d)
-        if d == 0
-            cands = prefPitch;
-        else
-            cands = [prefPitch + d, prefPitch - d];
-        end
-        for psi = cands
-            if ~fixedPitch && (psi > PITCH_MAX || psi < PITCH_MIN)
-                continue;
-            end
-            best = movement.solve_pitch(psi, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
-            if isempty(best)
-                continue;
-            end
-
-            % Os candidatos vão de 5 em 5 graus. Procura-se por bisseção a
-            % inclinação mais próxima da preferida que ainda funciona, para a
-            % garra inclinar de forma contínua em vez de saltar 5 graus.
-            if d > 0
-                good = psi;  bad = psi - sign(psi - prefPitch)*STEP;
-                for it = 1:15
-                    mid = (good + bad)/2;
-                    qm  = movement.solve_pitch(mid, x, y, dFwd, hJ2, L, D, qMin, qMax, ELBOW_MAX, family);
-                    if isempty(qm), bad = mid; else, good = mid; best = qm; end
-                end
-                psi = good;
-            end
-
-            % Passo 4: J6 alinha os dedos com as faces do cubo (só se a garra estiver
-            % quase vertical); J5 fica sempre a 0
-            q6 = 0;
-            if ~isempty(objYaw) && psi > deg2rad(45)
-                % os dedos fecham segundo a direção J1 - J6 (módulo 180 graus); um
-                % cubo é simétrico a cada 90 graus -> escolhe-se a menor rotação de J6
-                q6 = mod(best(1) - objYaw + pi/4, pi/2) - pi/4;
-            end
-            armJoints   = [best 0 q6];
-            isReachable = true;
-            pitchUsed   = psi;
-            return;
+        [psi, ok] = movement.solve_pitch(x, y, z, Links, qMin, qMax, prefPitch, family);
+        if ~ok
+            return;                     % nenhuma inclinação tem solução
         end
     end
+
+    % Passo 3: plano lateral, para a inclinação psi. alpha3 = ângulo da garra
+    % no plano do braço (a partir da horizontal; -90 graus = vertical para
+    % baixo). O ponto do pulso (J4) obtém-se recuando ao longo da garra (D) e
+    % do elo J4->J5 (L4), que é perpendicular à garra
+    alpha3 = -psi;
+    x3d = dFwd - D*cos(alpha3) - L(4)*cos(alpha3 + pi/2);
+    y3d = hJ2  - D*sin(alpha3) - L(4)*sin(alpha3 + pi/2);
+
+    % braço planar de 2 elos (J2 -> J3 -> pulso) até (x3d, y3d)
+    [theta1, theta2, ok] = movement.ik_2dof(x3d, y3d, L(2), L(3), family);
+    if ~ok
+        return;                         % fora de alcance para esta inclinação
+    end
+    % theta3: o elo J4->J5 faz alpha3 + 90 graus com a horizontal
+    theta3 = (alpha3 + pi/2) - theta1 - theta2;
+
+    % passar para as juntas do robô. Na pose zero o braço está vertical (o 1.º
+    % elo faz 90 graus com a horizontal), por isso J2 = theta1 - 90
+    q = wrap([q1, theta1 - pi/2, theta2, theta3]);
+
+    % Passo 4: validar: limites das juntas, dobra do cotovelo, e o cotovelo
+    % (J3) e o pulso (J4, J5) acima da base
+    zElbow = L(1) + L(2)*cos(q(2));
+    zJ4    = zElbow + L(3)*cos(q(2)+q(3));
+    zJ5    = zJ4 + L(4)*cos(q(2)+q(3)+q(4));
+    if any(q < qMin(1:4)) || any(q > qMax(1:4)) || abs(q(3)) > ELBOW_MAX ...
+            || min([zElbow zJ4 zJ5]) <= 0
+        return;
+    end
+
+    % Passo 5: J6 alinha os dedos com as faces do cubo (só se a garra estiver
+    % quase vertical); J5 fica sempre a 0
+    q6 = 0;
+    if ~isempty(objYaw) && psi > deg2rad(45)
+        % os dedos fecham segundo a direção J1 - J6 (módulo 180 graus); um
+        % cubo é simétrico a cada 90 graus -> escolhe-se a menor rotação de J6
+        q6 = mod(q(1) - objYaw + pi/4, pi/2) - pi/4;
+    end
+    armJoints   = [q 0 q6];
+    isReachable = true;
+    pitchUsed   = psi;
 end
-

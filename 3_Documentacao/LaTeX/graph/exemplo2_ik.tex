@@ -3,13 +3,15 @@
     elo/.style={line width=2pt, line cap=round},
     junta/.style={circle, draw, fill=white, line width=0.9pt, inner sep=1.8pt},
     every node/.style={font=\footnotesize}]
-  \draw[->, thin] (-3,0) -- (32,0) node[below left] {$d$};
+  \draw[->, thin] (-5,0) -- (20,0) node[below left] {$d$};
   \draw[->, thin] (0,0) -- (0,28) node[left] {$h$};
   \fill[gray!25] (-2.5,-0.8) rectangle (2.5,0.0);
-  \draw[elo, orange!85!black] (0.0,0.0) -- (0.0,13.2) -- (10.9,14.7) -- (20.4,16.0) -- (27.7,17.0) -- (29.7,2.0);
-  \foreach \p/\n/\a in {(0.0,13.2)/J2/left, (10.9,14.7)/J3/above, (20.4,16.0)/J4/above, (27.7,17.0)/J5/above right}
+  \draw[elo, orange!85!black] (0.0,0.0) -- (0.0,13.2) -- (-1.75,24.06) -- (5.51,17.78) -- (12.78,17.06) -- (11.28,2.0);
+  \foreach \p/\n/\a in {(0.0,13.2)/J2/left, (-1.75,24.06)/J3/above, (5.51,17.78)/J4/below, (12.78,17.06)/J5/above right}
     { \node[junta] at \p {}; \node[\a=2pt, font=\scriptsize] at \p {\n}; }
-  \fill (29.7,2.0) circle (5pt);
-  \draw[red!75!black, thick] (29.7,2.0) circle (14pt);
-  \node[left=8pt, align=right] at (29.7,4.0) {alvo $(0{,}05;\ 0{,}30;\ 0{,}02)$ m\\$\psi = 82{,}27^\circ$\\braço quase esticado};
+  % dobra do cotovelo no limite
+  \node[font=\scriptsize, orange!60!black, anchor=east] at (-2.6,24.4) {cotovelo a $140^\circ$};
+  \fill (11.28,2.0) circle (5pt);
+  \draw[red!75!black, thick] (11.28,2.0) circle (14pt);
+  \node[right=8pt, align=left] at (11.28,4.0) {alvo $(0;\ 0{,}13;\ 0{,}02)$ m\\$\psi = 95{,}69^\circ$};
 \end{tikzpicture}

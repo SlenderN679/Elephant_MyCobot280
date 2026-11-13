@@ -8,16 +8,20 @@
 
   \fill[green!12, even odd rule] (0,0) circle (20.64) (0,0) circle (1.44);
   \draw[green!50!black] (0,0) circle (20.64) (0,0) circle (1.44);
-  \draw[->, thin] (-23,0) -- (26,0) node[below left] {$d$};
+  \draw[->, thin] (-23,0) -- (26,0) node[above left] {$d$};
   \draw[->, thin] (0,-23) -- (0,24) node[left] {$h - L_1$};
   \node[junta] at (0,0) {}; \node[above left=1pt and 1pt] at (0,0) {J2};
   \draw[<->, cota] (0,0) -- (225:20.64) node[pos=0.55, above left=-1pt, black] {$L_2 + L_3 = 20{,}6$ cm};
   \node[green!40!black, align=center] at (-11,13) {pulso\\alcançável};
-  % pulso nos exemplos
+  % pulso nos exemplos (o "alvo a 30 cm" é o caso limitado pelo alcance)
   \fill[blue!70!black] (11.6,8.0) circle (8pt) node[above=3pt, black, align=center] {ex. 1\\$\psi = 90^\circ$};
   \draw[red!75!black, line width=1.2pt] (22.4,4.0) +(-0.8,-0.8) -- +(0.8,0.8) +(-0.8,0.8) -- +(0.8,-0.8);
-  \node[red!75!black, right=6pt, align=left] at (22.4,4.4) {ex. 2, $\psi = 90^\circ$\\fora: sem solução};
+  \node[red!75!black, right=6pt, align=left] at (22.4,4.4) {alvo a 30 cm, $\psi = 90^\circ$\\fora: sem solução};
   \fill[orange!85!black] (20.4,2.9) circle (8pt);
-  \node[orange!85!black, below right=4pt and 0pt, align=left] at (20.4,2.9) {ex. 2, $\psi = 82{,}27^\circ$\\na borda};
+  \node[orange!85!black, below right=26pt and 2pt, align=left] at (20.4,2.9) {alvo a 30 cm, $\psi = 82{,}27^\circ$\\na borda};
+  % exemplo 2: o pulso está dentro da zona, mas o cotovelo dobraria mais de 140 graus
+  \fill[violet!80!black] (3.97,3.97) circle (6pt);
+  \draw[violet!80!black, thin] (3.97,3.97) -- (8.5,-6.5);
+  \node[violet!80!black, below right=0pt and -2pt, align=left] at (8.5,-6.5) {ex. 2, $\psi = 90^\circ$: dentro da zona,\\mas cotovelo a $149^\circ$ ($> 140^\circ$)};
   \node[green!40!black, font=\scriptsize] at (0,-2.9) {$|L_2 - L_3| = 1{,}4$ cm};
 \end{tikzpicture}

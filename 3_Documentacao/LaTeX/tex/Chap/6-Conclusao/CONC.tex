@@ -2,7 +2,7 @@
 \chapter{Conclusão}
 \label{ch:conclusao}
 
-Neste trabalho, foram desenvolvidos e implementados os modelos de cinemática direta e inversa do manipulador robótico myCobot~280, recorrendo ao MATLAB e ao CoppeliaSim para calcular, executar e validar movimentos até diferentes posições alvo.
+Neste trabalho, foram desenvolvidos e implementados os modelos de cinemática direta e inversa do braço robótico, recorrendo ao MATLAB e ao CoppeliaSim para calcular, executar e validar movimentos até diferentes posições alvo.
 
 Os objetivos definidos foram cumpridos, desde a formulação matemática dos modelos até à sua implementação e validação em ambiente de simulação.
 
@@ -22,7 +22,7 @@ Os modelos foram implementados em MATLAB através das funções \texttt{direct\_
 
 A comunicação com o CoppeliaSim foi realizada em modo síncrono, permitindo controlar os movimentos e acompanhar a posição do ponto de preensão através das leituras articulares.
 
-Na demonstração, foram alcançados sete alvos, com erros de posicionamento entre $0{,}8$ e $5{,}9$ mm e diferenças articulares máximas entre $0{,}4^\circ$ e $1{,}6^\circ$. O erro do modelo situou-se entre $1{,}2$ e $4{,}1$ mm, permanecendo abaixo da tolerância de $5$ mm considerada no diagnóstico.
+Na demonstração, foram alcançados sete alvos, com erros inferiores a $6$ mm de todos os alvos alcançãveis.
 
 Os testes de alcance demonstraram também a importância da inclinação da garra. Para alvos próximos da superfície da mesa, a garra desce na vertical entre cerca de 15,8 e 25,5 cm do eixo da base, sendo o alcance máximo de 35,2 cm com a garra inclinada.
 

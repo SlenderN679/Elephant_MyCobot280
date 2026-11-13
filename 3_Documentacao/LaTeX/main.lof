@@ -5,20 +5,20 @@
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Vista lateral do manipulador no seu plano vertical.}}{4}{figure.caption.8}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Decomposição dos elos e soma das projeções no plano lateral.}}{6}{figure.caption.9}%
 \contentsline {figure}{\numberline {2.4}{\ignorespaces Vista superior do manipulador no plano horizontal.}}{7}{figure.caption.10}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}}{10}{figure.caption.11}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Relação entre o referencial do mundo e o referencial da base do manipulador, numa vista superior.}}{14}{figure.caption.12}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Representação da cinemática inversa no plano lateral.}}{16}{figure.caption.13}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Região geometricamente alcançável pelo pulso J4.}}{18}{figure.caption.14}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}}{19}{figure.caption.16}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Alinhamento da garra com uma peça cúbica, numa vista superior. Devido à simetria de $90^\circ $ da peça, a junta J6 necessita de rodar, no máximo, $45^\circ $ para efetuar o alinhamento.}}{20}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{22}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Relação entre o referencial do mundo e o referencial da base do manipulador, numa vista superior.}}{11}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Representação da cinemática inversa no plano lateral.}}{13}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Região geometricamente alcançável pelo pulso J4.}}{15}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Representação das soluções com o cotovelo para cima e para baixo, para uma mesma posição do pulso.}}{15}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Alinhamento da garra com uma peça cúbica, numa vista superior.}}{17}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Inclinações da garra consideradas na procura de uma solução válida para a cinemática inversa.}}{18}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Procura da inclinação da garra no Exemplo 2.}}{19}{figure.caption.17}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Representação esquemática da sequência de movimento até uma peça, numa vista lateral e sem escala.}}{37}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Representação esquemática da sequência de movimento até uma peça, numa vista lateral e sem escala.}}{32}{figure.caption.22}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Configuração obtida no Exemplo 1, no plano lateral, com a garra na vertical ($\psi =90^\circ $).}}{41}{figure.caption.26}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Configuração obtida no Exemplo 2, no plano lateral, com o braço quase estendido e a garra inclinada ($\psi \approx 82{,}27^\circ $).}}{43}{figure.caption.27}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Distribuição das peças no referencial da base, numa vista superior, com indicação dos limites de alcance.}}{44}{figure.caption.29}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Comparação dos erros do modelo e de alcance para cada peça.}}{44}{figure.caption.29}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Execução no CoppeliaSim: o cubo vermelho é levado até ao alvo verde. Na mesa estão desenhadas as zonas de alcance da Figura~\ref {fig:mapa_alvos}.}}{46}{figure.caption.30}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Configuração obtida no Exemplo 1, no plano lateral, com a garra na vertical ($\psi =90^\circ $).}}{35}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Configuração obtida no Exemplo 2, no plano lateral, com o cotovelo no limite de $140^\circ $ e a garra inclinada para a base ($\psi \approx 95{,}69^\circ $).}}{38}{figure.caption.25}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Distribuição das peças no referencial da base, numa vista superior.}}{40}{figure.caption.27}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Comparação dos erros do modelo e de alcance para cada peça.}}{40}{figure.caption.27}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Execução no CoppeliaSim: o cubo vermelho é levado até ao alvo verde. Na mesa estão desenhadas as zonas de alcance da Figura~\ref {fig:mapa_alvos}.}}{41}{figure.caption.28}%
 \addvspace {10\p@ }

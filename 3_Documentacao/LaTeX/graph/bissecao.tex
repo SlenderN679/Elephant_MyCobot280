@@ -1,0 +1,73 @@
+% Procura da inclinação da garra (Exemplo 2): pesquisa de 5 em 5 graus e
+% refinamento por bisseção entre a última inclinação inválida e a primeira válida
+% (precisa de \usetikzlibrary{arrows.meta})
+\begin{tikzpicture}[>=Stealth, every node/.style={font=\footnotesize},
+    ok/.style={circle, fill=green!60!black, inner sep=2.2pt},
+    nok/.style={circle, fill=red!75!black, inner sep=2.2pt}]
+  % ---- 1. pesquisa de 5 em 5 graus ----
+  \node[anchor=west, font=\footnotesize\bfseries] at (-0.2,2.1) {1. Pesquisa de $5^\circ$ em $5^\circ$};
+  % o que se sabe depois da pesquisa: sem solução entre 85 e 95 graus, válida
+  % em 100; entre 95 e 100 graus a fronteira ainda é desconhecida
+  \fill[red!10] (2.400,0.05) rectangle (7.200,0.35);
+  \fill[gray!15] (7.200,0.05) rectangle (9.600,0.35);
+  \node[font=\scriptsize\bfseries, gray!60!black] at (8.400,0.2) {?};
+  \fill[green!12] (9.600,0.05) rectangle (9.950,0.35);
+  \draw[->] (0,0) -- (12.480,0) node[right] {$\psi$};
+  \draw (0.000,0.08) -- (0.000,-0.08) node[below] {$80^\circ$};
+  \draw (2.400,0.08) -- (2.400,-0.08) node[below] {$85^\circ$};
+  \draw (4.800,0.08) -- (4.800,-0.08) node[below] {$90^\circ$};
+  \draw (7.200,0.08) -- (7.200,-0.08) node[below] {$95^\circ$};
+  \draw (9.600,0.08) -- (9.600,-0.08) node[below] {$100^\circ$};
+  \draw (12.000,0.08) -- (12.000,-0.08) node[below] {$105^\circ$};
+  \node[nok] at (4.800,0.2) {}; \node[above=3pt, font=\scriptsize] at (4.800,0.2) {1.\textordmasculine};
+  \node[nok] at (7.200,0.2) {}; \node[above=3pt, font=\scriptsize] at (7.200,0.2) {2.\textordmasculine};
+  \node[nok] at (2.400,0.2) {}; \node[above=3pt, font=\scriptsize] at (2.400,0.2) {3.\textordmasculine};
+  \node[ok] at (9.600,0.2) {}; \node[above=3pt, font=\scriptsize] at (9.600,0.2) {4.\textordmasculine};
+  \node[font=\scriptsize, red!60!black] at (4.800,0.85) {sem solução (cotovelo $> 140^\circ$)};
+  \node[font=\scriptsize, green!40!black] at (10.320,0.85) {válida};
+  \draw[dashed, gray] (7.200,-0.55) -- (0,-1.15);
+  \draw[dashed, gray] (9.600,-0.55) -- (10,-1.15);
+  % ---- 2. bisseção entre 95 e 100 graus ----
+  \node[anchor=west, font=\footnotesize\bfseries] at (-0.2,-1.45) {2. Bisseção entre $95^\circ$ (sem solução) e $100^\circ$ (válida)};
+  \fill[red!10] (0,-2.2) rectangle (1.373,-6.37);
+  \fill[green!12] (1.373,-2.2) rectangle (10,-6.37);
+  \node[anchor=east, font=\scriptsize] at (-0.15,-2.50) {1};
+  \draw[gray!70, line width=2.5pt] (0.000,-2.50) -- (10.000,-2.50);
+  \node[ok] at (5.000,-2.50) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-2.50) {testa $97{,}5^\circ$: válida};
+  \node[anchor=east, font=\scriptsize] at (-0.15,-3.12) {2};
+  \draw[gray!70, line width=2.5pt] (0.000,-3.12) -- (5.000,-3.12);
+  \node[ok] at (2.500,-3.12) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-3.12) {testa $96{,}25^\circ$: válida};
+  \node[anchor=east, font=\scriptsize] at (-0.15,-3.74) {3};
+  \draw[gray!70, line width=2.5pt] (0.000,-3.74) -- (2.500,-3.74);
+  \node[nok] at (1.250,-3.74) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-3.74) {testa $95{,}625^\circ$: sem solução};
+  \node[anchor=east, font=\scriptsize] at (-0.15,-4.36) {4};
+  \draw[gray!70, line width=2.5pt] (1.250,-4.36) -- (2.500,-4.36);
+  \node[ok] at (1.875,-4.36) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-4.36) {testa $95{,}9375^\circ$: válida};
+  \node[anchor=east, font=\scriptsize] at (-0.15,-4.98) {5};
+  \draw[gray!70, line width=2.5pt] (1.250,-4.98) -- (1.875,-4.98);
+  \node[ok] at (1.562,-4.98) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-4.98) {testa $95{,}7812^\circ$: válida};
+  \node[anchor=east, font=\scriptsize] at (-0.15,-5.60) {6};
+  \draw[gray!70, line width=2.5pt] (1.250,-5.60) -- (1.562,-5.60);
+  \node[ok] at (1.406,-5.60) {};
+  \node[anchor=west, font=\scriptsize] at (10.2,-5.60) {testa $95{,}7031^\circ$: válida};
+  \node[font=\scriptsize] at (1.600,-6.12) {$\vdots$};
+  \node[anchor=west, font=\scriptsize] at (10.2,-6.12) {\dots\ até 15 iterações};
+  \draw[->] (0,-6.52) -- (10.4,-6.52) node[right] {$\psi$};
+  \draw (0.000,-6.44) -- (0.000,-6.60) node[below] {$95^\circ$};
+  \draw (2.000,-6.44) -- (2.000,-6.60) node[below] {$96^\circ$};
+  \draw (4.000,-6.44) -- (4.000,-6.60) node[below] {$97^\circ$};
+  \draw (6.000,-6.44) -- (6.000,-6.60) node[below] {$98^\circ$};
+  \draw (8.000,-6.44) -- (8.000,-6.60) node[below] {$99^\circ$};
+  \draw (10.000,-6.44) -- (10.000,-6.60) node[below] {$100^\circ$};
+  \draw[blue!70!black, thick] (1.373,-2.2) -- (1.373,-6.52);
+  \node[blue!70!black, fill=white, inner sep=1pt, font=\scriptsize\bfseries] at (1.373,-1.95) {$\psi = 95{,}69^\circ$};
+  % legenda
+  \node[ok] at (0.2,-7.57) {}; \node[anchor=west, font=\scriptsize] at (0.4,-7.57) {inclinação válida};
+  \node[nok] at (3.4,-7.57) {}; \node[anchor=west, font=\scriptsize] at (3.6,-7.57) {sem solução};
+  \draw[gray!70, line width=2.5pt] (5.6,-7.57) -- (6.2,-7.57); \node[anchor=west, font=\scriptsize] at (6.3,-7.57) {intervalo em que está a fronteira};
+\end{tikzpicture}

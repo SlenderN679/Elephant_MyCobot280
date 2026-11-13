@@ -4,63 +4,42 @@
 
 \subsection{Validação do modelo}
 
-Nos alvos testados, o erro do modelo variou entre $1{,}2$ e $4{,}1$ mm, permanecendo abaixo da tolerância de $5$ mm considerada no diagnóstico.
+O erro entre as posições calculadas pela função \texttt{direct\_kin} e as obtidas no CoppeliaSim, utilizando os mesmos ângulos articulares, permaneceu abaixo da tolerância de $5$ mm considerada no diagnóstico.
 
-Este erro compara a posição calculada pela função \texttt{direct\_kin} com a posição do centro de preensão obtida no CoppeliaSim, utilizando os mesmos ângulos articulares. Permite, assim, avaliar o modelo geométrico independentemente dos erros de execução dos movimentos.
-
-As diferenças observadas podem resultar de pequenas discrepâncias entre os comprimentos dos elos utilizados no modelo e a geometria do simulador, incluindo a definição do centro de preensão.
-
-Os resultados indicam uma boa correspondência entre o modelo matemático e o manipulador simulado.
+Estas diferenças podem resultar de pequenas discrepâncias entre a geometria utilizada no modelo matemático e a do simulador, incluindo a definição do centro de preensão. Os resultados indicam, assim, uma boa correspondência entre ambos.
 
 \subsection{Erro de alcance e erro nas juntas}
 
-O erro de alcance corresponde à diferença entre a posição pretendida e a posição efetivamente atingida, enquanto o erro articular resulta da diferença entre os ângulos pretendidos e os ângulos medidos.
+Os erros de alcance variaram entre $0{,}8$ e $5{,}9$ mm, enquanto as diferenças articulares máximas se situaram entre $0{,}4^\circ$ e $1{,}6^\circ$.
 
-Nos testes, os erros de alcance variaram entre $0{,}8$ e $5{,}9$ mm, e as diferenças articulares máximas entre $0{,}4^\circ$ e $1{,}6^\circ$.
+O maior erro ocorreu na peça rosa, situada a $27{,}5$ cm do eixo da base, com $5{,}9$ mm de desvio e $1{,}6^\circ$ de erro articular. Este resultado pode estar associado à configuração mais estendida do braço, na qual pequenas diferenças angulares provocam maiores desvios de posição.
 
-O maior erro de alcance ocorreu na peça rosa, situada a $27{,}5$ cm do eixo da base, com $5{,}9$ mm. Esta peça apresentou também um erro do modelo de $4{,}1$ mm e a maior diferença articular, de $1{,}6^\circ$.
-
-Este resultado pode estar associado à configuração mais estendida do braço, na qual pequenas diferenças articulares podem provocar maiores desvios de posicionamento. A gravidade e o tempo de estabilização de $2$ s utilizado nos testes também podem contribuir para estas diferenças, embora não tenha sido possível determinar a influência de cada fator.
+A gravidade e o tempo de estabilização de $2$ s também poderão ter influenciado os resultados, embora não tenha sido possível quantificar a contribuição de cada fator.
 
 \subsection{Alcance e inclinação da garra}
 
-A inclinação da garra influencia o alcance do manipulador, pois altera a posição necessária do pulso para atingir um determinado alvo.
+A inclinação da garra influencia o alcance do manipulador, uma vez que altera a posição necessária do pulso para atingir o alvo.
 
-A Figura~\ref{fig:mapa_alvos} apresenta as zonas de alcance obtidas com a função \texttt{plan\_vertical}, considerando o centro de preensão a $2$ cm da mesa e uma descida vertical de $10$ cm.
+A Figura~\ref{fig:mapa_alvos} apresenta as zonas de alcance obtidas com \texttt{plan\_vertical}, considerando o centro de preensão a $2$ cm da mesa e uma descida vertical de $10$ cm.
 
-Nestas condições, a garra consegue realizar a descida com $\psi=90^\circ$ para distâncias entre aproximadamente $15{,}8$ e $25{,}5$ cm do eixo da base.
+Nestas condições, a orientação vertical ($\psi=90^\circ$) permite alcançar distâncias entre aproximadamente $15{,}8$ e $25{,}5$ cm do eixo da base. Para alvos mais próximos, a garra deve inclinar-se para a base ($\psi>90^\circ$), enquanto para alvos mais afastados se inclina para fora ($\psi<90^\circ$), permitindo atingir cerca de $35{,}2$ cm neste planeamento.
 
-Para posições mais próximas, é necessário inclinar a garra para a base ($\psi>90^\circ$), enquanto para posições mais afastadas a garra se inclina para fora ($\psi<90^\circ$). Neste planeamento, o alcance máximo obtido foi de aproximadamente $35{,}2$ cm.
+Este comportamento foi observado nos testes: a peça vermelha, a $11{,}7$ cm, foi alcançada com $\psi=110^\circ$; a laranja, a $24{,}9$ cm, com $\psi=90^\circ$; e a rosa, a $27{,}5$ cm, com $\psi=80^\circ$.
 
-Os testes realizados confirmam este comportamento:
-\begin{itemize}
-    \item A peça vermelha, a $11{,}7$ cm, foi alcançada com $\psi=110^\circ$;
-    \item A peça laranja, a $24{,}9$ cm, foi alcançada com $\psi=90^\circ$;
-    \item A peça rosa, a $27{,}5$ cm, foi alcançada com $\psi=80^\circ$.
-\end{itemize}
+O segundo exemplo da Secção~5.1 também evidencia a necessidade de adaptar a inclinação, utilizando aproximadamente $\psi=95{,}69^\circ$ para alcançar um alvo a $13$ cm sem ultrapassar o limite de flexão do cotovelo.
 
-O mesmo comportamento foi observado no segundo exemplo da Secção~\ref{sec:ik_resultados}, no qual foi necessário alterar a inclinação para aproximadamente $82{,}27^\circ$.
+Por outro lado, quatro posições entre $39$ e $41$ cm foram rejeitadas por não apresentarem soluções válidas. O alcance é ainda condicionado pelas colisões com a base, observadas entre aproximadamente $8{,}4$ e $13$ cm, dependendo da direção, e pelo limite de rotação de $\pm165^\circ$ de J1, que cria uma zona inacessível atrás do manipulador.
 
-Por outro lado, quatro alvos situados entre $39$ e $41$ cm do eixo da base foram rejeitados pela cinemática inversa por não apresentarem soluções válidas.
-
-O alcance também é limitado nas proximidades da base, devido ao desvio lateral $L_5$ e às possíveis colisões com a sua estrutura. Nos testes analisados, a zona de colisão com a placa da base situou-se entre aproximadamente $8{,}4$ e $13$ cm, dependendo da direção.
-
-Existe ainda uma zona inacessível atrás do manipulador, devido ao limite de rotação de $\pm165^\circ$ da junta J1.
-
-Assim, o alcance efetivo depende da geometria do braço, da inclinação da garra, dos limites articulares e das restrições de colisão consideradas.
+Assim, o alcance efetivo depende não apenas dos comprimentos dos elos, mas também da inclinação da garra, dos limites articulares e das restrições de colisão.
 
 \subsection{Limitações}
 
-A abordagem desenvolvida apresenta algumas limitações relacionadas com os movimentos, as configurações articulares e a utilização do simulador.
+A função \texttt{move\_joints} permite movimentos articulares suaves, mas não garante trajetórias retilíneas. Para esse efeito, foram desenvolvidas \texttt{move\_linear} e \texttt{plan\_vertical}, cuja execução depende da existência de soluções válidas ao longo do percurso.
 
-A função \texttt{move\_joints} realiza movimentos suaves no espaço das juntas, mas não garante trajetórias retilíneas do centro de preensão. Para esse efeito, utiliza-se a função \texttt{move\_linear}, enquanto a função \texttt{plan\_vertical} permite selecionar uma inclinação fixa da garra ao longo de movimentos verticais.
+A cinemática inversa mantém ainda J5 fixa a $0^\circ$ e privilegia a configuração com o cotovelo para cima, reduzindo as configurações exploradas.
 
-Contudo, a execução destas trajetórias depende da existência de soluções válidas da cinemática inversa ao longo de todo o percurso.
+Por fim, a validação foi realizada exclusivamente no CoppeliaSim. Embora a câmara tenha sido utilizada para identificar os objetos, as suas posições foram obtidas diretamente do simulador para avaliar os erros.
 
-Além disso, a cinemática inversa mantém J5 fixa a $0^\circ$ e privilegia a configuração com o cotovelo para cima, simplificando os cálculos, mas limitando as soluções exploradas.
+A aplicação num manipulador físico exigiria calibração da câmara e das juntas, bem como a consideração de folgas mecânicas e das características dos motores.
 
-Por fim, os testes foram realizados exclusivamente no CoppeliaSim. A identificação dos alvos foi efetuada através da câmara do cenário, sendo as posições dos objetos disponibilizadas pelo simulador utilizadas como referência para avaliar os erros.
-
-Num manipulador físico, seria necessário considerar a calibração da câmara e das juntas, as folgas mecânicas e as características dos motores.
-
-Os resultados obtidos demonstram a viabilidade da abordagem desenvolvida em simulação, constituindo uma base para a futura implementação no manipulador físico.
+Apesar destas limitações, os resultados demonstram a viabilidade da abordagem desenvolvida em simulação.

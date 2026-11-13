@@ -1,5 +1,5 @@
 
-\section{Resumo e verificação}
+\section{Resumo}
 \label{sec:dk_resumo}
 
 Combinando os resultados obtidos nos planos lateral e horizontal, é possível determinar a posição tridimensional do centro de preensão do myCobot~280 em função dos ângulos articulares e dos parâmetros geométricos do manipulador.
@@ -27,9 +27,14 @@ Considerando $D=L_6+L_7$ e os ângulos absolutos definidos na Equação~\eqref{e
     \label{eq:dk_final}
 \end{equation}
 
-Estas expressões permitem calcular a posição do centro de preensão relativamente ao referencial da base, a partir dos ângulos das juntas e dos comprimentos dos elos.
 
-Adicionalmente, a direção longitudinal da garra pode ser determinada através das componentes $-\sin q_5$, $\cos q_5\cos\alpha$ e $\cos q_5\sin\alpha$, expressas no referencial associado ao plano do braço. Estas componentes são posteriormente transformadas para o referencial da base, considerando a rotação $q_1$.
+As expressões anteriores permitem determinar a posição do centro de preensão a partir dos ângulos articulares.
+
+Além da posição, é possível calcular a direção da garra. Para isso, consideram-se os ângulos $\alpha$ e $q_5$, que definem a sua orientação relativamente ao plano do braço. A rotação da base $q_1$ permite depois expressar essa direção no referencial da base.
+
+
+\iffalse
+    
 
 \subsection{Verificação dos resultados}
 
@@ -40,7 +45,7 @@ A Figura~\ref{fig:poses_fk} apresenta as duas configurações consideradas na ve
 
 \begin{figure}[H]
     \centering
-    \resizebox{0.75\textwidth}{!}{
+    \resizebox{0.7\textwidth}{!}{
         \input{./graph/poses_fk.tex}
     }
     \caption{Configuração de referência e configuração de trabalho utilizadas na verificação da cinemática direta.}
@@ -125,7 +130,6 @@ Considerando a rotação da base e o desvio lateral do manipulador, a posição 
 Deste modo, o centro de preensão encontra-se aproximadamente a $20$ cm de distância horizontal do eixo da base, na direção positiva do eixo $y$, e a uma altura de $6$ cm.
 
 
-\iffalse
 \subsubsection{Validação no CoppeliaSim}
 
 A validação do modelo cinemático é realizada através do modo de diagnóstico implementado em MATLAB, no ficheiro \texttt{diagnostico\_.m}. Este procedimento permite comparar a posição do centro de preensão calculada pelo modelo matemático com a posição fornecida diretamente pelo CoppeliaSim.

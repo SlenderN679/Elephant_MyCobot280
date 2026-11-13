@@ -2,27 +2,24 @@
 \subsection{Demonstração no simulador}
 \label{sec:demo_sim}
 
-Para avaliar o funcionamento do sistema, foi realizada uma demonstração no CoppeliaSim, deslocando o manipulador até diferentes peças distribuídas sobre a mesa.
+Para avaliar o funcionamento do sistema, foram realizados movimentos até diferentes peças distribuídas sobre a mesa no CoppeliaSim.
 
-Para cada alvo, a função \texttt{inverse\_kin} calcula os ângulos articulares necessários. A função \texttt{move\_joints} permite deslocar o manipulador até uma posição de aproximação, enquanto a função \texttt{move\_linear} é utilizada para realizar movimentos aproximadamente retilíneos.
+A função \texttt{inverse\_kin} determina a configuração articular necessária, enquanto \texttt{move\_joints} e \texttt{move\_linear} permitem executar os movimentos de aproximação e as trajetórias aproximadamente retilíneas.
 
 O desempenho foi avaliado através de três indicadores:
-
 \begin{itemize}
-    \item \textbf{Erro do modelo:} diferença entre a posição calculada pela função \texttt{direct\_kin} e a posição obtida diretamente no CoppeliaSim, utilizando os mesmos ângulos articulares;
-
-    \item \textbf{Erro de alcance:} diferença entre a posição pretendida e a posição efetivamente alcançada;
-
-    \item \textbf{Erro articular:} maior diferença absoluta entre os ângulos pretendidos e os ângulos medidos.
+    \item \textbf{Erro do modelo:} diferença entre a posição calculada por \texttt{direct\_kin} e a obtida no CoppeliaSim para os mesmos ângulos articulares;
+    \item \textbf{Erro de alcance:} distância entre a posição pretendida e a efetivamente alcançada;
+    \item \textbf{Erro articular:} maior diferença absoluta entre os ângulos pretendidos e os medidos.
 \end{itemize}
 
-A Tabela~\ref{tab:demo_sim} apresenta os resultados obtidos para sete posições alvo, com as coordenadas expressas em milímetros relativamente ao referencial da base.
+A Tabela~\ref{tab:demo_sim} apresenta os resultados para sete posições alvo, com coordenadas expressas em milímetros relativamente ao referencial da base.
 
 \begin{table}[H]
     \centering
-    \caption{Resultados do movimento até diferentes posições alvo no simulador. Posições no referencial da base, em mm; $\psi$ representa a inclinação da garra.}
+    \caption{Resultados do movimento até diferentes posições alvo no simulador.}
     \label{tab:demo_sim}
-    \resizebox{\textwidth}{!}{%
+    \resizebox{\textwidth}{!}{
     \begin{tabular}{lcccccc}
         \toprule
         Peça & Pedido $(x,y,z)$ & Alcançado $(x,y,z)$ & $\psi$ & Modelo [mm] & Alcance [mm] & Juntas \\
@@ -38,14 +35,14 @@ A Tabela~\ref{tab:demo_sim} apresenta os resultados obtidos para sete posições
     \end{tabular}}
 \end{table}
 
-As Figuras~\ref{fig:mapa_alvos} e~\ref{fig:erros} apresentam, respetivamente, a distribuição das peças e a comparação dos erros registados.
+As Figuras~\ref{fig:mapa_alvos} e~\ref{fig:erros} apresentam a distribuição das peças e os erros registados.
 
 \begin{figure}[htbp]
     \centering
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \input{graph/mapa_alvos}
-        \caption{Distribuição das peças no referencial da base, numa vista superior, com indicação dos limites de alcance.}
+        \caption{Distribuição das peças no referencial da base, numa vista superior.}
         \label{fig:mapa_alvos}
     \end{minipage}
     \hfill
@@ -59,10 +56,8 @@ As Figuras~\ref{fig:mapa_alvos} e~\ref{fig:erros} apresentam, respetivamente, a 
 
 Nos sete alvos alcançados, os erros de alcance variaram entre $0{,}8$ e $5{,}9$ mm, os erros do modelo entre $1{,}2$ e $4{,}1$ mm e as diferenças articulares máximas entre $0{,}4^\circ$ e $1{,}6^\circ$.
 
-As posições pretendidas apresentam $z=-10$ mm relativamente ao referencial da base, correspondendo a uma altura de $20$ mm acima da mesa no cenário utilizado.
+O menor erro de alcance ocorreu na peça verde, enquanto a peça rosa apresentou os maiores desvios. As posições pretendidas tinham $z=-10$ mm relativamente à base, correspondendo a uma altura de $20$ mm acima da mesa.
 
-O menor erro de alcance ocorreu na peça verde, com $0{,}8$ mm, enquanto o maior foi registado na peça rosa, com $5{,}9$ mm. Esta última apresentou também o maior erro do modelo, de $4{,}1$ mm, e a maior diferença articular, de $1{,}6^\circ$.
+Foram ainda testadas quatro posições a distâncias de aproximadamente $39$ a $41$ cm do eixo da base, rejeitadas por não existirem configurações válidas segundo as restrições implementadas.
 
-Além dos sete alvos alcançados, quatro posições situadas a aproximadamente $39$ a $41$ cm do eixo da base foram rejeitadas pela cinemática inversa, por não apresentarem soluções válidas segundo as restrições implementadas.
-
-De forma geral, a demonstração permitiu verificar a capacidade do sistema para calcular configurações articulares, executar movimentos até diferentes posições e identificar alvos que não podem ser alcançados nas condições consideradas.
+Os resultados demonstram a capacidade do sistema para alcançar diferentes posições com erros de poucos milímetros e identificar alvos inalcançáveis nas condições consideradas.

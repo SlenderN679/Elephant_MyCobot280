@@ -1,14 +1,13 @@
-
 \section{Cinemática inversa}
 \label{sec:cin_inv}
 
 A função \texttt{inverse\_kin} implementa a formulação matemática da cinemática inversa apresentada no Capítulo~\ref{ch:inv_kin}, permitindo determinar os ângulos articulares necessários para alcançar uma posição pretendida do centro de preensão.
 
-A resolução é realizada com o auxílio das funções \texttt{ik\_2dof} e \texttt{solve\_pitch}. A primeira resolve o problema geométrico de um manipulador planar de dois graus de liberdade, enquanto a segunda determina os ângulos das juntas J1 a J4 para uma inclinação específica da garra, verificando as restrições de alcance e os limites articulares.
+A resolução é realizada com o auxílio das funções \texttt{ik\_2dof} e \texttt{solve\_pitch}. A primeira resolve o problema geométrico de um manipulador planar de dois graus de liberdade, enquanto a segunda escolhe a inclinação da garra a utilizar.
 
-A função principal começa por calcular a distância frontal e a altura relativamente ao ombro. Seguidamente, procura uma inclinação válida para a garra, começando pela orientação preferencial de $90^\circ$ e testando, quando necessário, inclinações alternativas em incrementos de $5^\circ$.
+A função principal começa por resolver o plano horizontal, calculando a distância frontal, a altura relativamente ao ombro e o ângulo da junta J1. Seguidamente, obtém a inclinação da garra: quando \texttt{fixedPitch} é verdadeiro, utiliza a inclinação indicada; caso contrário, recorre à função \texttt{solve\_pitch}.
 
-Quando é encontrada uma solução válida numa inclinação diferente da preferencial, é realizado um refinamento através do método da bisseção. Por fim, é calculada a rotação da junta J6, caso tenha sido fornecida a orientação do objeto e a inclinação da garra satisfaça a condição estabelecida.
+Conhecida a inclinação, resolve o plano lateral: calcula a posição do pulso J4, utiliza \texttt{ik\_2dof} para determinar as juntas J2 e J3 e obtém J4. A configuração é depois validada quanto aos limites articulares, à flexão máxima do cotovelo e às alturas das juntas. Por fim, é calculada a rotação da junta J6, caso tenha sido fornecida a orientação do objeto e a inclinação da garra satisfaça a condição estabelecida.
 
 A implementação da função principal encontra-se apresentada na Listagem~\ref{lst:inv_kin}.
 
@@ -17,115 +16,85 @@ A implementação da função principal encontra-se apresentada na Listagem~\ref
     caption={Implementação da função inverse\_kin.},
     label={lst:inv_kin}
 ]
-function [armJoints, isReachable, pitchUsed] = ...
-    inverse_kin(x, y, z, Links, qMin, qMax, ...
-                objYaw, prefPitch, family, fixedPitch)
-
-    % Valores por defeito
+function [armJoints, isReachable, pitchUsed] = inverse_kin(x, y, z, Links, qMin, qMax, objYaw, prefPitch, family, fixedPitch)
     if nargin < 5 || isempty(qMin)
-        qMin = deg2rad([-165 -165 -165 -165 -165 -175]);
+        qMin = deg2rad([-165 -165 -165 -165 -165 -175]); % valores de defeito para limites min
     end
     if nargin < 6 || isempty(qMax)
-        qMax = deg2rad([165 165 165 165 165 175]);
+        qMax = deg2rad([ 165  165  165  165  165  175]); % valores de defeito para limites max
     end
     if nargin < 7
-        objYaw = [];
+        objYaw = [];                                     % valor de defeito para a rotação do objeto
     end
-    if nargin < 8 || isempty(prefPitch)
-        prefPitch = pi/2;
+    if nargin < 8 || isempty(prefPitch) 
+        prefPitch = pi/2;                                % valor de defeito para a inclinação do objeto
     end
     if nargin < 9 || isempty(family)
-        family = 'up';
+        family = 'up';                                   % por defeito: cotovelo para cima
     end
     if nargin < 10 || isempty(fixedPitch)
-        fixedPitch = false;
+        fixedPitch = false;                              % por defeito procura a inclinação
+    end
+    
+    % inicializar valores para os cálculos
+    L  = Links;
+    D  = L(6) + L(7);                  % eixo de J5 -> centro de preensão (ao longo da garra)
+    armJoints   = zeros(1, 6);
+    isReachable = false;
+    pitchUsed   = NaN;
+    wrap = @(t) atan2(sin(t), cos(t));
+    ELBOW_MAX = deg2rad(140);           % dobra máxima do cotovelo (|J3|), com folga até ao limite de 165
+
+    if ~strcmp(family, 'down')
+        family = 'up';                   % qualquer outro valor: cotovelo para cima
     end
 
-    L = Links;
-    D = L(6) + L(7);
-
-    armJoints = zeros(1,6);
-    isReachable = false;
-    pitchUsed = NaN;
-
-    % Plano horizontal
-    r = hypot(x,y);
+    r = hypot(x, y);
     if r <= L(5)
+        return;                         % dentro do desvio lateral: inalcançável
+    end
+    dFwd = sqrt(r^2 - L(5)^2);          % d: distância em frente, no plano do braço
+    hJ2  = z - L(1);                    % h: altura relativa a J2 (ombro)
+    q1   = atan2(y, x) - atan2(dFwd, L(5));
+
+    if fixedPitch
+        psi = prefPitch;
+    else
+        [psi, ok] = movement.solve_pitch(x, y, z, Links, qMin, qMax, prefPitch, family);
+        if ~ok
+            return;                     % nenhuma inclinação tem solução
+        end
+    end
+
+    alpha3 = -psi;
+    x3d = dFwd - D*cos(alpha3) - L(4)*cos(alpha3 + pi/2);
+    y3d = hJ2  - D*sin(alpha3) - L(4)*sin(alpha3 + pi/2);
+
+    [theta1, theta2, ok] = movement.ik_2dof(x3d, y3d, L(2), L(3), family);
+    if ~ok
+        return;                         % fora de alcance para esta inclinação
+    end
+    theta3 = (alpha3 + pi/2) - theta1 - theta2;
+
+    q = wrap([q1, theta1 - pi/2, theta2, theta3]);
+
+    zElbow = L(1) + L(2)*cos(q(2));
+    zJ4    = zElbow + L(3)*cos(q(2)+q(3));
+    zJ5    = zJ4 + L(4)*cos(q(2)+q(3)+q(4));
+    if any(q < qMin(1:4)) || any(q > qMax(1:4)) || abs(q(3)) > ELBOW_MAX ...
+            || min([zElbow zJ4 zJ5]) <= 0
         return;
     end
 
-    dFwd = sqrt(r^2-L(5)^2);
-    hJ2 = z-L(1);
-
-    % Restricoes
-    ELBOW_MAX = deg2rad(140);
-    PITCH_MAX = deg2rad(135);
-    PITCH_MIN = deg2rad(30);
-    STEP = deg2rad(5);
-
-    if ~strcmp(family,'down')
-        family = 'up';
+    q6 = 0;
+    if ~isempty(objYaw) && psi > deg2rad(45)
+        % os dedos fecham segundo a direção J1 - J6 (módulo 180 graus); um
+        % cubo é simétrico a cada 90 graus -> escolhe-se a menor rotação de J6
+        q6 = mod(q(1) - objYaw + pi/4, pi/2) - pi/4;
     end
-
-    if fixedPitch
-        dList = 0;
-    else
-        dList = 0:STEP:(PITCH_MAX-PITCH_MIN);
-    end
-
-    % Procurar inclinacao valida
-    for d = dList
-        if d == 0
-            cands = prefPitch;
-        else
-            cands = [prefPitch+d, prefPitch-d];
-        end
-
-        for psi = cands
-            if ~fixedPitch && ...
-                    (psi > PITCH_MAX || psi < PITCH_MIN)
-                continue;
-            end
-
-            best = movement.solve_pitch(psi,x,y,dFwd,hJ2, ...
-                L,D,qMin,qMax,ELBOW_MAX,family);
-
-            if isempty(best)
-                continue;
-            end
-
-            % Refinamento por bissecao
-            if d > 0
-                good = psi;
-                bad = psi-sign(psi-prefPitch)*STEP;
-
-                for it = 1:15
-                    mid = (good+bad)/2;
-                    qm = movement.solve_pitch(mid,x,y,dFwd,hJ2, ...
-                        L,D,qMin,qMax,ELBOW_MAX,family);
-
-                    if isempty(qm)
-                        bad = mid;
-                    else
-                        good = mid;
-                        best = qm;
-                    end
-                end
-                psi = good;
-            end
-
-            % Orientacao da junta J6
-            q6 = 0;
-            if ~isempty(objYaw) && psi > deg2rad(45)
-                q6 = mod(best(1)-objYaw+pi/4,pi/2)-pi/4;
-            end
-
-            armJoints = [best 0 q6];
-            isReachable = true;
-            pitchUsed = psi;
-            return;
-        end
-    end
+    armJoints   = [q 0 q6];
+    isReachable = true;
+    pitchUsed   = psi;
 end
 \end{lstlisting}
 
@@ -165,17 +134,25 @@ As entradas e saídas da função encontram-se resumidas na Tabela~\ref{tab:inve
 
 A função \texttt{ik\_2dof} resolve a cinemática inversa do braço planar formado pelos elos $L_2$ e $L_3$, através da lei dos cossenos. A implementação permite selecionar a configuração com o cotovelo para cima ou para baixo, conforme descrito na Secção~\ref{sec:ik_lateral}.
 
-Por sua vez, a função \texttt{solve\_pitch} recebe uma inclinação $\psi$ previamente definida, calcula a posição do pulso J4 e utiliza \texttt{ik\_2dof} para determinar os ângulos das juntas J2 e J3. Seguidamente, determina J1 e J4 e verifica se a configuração obtida respeita os limites articulares, a flexão máxima do cotovelo e as restrições de altura das juntas.
+Por sua vez, a função \texttt{solve\_pitch} escolhe a inclinação da garra. Começa pela inclinação preferencial, normalmente $90^\circ$, e, quando esta não tem solução, testa inclinações alternativas em incrementos de $5^\circ$, primeiro para o lado da base e depois para fora. Cada inclinação é testada através da função \texttt{inverse\_kin} com a inclinação fixa, que resolve o plano lateral e verifica as condições de existência. Quando é encontrada uma inclinação válida diferente da preferencial, é realizado um refinamento através do método da bisseção.
 
 As implementações destas funções encontram-se nas Listagens~\ref{lst:ik2dof} e~\ref{lst:solvepitch}.
 
+% as duas listagens ficam lado a lado em duas colunas (pacote paracol), que
+% podem continuar na página seguinte; cada coluna continua na mesma coluna
+\globalcounter{lstlisting}  % numeração das listagens comum às duas colunas
+\columnratio{0.47,0.47}
+\begin{paracol}{2}
+\captionsetup{justification=centering}
 \begin{lstlisting}[
     language=Matlab,
+    basicstyle=\ttfamily\scriptsize,
     caption={Implementação da função ik\_2dof.},
     label={lst:ik2dof}
 ]
-function [theta1, theta2, isReachable] = ...
-    ik_2dof(xd, yd, LA, LB, solution_type)
+function [theta1, theta2, ...
+    isReachable] = ik_2dof( ...
+    xd, yd, LA, LB, solution_type)
 
     theta1 = NaN;
     theta2 = NaN;
@@ -187,7 +164,8 @@ function [theta1, theta2, isReachable] = ...
     arg1 = (LA^2+r^2-LB^2)/(2*LA*r);
     arg2 = (LA^2+LB^2-r^2)/(2*LA*LB);
 
-    if r == 0 || abs(arg1) > 1 || abs(arg2) > 1
+    if r == 0 || abs(arg1) > 1 ...
+            || abs(arg2) > 1
         return;
     end
 
@@ -205,105 +183,113 @@ function [theta1, theta2, isReachable] = ...
     isReachable = true;
 end
 \end{lstlisting}
-
+\switchcolumn
+\captionsetup{justification=centering}
 \begin{lstlisting}[
     language=Matlab,
+    basicstyle=\ttfamily\scriptsize,
     caption={Implementação da função solve\_pitch.},
     label={lst:solvepitch}
 ]
-function q = solve_pitch(psi,x,y,dFwd,hJ2, ...
-    L,D,qMin,qMax,elbowMax,family)
+function [psi, ok] = solve_pitch( ...
+  x, y, z, Links, qMin, qMax, ...
+  prefPitch, family)
+  psi = NaN;  ok = false;
 
-    wrap = @(t) atan2(sin(t),cos(t));
-    q = [];
+  PITCH_MAX = deg2rad(135);
+  PITCH_MIN = deg2rad(30);
+  STEP      = deg2rad(5);
 
-    % Angulo da base
-    q1 = atan2(y,x)-atan2(dFwd,L(5));
+  works = @(p) has_solution(x, y, ...
+    z, Links, qMin, qMax, p, family);
 
-    % Posicao do pulso
-    alpha3 = -psi;
-    x3d = dFwd-D*cos(alpha3) ...
-        -L(4)*cos(alpha3+pi/2);
-    y3d = hJ2-D*sin(alpha3) ...
-        -L(4)*sin(alpha3+pi/2);
-
-    % Braco planar de dois elos
-    [theta1,theta2,ok] = movement.ik_2dof( ...
-        x3d,y3d,L(2),L(3),family);
-
-    if ~ok
-        return;
+  for d = 0:STEP:(PITCH_MAX-PITCH_MIN)
+    if d == 0
+      ang = prefPitch;
+    else
+      ang = [prefPitch+d, prefPitch-d];
     end
-
-    % Angulo da junta J4
-    theta3 = (alpha3+pi/2)-theta1-theta2;
-
-    % Angulos articulares
-    q = wrap([q1,theta1-pi/2,theta2,theta3]);
-
-    % Alturas das juntas
-    zElbow = L(1)+L(2)*cos(q(2));
-    zJ4 = zElbow+L(3)*cos(q(2)+q(3));
-    zJ5 = zJ4+L(4)*cos(q(2)+q(3)+q(4));
-
-    % Validacao da configuracao
-    if any(q < qMin(1:4)) || ...
-            any(q > qMax(1:4)) || ...
-            abs(q(3)) > elbowMax || ...
-            min([zElbow zJ4 zJ5]) <= 0
-        q = [];
+    for p = ang
+      if p > PITCH_MAX || p < PITCH_MIN
+        continue;
+      end
+      if ~works(p)
+        continue;
+      end
+      % refinamento por bissecao
+      if d > 0
+        good = p;
+        bad = p-sign(p-prefPitch)*STEP;
+        for it = 1:15
+          mid = (good+bad)/2;
+          if works(mid)
+            good = mid;
+          else
+            bad = mid;
+          end
+        end
+        p = good;
+      end
+      psi = p;  ok = true;
+      return;
     end
+  end
+end
+
+function ok = has_solution(x, y, z, ...
+    Links, qMin, qMax, p, family)
+  [~, ok] = movement.inverse_kin(x, ...
+    y, z, Links, qMin, qMax, [], ...
+    p, family, true);
 end
 \end{lstlisting}
+\end{paracol}
+\medskip
 
 As entradas e saídas das duas funções auxiliares encontram-se apresentadas nas Tabelas~\ref{tab:ik2dof_io} e~\ref{tab:solvepitch_io}.
 
-\begin{table}[H]
-    \centering
-    \caption{Entradas e saídas da função \texttt{ik\_2dof}.}
-    \label{tab:ik2dof_io}
+% as duas tabelas são uma só tabela com 5 colunas (a do meio é só o
+% espaço entre elas): assim cada linha tem a mesma altura nas duas e as
+% linhas horizontais ficam sempre alinhadas; ocupam mais 1,2 cm de cada lado
+\noindent\hspace*{-1.2cm}%
+\begin{minipage}{\dimexpr\textwidth+2.4cm\relax}
     \small
-    \begin{tabular}{lp{8cm}}
-        \toprule
-        Argumento & Significado \\
-        \midrule
-        \multicolumn{2}{l}{\textit{Entradas}} \\
-        \texttt{xd, yd} & Coordenadas do pulso relativamente ao ombro [m] \\
-        \texttt{LA, LB} & Comprimentos dos dois elos [m] \\
-        \texttt{solution\_type} & Configuração \texttt{'up'} ou \texttt{'down'} \\
-        \midrule
-        \multicolumn{2}{l}{\textit{Saídas}} \\
-        \texttt{theta1} & Orientação absoluta do primeiro elo [rad] \\
-        \texttt{theta2} & Rotação do segundo elo relativamente ao primeiro [rad] \\
-        \texttt{isReachable} & Indicador de solução geométrica válida \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \captionsetup{justification=centering}
+    \begin{minipage}[b]{\dimexpr(\linewidth-1cm)/2\relax}
+        \captionof{table}[Entradas e saídas da função \texttt{ik\_2dof}.]{Entradas e saídas da função\newline\texttt{ik\_2dof}.}
+        \label{tab:ik2dof_io}
+    \end{minipage}\hspace{1cm}%
+    \begin{minipage}[b]{\dimexpr(\linewidth-1cm)/2\relax}
+        \captionof{table}[Entradas e saídas da função \texttt{solve\_pitch}.]{Entradas e saídas da função\newline\texttt{solve\_pitch}.}
+        \label{tab:solvepitch_io}
+    \end{minipage}
 
-\begin{table}[H]
-    \centering
-    \caption{Entradas e saídas da função \texttt{solve\_pitch}.}
-    \label{tab:solvepitch_io}
-    \small
-    \begin{tabular}{lp{8cm}}
-        \toprule
-        Argumento & Significado \\
-        \midrule
-        \multicolumn{2}{l}{\textit{Entradas}} \\
-        \texttt{psi} & Inclinação definida para a garra [rad] \\
-        \texttt{x, y} & Coordenadas horizontais do alvo [m] \\
-        \texttt{dFwd, hJ2} & Distância frontal e altura relativa ao ombro [m] \\
-        \texttt{L, D} & Parâmetros geométricos do manipulador [m] \\
-        \texttt{qMin, qMax} & Limites articulares [rad] \\
-        \texttt{elbowMax} & Flexão máxima admitida para o cotovelo [rad] \\
-        \texttt{family} & Configuração \texttt{'up'} ou \texttt{'down'} \\
-        \midrule
-        \multicolumn{2}{l}{\textit{Saída}} \\
-        \texttt{q} & Vetor $[q_1\ q_2\ q_3\ q_4]$ [rad] ou vazio \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}p{1cm}@{}l>{\raggedright\arraybackslash}X@{}}
+        \cmidrule[\heavyrulewidth]{1-2}\cmidrule[\heavyrulewidth]{4-5}
+        Argumento & Significado & & Argumento & Significado \\
+        \cmidrule{1-2}\cmidrule{4-5}
+        \multicolumn{2}{@{}l}{\textit{Entradas}} & & \multicolumn{2}{@{}l}{\textit{Entradas}} \\
+        \texttt{xd, yd} & Pulso relativamente ao ombro [m] & &
+            \texttt{x, y, z} & Posição pretendida (base) [m] \\
+        \texttt{LA, LB} & Comprimentos dos dois elos [m] & &
+            \texttt{Links} & Parâmetros geométricos [m] \\
+        \texttt{solution\_type} & Configuração \texttt{'up'} ou \texttt{'down'} & &
+            \texttt{qMin, qMax} & Limites articulares [rad] \\
+        & & & \texttt{prefPitch} & Inclinação preferencial [rad] \\
+        & & & \texttt{family} & Configuração \texttt{'up'} ou \texttt{'down'} \\
+        \cmidrule{1-2}\cmidrule{4-5}
+        \multicolumn{2}{@{}l}{\textit{Saídas}} & & \multicolumn{2}{@{}l}{\textit{Saídas}} \\
+        \texttt{theta1} & Ângulo absoluto do 1.º elo [rad] & &
+            \texttt{psi} & Inclinação escolhida para a garra [rad] \\
+        \texttt{theta2} & Ângulo do 2.º elo face ao 1.º [rad] & &
+            \texttt{ok} & Existência de uma inclinação válida \\
+        \texttt{isReachable} & Existência de solução geométrica & & & \\
+        \cmidrule[\heavyrulewidth]{1-2}\cmidrule[\heavyrulewidth]{4-5}
+    \end{tabularx}
+\end{minipage}%
+\hspace*{-1.2cm}
 
-Deste modo, a implementação separa a procura de uma inclinação válida da resolução geométrica para uma inclinação específica, permitindo reutilizar os cálculos cinemáticos em diferentes procedimentos de movimento.
+\vspace{\baselineskip}
+Deste modo, a implementação separa a escolha da inclinação da garra, feita pela função \texttt{solve\_pitch}, da resolução geométrica para essa inclinação, feita pela função \texttt{inverse\_kin}, permitindo reutilizar os cálculos cinemáticos em diferentes procedimentos de movimento.
 
 A função \texttt{inverse\_kin} é utilizada tanto no posicionamento do manipulador como no planeamento de trajetórias, sendo chamada repetidamente quando é necessário determinar configurações articulares para diferentes pontos do espaço de trabalho.

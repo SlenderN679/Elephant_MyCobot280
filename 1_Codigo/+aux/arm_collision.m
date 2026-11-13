@@ -30,15 +30,35 @@ function [hit, what] = arm_collision(q, Links)
     L = Links;  q = q(:)';
     if numel(q) == 4, q = [q 0 0]; end
 
-    % Passo 2: posição de cada junta para a pose q (percorre o braço como em
-    % direct_kin e guarda a posição depois de cada elo)
-    % posições das juntas (mesmas transformações que direct_kin)
-    T = aux.matrix.rotz(q(1)) * aux.matrix.trans(0,0,L(1));                 J2 = T(1:3,4);
-    T = T * aux.matrix.rotx(q(2)) * aux.matrix.trans(0,0,L(2));             J3 = T(1:3,4);
-    T = T * aux.matrix.rotx(q(3)) * aux.matrix.trans(L(5),0,L(3));          J4 = T(1:3,4);
-    T = T * aux.matrix.rotx(q(4)) * aux.matrix.trans(0,0,L(4));             J5 = T(1:3,4);
-    T = T * aux.matrix.rotz(q(5)) * aux.matrix.trans(0,L(6),0);             J6 = T(1:3,4);
-    T = T * aux.matrix.roty(q(6)) * aux.matrix.trans(0,L(7),0);             G  = T(1:3,4);
+    % Passo 2: posição de cada junta para a pose q, com a mesma abordagem
+    % geométrica de direct_kin (sem matrizes): no plano do braço soma-se, elo a
+    % elo, L*cos e L*sin do ângulo absoluto de cada elo (d = em frente,
+    % h = altura, l = desvio lateral) e depois roda-se o plano com J1
+    thetaA = q(2) + pi/2;               % elo L2 (J2 -> J3)
+    thetaB = thetaA + q(3);             % elo L3 (J3 -> J4)
+    thetaC = thetaB + q(4);             % elo L4 (J4 -> J5)
+    alpha  = thetaC - pi/2;             % garra: perpendicular a L4
+    % direção da garra (J5 roda-a para fora do plano do braço)
+    gL = -sin(q(5));                    % componente para o lado
+    gD =  cos(q(5))*cos(alpha);         % componente em frente
+    gH =  cos(q(5))*sin(alpha);         % componente para cima
+    % J2 (ombro)
+    l = 0;  d = 0;  h = L(1);
+    J2 = plane_to_base(l, d, h, q(1));
+    % J3 (cotovelo)
+    d = d + L(2)*cos(thetaA);  h = h + L(2)*sin(thetaA);
+    J3 = plane_to_base(l, d, h, q(1));
+    % J4 (pulso): o desvio lateral L5 fica entre J3 e J4
+    l = L(5);
+    d = d + L(3)*cos(thetaB);  h = h + L(3)*sin(thetaB);
+    J4 = plane_to_base(l, d, h, q(1));
+    % J5
+    d = d + L(4)*cos(thetaC);  h = h + L(4)*sin(thetaC);
+    J5 = plane_to_base(l, d, h, q(1));
+    % J6 e centro de preensão G, ao longo da garra (J6 não muda a posição)
+    J6 = plane_to_base(l + L(6)*gL, d + L(6)*gD, h + L(6)*gH, q(1));
+    D  = L(6) + L(7);
+    G  = plane_to_base(l + D*gL, d + D*gD, h + D*gH, q(1));
     F = J6 + 0.75*(G - J6);                           % início dos dedos
 
     % Passo 3: o braço como "cápsulas": cada linha = {início, fim, raio, nome}
@@ -80,4 +100,15 @@ function d = seg_dist(p, a, b)
     ab = b - a;
     t  = max(0, min(1, dot(p - a, ab) / dot(ab, ab)));
     d  = norm(p - (a + t*ab));
+end
+
+% --------------------------------------------------------------------------
+% Passa um ponto do plano do braço (l = para o lado, d = em frente, h = altura)
+% para o referencial da base, como no plano horizontal de direct_kin: o desvio
+% l faz o ângulo q1 com o eixo x e a distância d faz q1 + 90 graus
+function p = plane_to_base(l, d, h, q1)
+% ponto do plano do braço -> referencial da base
+    p = [l*cos(q1) - d*sin(q1);
+         l*sin(q1) + d*cos(q1);
+         h];
 end

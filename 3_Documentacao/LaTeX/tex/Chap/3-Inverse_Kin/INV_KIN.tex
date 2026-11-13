@@ -2,34 +2,31 @@
 \chapter{Formulação da cinemática inversa}
 \label{ch:inv_kin}
 
-A cinemática inversa consiste em determinar os ângulos articulares necessários para que o \textit{end effector} de um manipulador robótico atinja uma determinada posição e orientação no espaço. Ao contrário da cinemática direta, em que a configuração das juntas é conhecida, na cinemática inversa parte-se de uma posição pretendida para o centro de preensão, expressa pelas coordenadas $(x,y,z)$ no referencial da base, e procura-se determinar os ângulos das juntas que permitem alcançá-la.
+A cinemática inversa permite determinar os ângulos articulares necessários para que o centro de preensão atinja uma posição pretendida $(x,y,z)$, com uma determinada orientação da garra.
 
-Este problema apresenta uma maior complexidade, uma vez que nem todas as posições são necessariamente alcançáveis pelo manipulador. Além disso, uma mesma posição pode corresponder a diferentes configurações articulares, como acontece nas soluções com o cotovelo orientado para cima ou para baixo.
+Ao contrário da cinemática direta, parte-se da posição desejada para calcular os ângulos das juntas. No entanto, nem todas as posições são alcançáveis e podem existir várias configurações articulares para o mesmo alvo, como as soluções com o cotovelo para cima ou para baixo.
 
-No presente projeto, a cinemática inversa é resolvida através de uma abordagem geométrica e analítica. Para uma inclinação da garra previamente definida, os ângulos articulares são determinados através de expressões matemáticas, para cada inclinação, a solução é analítica. Quando a inclinação pretendida não permite obter uma solução válida, são testadas outras inclinações, procurando uma configuração que respeite as restrições do manipulador.
+Neste projeto, utiliza-se uma abordagem geométrica e analítica. Como as juntas J1 a J4 introduzem quatro variáveis para três equações de posição, é necessário definir uma condição adicional: a inclinação da garra, representada por $\psi$.
 
-Considerando a posição tridimensional do centro de preensão, obtêm-se três equações de posição. No entanto, as juntas J1 a J4 introduzem quatro variáveis articulares, existindo, por isso, um grau de liberdade adicional.
+A inclinação preferencial é $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo. Quando não existe uma solução válida para esta inclinação, o algoritmo procura outras orientações que respeitem as restrições do manipulador.
 
-Para resolver esta indeterminação, é definida a inclinação da garra através do ângulo $\psi$, seguindo uma abordagem semelhante à utilizada no estudo de manipuladores planares. A inclinação preferencial é $\psi=90^\circ$, correspondente à garra orientada verticalmente para baixo, uma configuração adequada à preensão de objetos sobre uma superfície horizontal.
-
-À semelhança da cinemática direta, a resolução é dividida em duas componentes geométricas, analisadas pela ordem inversa:
+Tal como na cinemática direta, a resolução é dividida em dois planos, mas seguindo a ordem inversa:
 
 \begin{itemize}
-    \item No \textbf{plano horizontal}, determina-se o ângulo da junta J1 e a distância frontal $d$ necessária para alcançar o alvo, considerando o desvio lateral da estrutura do manipulador (Secção~\ref{sec:ik_horizontal});
+    \item \textbf{Plano horizontal:} calcula-se o ângulo da junta J1 e a distância frontal $d$, considerando o desvio lateral do manipulador (Secção~\ref{sec:ik_horizontal});
 
-    \item No \textbf{plano lateral}, as juntas J2, J3 e J4 são analisadas através de um modelo planar de três graus de liberdade. Ao impor a inclinação da garra, o problema é reduzido à resolução geométrica de um manipulador planar de dois graus de liberdade \cite{bicho_2dof, bicho_3dof} (Secção~\ref{sec:ik_lateral});
-
-    \item A \textbf{junta 5} é mantida a $0^\circ$ na cinemática inversa implementada, permitindo conservar a garra no plano de movimento do braço. A \textbf{junta 6} é utilizada para ajustar a orientação dos dedos da garra relativamente ao objeto, sem alterar a posição do centro de preensão.
+    \item \textbf{Plano lateral:} calculam-se os ângulos de J2, J3 e J4. Ao fixar a inclinação da garra, o problema reduz-se a um manipulador planar de dois graus de liberdade, resolvido geometricamente \cite{bicho_2dof,bicho_3dof} (Secção~\ref{sec:ik_lateral}).
 \end{itemize}
+
+Na implementação desenvolvida, J5 é mantida a $0^\circ$, enquanto J6 permite ajustar a orientação dos dedos da garra sem alterar a posição do centro de preensão.
+
 
 \section{Do referencial do mundo para o da base}
 \label{sec:mundo_base}
 
-No ambiente de simulação CoppeliaSim, as posições dos objetos são inicialmente obtidas relativamente ao referencial global, designado por referencial do mundo. No entanto, os cálculos da cinemática inversa são realizados relativamente ao referencial da base do manipulador.
+No CoppeliaSim, as posições dos objetos são obtidas relativamente ao referencial do mundo, enquanto a cinemática inversa utiliza o referencial da base do manipulador. Por isso, é necessário converter as coordenadas entre os dois referenciais.
 
-Deste modo, torna-se necessário efetuar uma transformação de coordenadas, considerando tanto a translação como a rotação existente entre os dois referenciais.
-
-No cenário desenvolvido, a origem do referencial da base encontra-se na posição:
+No cenário utilizado, a origem da base encontra-se em:
 
 \begin{equation}
     (X_b,Y_b,Z_b)=
@@ -37,11 +34,11 @@ No cenário desenvolvido, a origem do referencial da base encontra-se na posiç�
     \ \text{m}
 \end{equation}
 
-Adicionalmente, o referencial da base apresenta uma rotação de $\theta_b=-90^\circ$ em torno do eixo vertical $z$, relativamente ao referencial do mundo.
+O referencial da base apresenta ainda uma rotação de $\theta_b=-90^\circ$ em torno do eixo $z$ relativamente ao mundo.
 
-Para converter a posição de um ponto do referencial global para o referencial da base, começa-se por subtrair a posição da origem da base. Seguidamente, aplica-se a rotação inversa, correspondente a $-\theta_b=+90^\circ$, de forma a expressar as coordenadas segundo os eixos do manipulador.
+Para converter as coordenadas, subtrai-se primeiro a posição da origem da base e aplica-se depois a rotação inversa de $+90^\circ$. Esta rotação transforma as componentes horizontais $(a,b)$ em $(-b,a)$.
 
-Considerando que uma rotação de $90^\circ$ transforma um ponto $(a,b)$ em $(-b,a)$, obtêm-se as seguintes expressões:
+Assim, obtêm-se:
 
 \begin{equation}
     \boxed{
@@ -54,11 +51,9 @@ Considerando que uma rotação de $90^\circ$ transforma um ponto $(a,b)$ em $(-b
     \label{eq:mundo_base}
 \end{equation}
 
-onde $(X,Y,Z)$ representa a posição do ponto no referencial do mundo e $(x,y,z)$ corresponde à posição do mesmo ponto relativamente ao referencial da base do robô.
+Aqui, $(X,Y,Z)$ representa a posição no referencial do mundo e $(x,y,z)$ a mesma posição relativamente à base.
 
-Esta transformação permite converter as posições dos objetos, expressas no referencial do mundo, para o referencial da base do manipulador, utilizado nos cálculos da cinemática inversa. No código MATLAB, esta operação é realizada através da função \texttt{aux.world\_to\_base}.
-
-A Figura~\ref{fig:mundo_base} ilustra a relação entre os dois referenciais e a transformação considerada.
+Esta transformação é implementada em MATLAB através da função \texttt{aux.world\_to\_base} e encontra-se ilustrada na Figura~\ref{fig:mundo_base}.
 
 \begin{figure}[htbp]
     \centering
